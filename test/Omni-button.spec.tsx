@@ -1,21 +1,11 @@
-import React from 'react';
-import { shallow } from "enzyme"
-import { expect } from "chai"
+import React from "react"
+import {render} from "enzyme"
 
-import { configure } from "enzyme"
-import Adapter from "enzyme-adapter-react-16"
-configure({ adapter: new Adapter() })
+import OmniButton from "../src/components/Omni-button"
 
-import OmniButton from '../src/components/Omni-button.tsx';
+test("Should render a button", () => {
+  const props = {}
+  const component = render(<OmniButton {...props} />)
 
-describe("render components", () => {
-
-  it("should render a button", () => {
-    const props = {}
-    const wrapper = shallow(<OmniButton {...props} />)
-
-    expect(wrapper.find({ className: "omni-button" })).to.have.length(
-      1
-    )
-  })
+  expect(component).toMatchSnapshot()
 })

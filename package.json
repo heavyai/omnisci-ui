@@ -1,0 +1,37 @@
+{
+  "name": "omnisci-ui",
+  "version": "0.1.0",
+  "description": "OmniSci component ui library",
+  "author": "Christophe Viau",
+  "license": "ISC",
+  "dependencies": {
+    "@material/react-button": "^0.10.0",
+    "@types/classnames": "^2.2.7",
+    "@types/node": "^11.9.4",
+    "@types/react": "^16.8.4",
+    "@types/react-dom": "^16.8.2",
+    "node-sass": "^4.11.0",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "react-scripts": "2.1.5",
+    "react-styleguidist": "^9.0.1",
+    "typescript": "^3.3.3333"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "test": "react-scripts test",
+    "styleguide": "styleguidist server",
+    "styleguide:build": "styleguidist build"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

@@ -1,0 +1,5 @@
+@import "@material/button/mixins";
+
+.omni-button {
+  @include mdc-button-container-fill-color(lightblue);
+}

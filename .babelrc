@@ -1,0 +1,14 @@
+{
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "modules": false,
+        "useBuiltIns": "entry"
+      }
+    ],
+    "@babel/react",
+    "@babel/preset-typescript"
+  ],
+  "plugins": ["transform-object-rest-spread"]
+}

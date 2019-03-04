@@ -10,5 +10,11 @@
     "@babel/react",
     "@babel/preset-typescript"
   ],
-  "plugins": ["transform-object-rest-spread"]
+  "plugins": ["@babel/plugin-proposal-object-rest-spread"],
+  "env": {
+    "test": {
+      "presets": ["@babel/env", "@babel/react", "@babel/preset-typescript"],
+      "plugins": ["@babel/plugin-proposal-object-rest-spread"]
+    }
+  }
 }

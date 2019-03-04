@@ -1,0 +1,18 @@
+{
+  "automock": false,
+  "transform": {
+    "^.+\\.jsx?$": "babel-jest",
+    "^.+\\.tsx?$": "babel-jest"
+  },
+  "moduleFileExtensions": ["js", "jsx", "ts", "tsx"],
+  "setupFiles": ["./test/setup.ts"],
+  "snapshotSerializers": ["enzyme-to-json/serializer"],
+  "moduleNameMapper": {
+    "\\.scss$": "identity-obj-proxy"
+  },
+  "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}"],
+  "coverageDirectory": "coverage",
+  "coverageReporters": ["html"],
+  "testMatch": ["**/?(*.)(spec|test).js?(x)", "**/?(*.)(spec|test).ts?(x)"],
+  "testURL": "http://localhost/"
+}

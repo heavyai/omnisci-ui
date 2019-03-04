@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should render a button 1`] = `
+<button
+  class="mdc-button omni-button"
+>
+  <span
+    class="mdc-button__label"
+  />
+</button>
+`;

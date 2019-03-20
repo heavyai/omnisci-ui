@@ -107,17 +107,6 @@ eval("(function webpackUniversalModuleDefinition(root, factory) {\n\tif(true)\n\
 
 /***/ }),
 
-/***/ "./node_modules/@material/react-button/index.scss":
-/*!********************************************************!*\
-  !*** ./node_modules/@material/react-button/index.scss ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack://%5Bname%5D/./node_modules/@material/react-button/index.scss?");
-
-/***/ }),
-
 /***/ "./node_modules/@material/react-ripple/dist/index.js":
 /*!***********************************************************!*\
   !*** ./node_modules/@material/react-ripple/dist/index.js ***!
@@ -211,15 +200,26 @@ eval("\n\nif (false) {} else {\n  module.exports = __webpack_require__(/*! ./cjs
 
 /***/ }),
 
-/***/ "./src/components/Omni-button.tsx":
-/*!****************************************!*\
-  !*** ./src/components/Omni-button.tsx ***!
-  \****************************************/
+/***/ "./src/components/omni-button/Omni-button.tsx":
+/*!****************************************************!*\
+  !*** ./src/components/omni-button/Omni-button.tsx ***!
+  \****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __importStar = (this && this.__importStar) || function (mod) {\n    if (mod && mod.__esModule) return mod;\n    var result = {};\n    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];\n    result[\"default\"] = mod;\n    return result;\n};\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst React = __importStar(__webpack_require__(/*! react */ \"./node_modules/react/index.js\"));\nconst react_button_1 = __importDefault(__webpack_require__(/*! @material/react-button */ \"./node_modules/@material/react-button/dist/index.js\"));\n__webpack_require__(/*! @material/react-button/index.scss */ \"./node_modules/@material/react-button/index.scss\");\n__webpack_require__(/*! ../styles/overrides/react-button.scss */ \"./src/styles/overrides/react-button.scss\");\n/**\n * Button\n */\nconst OmniButton = (props) => {\n    return React.createElement(react_button_1.default, { className: \"omni-button\" }, props.label);\n};\nexports.default = OmniButton;\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/components/Omni-button.tsx?");
+eval("\nvar __importStar = (this && this.__importStar) || function (mod) {\n    if (mod && mod.__esModule) return mod;\n    var result = {};\n    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];\n    result[\"default\"] = mod;\n    return result;\n};\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst React = __importStar(__webpack_require__(/*! react */ \"./node_modules/react/index.js\"));\nconst react_button_1 = __importDefault(__webpack_require__(/*! @material/react-button */ \"./node_modules/@material/react-button/dist/index.js\"));\n__webpack_require__(/*! ./react-button.scss */ \"./src/components/omni-button/react-button.scss\");\n/**\n * Button\n */\nconst OmniButton = (props) => {\n    return React.createElement(react_button_1.default, Object.assign({ className: \"omni-button\" }, props), props.label);\n};\nexports.default = OmniButton;\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/components/omni-button/Omni-button.tsx?");
+
+/***/ }),
+
+/***/ "./src/components/omni-button/react-button.scss":
+/*!******************************************************!*\
+  !*** ./src/components/omni-button/react-button.scss ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack://%5Bname%5D/./src/components/omni-button/react-button.scss?");
 
 /***/ }),
 
@@ -231,18 +231,7 @@ eval("\nvar __importStar = (this && this.__importStar) || function (mod) {\n    
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _components_Omni_button_tsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Omni-button.tsx */ \"./src/components/Omni-button.tsx\");\n/* harmony import */ var _components_Omni_button_tsx__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_components_Omni_button_tsx__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, \"OmniButton\", function() { return _components_Omni_button_tsx__WEBPACK_IMPORTED_MODULE_0___default.a; });\n\n\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/index.js?");
-
-/***/ }),
-
-/***/ "./src/styles/overrides/react-button.scss":
-/*!************************************************!*\
-  !*** ./src/styles/overrides/react-button.scss ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack://%5Bname%5D/./src/styles/overrides/react-button.scss?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _components_omni_button_Omni_button_tsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/omni-button/Omni-button.tsx */ \"./src/components/omni-button/Omni-button.tsx\");\n/* harmony import */ var _components_omni_button_Omni_button_tsx__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_components_omni_button_Omni_button_tsx__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, \"OmniButton\", function() { return _components_omni_button_Omni_button_tsx__WEBPACK_IMPORTED_MODULE_0___default.a; });\n\n\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/index.js?");
 
 /***/ })
 

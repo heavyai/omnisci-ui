@@ -160,15 +160,15 @@
   .mdc-button:not(:disabled) {
     background-color: transparent; }
   .mdc-button:not(:disabled) {
-    color: #6200ee;
+    color: #0089D1;
     /* @alternate */
-    color: var(--mdc-theme-primary, #6200ee); }
+    color: var(--mdc-theme-primary, #0089D1); }
   .mdc-button::before, .mdc-button::after {
-    background-color: #6200ee; }
+    background-color: #0089D1; }
     @supports not (-ms-ime-align: auto) {
       .mdc-button::before, .mdc-button::after {
         /* @alternate */
-        background-color: var(--mdc-theme-primary, #6200ee); } }
+        background-color: var(--mdc-theme-primary, #0089D1); } }
   .mdc-button:hover::before {
     opacity: 0.04; }
   .mdc-button:not(.mdc-ripple-upgraded):focus::before, .mdc-button.mdc-ripple-upgraded--background-focused::before {
@@ -257,27 +257,27 @@ svg.mdc-button__icon {
     color: rgba(0, 0, 0, 0.37); }
   .mdc-button--raised:not(:disabled),
   .mdc-button--unelevated:not(:disabled) {
-    background-color: #6200ee; }
+    background-color: #0089D1; }
     @supports not (-ms-ime-align: auto) {
       .mdc-button--raised:not(:disabled),
       .mdc-button--unelevated:not(:disabled) {
         /* @alternate */
-        background-color: var(--mdc-theme-primary, #6200ee); } }
+        background-color: var(--mdc-theme-primary, #0089D1); } }
   .mdc-button--raised:not(:disabled),
   .mdc-button--unelevated:not(:disabled) {
-    color: #fff;
+    color: white;
     /* @alternate */
-    color: var(--mdc-theme-on-primary, #fff); }
+    color: var(--mdc-theme-on-primary, white); }
   .mdc-button--raised::before, .mdc-button--raised::after,
   .mdc-button--unelevated::before,
   .mdc-button--unelevated::after {
-    background-color: #fff; }
+    background-color: white; }
     @supports not (-ms-ime-align: auto) {
       .mdc-button--raised::before, .mdc-button--raised::after,
       .mdc-button--unelevated::before,
       .mdc-button--unelevated::after {
         /* @alternate */
-        background-color: var(--mdc-theme-on-primary, #fff); } }
+        background-color: var(--mdc-theme-on-primary, white); } }
   .mdc-button--raised:hover::before,
   .mdc-button--unelevated:hover::before {
     opacity: 0.08; }
@@ -324,12 +324,10 @@ svg.mdc-button__icon {
   .mdc-button--outlined:disabled {
     border-color: rgba(0, 0, 0, 0.37); }
   .mdc-button--outlined:not(:disabled) {
-    border-color: #6200ee;
+    border-color: #0089D1;
     /* @alternate */
-    border-color: var(--mdc-theme-primary, #6200ee); }
+    border-color: var(--mdc-theme-primary, #0089D1); }
 
 .mdc-button--dense {
   height: 32px;
   font-size: .8125rem; }
-.omni-button:not(:disabled) {
-  background-color: lightblue; }

@@ -18,6 +18,7 @@
     "dev": "webpack --env.dev --watch",
     "clean": "yarn cache clean && rm -rf node_modules",
     "test": "jest --config jest.config.json",
+    "test:snapshot": "jest --config jest.config.json --updateSnapshot",
     "format": "eslint \"src/**/*.js\" --fix",
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build"

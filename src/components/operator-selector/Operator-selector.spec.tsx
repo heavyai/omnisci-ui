@@ -1,11 +1,16 @@
 import React from "react"
 import {render} from "enzyme"
 
-import OmniButton from "./Omni-button"
+import OperatorSelector from "./Operator-selector"
 
-test("Should render a button", () => {
-  const props = {}
-  const component = render(<OmniButton {...props} />)
+test("Should render an operator selector", () => {
+  const props = {
+    menuIsOpen: false,
+    operator: "between",
+    min: 0,
+    max: 10
+  }
+  const component = render(<OperatorSelector {...props} />)
 
   expect(component).toMatchSnapshot()
 })

@@ -37,6 +37,7 @@
   ],
   "dependencies": {
     "@babel/cli": "^7.2.3",
+    "@babel/polyfill": "^7.4.0",
     "@material/react-button": "0.10.0",
     "@types/classnames": "2.2.7",
     "@types/mocha": "^5.2.6",
@@ -62,7 +63,7 @@
     "@babel/core": "7.3.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
     "@babel/plugin-transform-runtime": "7.3.4",
-    "@babel/preset-env": "7.3.4",
+    "@babel/preset-env": "^7.4.2",
     "@babel/preset-react": "7.0.0",
     "@babel/preset-typescript": "7.3.3",
     "autoprefixer": "9.4.9",

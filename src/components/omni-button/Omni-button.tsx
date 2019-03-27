@@ -14,7 +14,7 @@ export interface IButtonProps {
  * Button
  */
 export const OmniButton = (props: IButtonProps) => {
-  return <Button className="omni-button" {...props}>{ props.label }</Button>;
+  return <Button className="omni-button" {...props}>{props.label}</Button>;
 };
 
 export default OmniButton

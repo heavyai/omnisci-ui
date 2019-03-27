@@ -27,6 +27,13 @@ $mid-gray: rgb(125, 125, 125);
 
     .label, .arrow {
       align-items: center;
+      flex: 1;
+    }
+
+    .arrow {
+      justify-content: flex-end;
+      padding-right: 8px;
+      font-size: 14px;
     }
   }
 

@@ -359,7 +359,16 @@ svg.mdc-button__icon {
     .operator-selector .operator .label, .operator-selector .operator .arrow {
       -webkit-box-align: center;
           -ms-flex-align: center;
-              align-items: center; }
+              align-items: center;
+      -webkit-box-flex: 1;
+          -ms-flex: 1;
+              flex: 1; }
+    .operator-selector .operator .arrow {
+      -webkit-box-pack: end;
+          -ms-flex-pack: end;
+              justify-content: flex-end;
+      padding-right: 8px;
+      font-size: 14px; }
   .operator-selector .min-input, .operator-selector .max-input {
     height: 100%;
     -webkit-box-flex: 1;

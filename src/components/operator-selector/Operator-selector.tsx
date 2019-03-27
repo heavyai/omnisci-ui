@@ -1,7 +1,6 @@
 import * as React from "react";
 import "./operator-selector.scss";
 
-
 export const operatorArgs = {
   "between": ["min", "max"],
   "less than": ["max"],
@@ -54,18 +53,18 @@ export const OperatorSelector = (props: IOperatorSelectorProps) => {
           </div>
         : <div className="operator" onClick={props.onMenuClick}>
             <div className="label">{operator}</div>
-            <div className="arrow"></div>
+            <div className="arrow">▾</div>
           </div>}
-      {operatorArgs[operator].includes("min") && 
+      {operatorArgs[operator].includes("min") &&
         <div className="min-input">
           <input type="text" value={props.min} onChange={onInputChange("min")} />
         </div>
       }
       {operatorArgs[operator].includes("min") &&
-        operatorArgs[operator].includes("max") && 
+        operatorArgs[operator].includes("max") &&
         <div className="between-label">and</div>
       }
-      {operatorArgs[operator].includes("max") && 
+      {operatorArgs[operator].includes("max") &&
         <div className="max-input">
           <input type="text" value={props.max}  onChange={onInputChange("max")} />
         </div>

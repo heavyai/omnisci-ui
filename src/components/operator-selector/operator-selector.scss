@@ -9,7 +9,7 @@ $mid-gray: rgb(125, 125, 125);
   align-content: stretch;
   border: 1px solid silver;
   height: 36px;
-  width: 300px;
+  width: 100%;
   font-family: Roboto, sans-serif;
   font-size: 12px;
 
@@ -23,17 +23,19 @@ $mid-gray: rgb(125, 125, 125);
     flex: 0 0 120px;
     background: $x-light-gray;
     padding-left: 8px;
-    color: $mid-gray;
 
     .label, .arrow {
       align-items: center;
       flex: 1;
+      font-size: 12px;
+      color: $mid-gray;
     }
 
     .arrow {
       justify-content: flex-end;
       padding-right: 8px;
       font-size: 14px;
+      color: $mid-gray;
     }
   }
 
@@ -43,7 +45,8 @@ $mid-gray: rgb(125, 125, 125);
 
     input {
       width: 100%;
-      text-align: center;
+      text-align: right;
+      padding: 0 8px 0 4px;
       border: none;
     }
   }

@@ -339,7 +339,7 @@ svg.mdc-button__icon {
       align-content: stretch;
   border: 1px solid silver;
   height: 36px;
-  width: 300px;
+  width: 100%;
   font-family: Roboto, sans-serif;
   font-size: 12px; }
   .operator-selector * {
@@ -354,21 +354,23 @@ svg.mdc-button__icon {
         -ms-flex: 0 0 120px;
             flex: 0 0 120px;
     background: whitesmoke;
-    padding-left: 8px;
-    color: #7d7d7d; }
+    padding-left: 8px; }
     .operator-selector .operator .label, .operator-selector .operator .arrow {
       -webkit-box-align: center;
           -ms-flex-align: center;
               align-items: center;
       -webkit-box-flex: 1;
           -ms-flex: 1;
-              flex: 1; }
+              flex: 1;
+      font-size: 12px;
+      color: #7d7d7d; }
     .operator-selector .operator .arrow {
       -webkit-box-pack: end;
           -ms-flex-pack: end;
               justify-content: flex-end;
       padding-right: 8px;
-      font-size: 14px; }
+      font-size: 14px;
+      color: #7d7d7d; }
   .operator-selector .min-input, .operator-selector .max-input {
     height: 100%;
     -webkit-box-flex: 1;
@@ -376,7 +378,8 @@ svg.mdc-button__icon {
             flex: 1; }
     .operator-selector .min-input input, .operator-selector .max-input input {
       width: 100%;
-      text-align: center;
+      text-align: right;
+      padding: 0 8px 0 4px;
       border: none; }
   .operator-selector .between-label {
     -webkit-box-align: center;

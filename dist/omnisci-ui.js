@@ -208,18 +208,41 @@ eval("\n\nif (false) {} else {\n  module.exports = __webpack_require__(/*! ./cjs
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __importStar = (this && this.__importStar) || function (mod) {\n    if (mod && mod.__esModule) return mod;\n    var result = {};\n    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];\n    result[\"default\"] = mod;\n    return result;\n};\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst React = __importStar(__webpack_require__(/*! react */ \"./node_modules/react/index.js\"));\nconst react_button_1 = __importDefault(__webpack_require__(/*! @material/react-button */ \"./node_modules/@material/react-button/dist/index.js\"));\n__webpack_require__(/*! ./react-button.scss */ \"./src/components/omni-button/react-button.scss\");\n/**\n * Button\n */\nconst OmniButton = (props) => {\n    return React.createElement(react_button_1.default, Object.assign({ className: \"omni-button\" }, props), props.label);\n};\nexports.default = OmniButton;\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/components/omni-button/Omni-button.tsx?");
+eval("\nvar __importStar = (this && this.__importStar) || function (mod) {\n    if (mod && mod.__esModule) return mod;\n    var result = {};\n    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];\n    result[\"default\"] = mod;\n    return result;\n};\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst React = __importStar(__webpack_require__(/*! react */ \"./node_modules/react/index.js\"));\nconst react_button_1 = __importDefault(__webpack_require__(/*! @material/react-button */ \"./node_modules/@material/react-button/dist/index.js\"));\n__webpack_require__(/*! ./omni-button.scss */ \"./src/components/omni-button/omni-button.scss\");\n/**\n * Button\n */\nexports.OmniButton = (props) => {\n    return React.createElement(react_button_1.default, Object.assign({ className: \"omni-button\" }, props), props.label);\n};\nexports.default = exports.OmniButton;\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/components/omni-button/Omni-button.tsx?");
 
 /***/ }),
 
-/***/ "./src/components/omni-button/react-button.scss":
-/*!******************************************************!*\
-  !*** ./src/components/omni-button/react-button.scss ***!
-  \******************************************************/
+/***/ "./src/components/omni-button/omni-button.scss":
+/*!*****************************************************!*\
+  !*** ./src/components/omni-button/omni-button.scss ***!
+  \*****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack://%5Bname%5D/./src/components/omni-button/react-button.scss?");
+eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack://%5Bname%5D/./src/components/omni-button/omni-button.scss?");
+
+/***/ }),
+
+/***/ "./src/components/operator-selector/Operator-selector.tsx":
+/*!****************************************************************!*\
+  !*** ./src/components/operator-selector/Operator-selector.tsx ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nvar __importStar = (this && this.__importStar) || function (mod) {\n    if (mod && mod.__esModule) return mod;\n    var result = {};\n    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];\n    result[\"default\"] = mod;\n    return result;\n};\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst React = __importStar(__webpack_require__(/*! react */ \"./node_modules/react/index.js\"));\n__webpack_require__(/*! ./operator-selector.scss */ \"./src/components/operator-selector/operator-selector.scss\");\nexports.operatorArgs = {\n    \"between\": [\"min\", \"max\"],\n    \"less than\": [\"max\"],\n    \"greater than\": [\"min\"],\n    \"equals\": [\"min\"],\n    \"is not between\": [\"min\", \"max\"],\n};\nconst operatorLabels = Object.keys(exports.operatorArgs);\n/**\n * Operator Selector\n */\nexports.OperatorSelector = (props) => {\n    const onInputChange = (minOrMax) => (e) => {\n        props.onInputChange(minOrMax, e.target.value);\n    };\n    const operator = props.operator || operatorLabels[0];\n    return (React.createElement(\"div\", { className: \"operator-selector\" },\n        props.menuIsOpen\n            ? React.createElement(\"div\", { className: \"operator-menu\" }, operatorLabels.map((operatorLabel, i) => React.createElement(\"div\", { key: i, className: \"operator-item\", onClick: props.onMenuSelect(operatorLabel) }, operatorLabel)))\n            : React.createElement(\"div\", { className: \"operator\", onClick: props.onMenuClick },\n                React.createElement(\"div\", { className: \"label\" }, operator),\n                React.createElement(\"div\", { className: \"arrow\" })),\n        exports.operatorArgs[operator].includes(\"min\") &&\n            React.createElement(\"div\", { className: \"min-input\" },\n                React.createElement(\"input\", { type: \"text\", value: props.min, onChange: onInputChange(\"min\") })),\n        exports.operatorArgs[operator].includes(\"min\") &&\n            exports.operatorArgs[operator].includes(\"max\") &&\n            React.createElement(\"div\", { className: \"between-label\" }, \"and\"),\n        exports.operatorArgs[operator].includes(\"max\") &&\n            React.createElement(\"div\", { className: \"max-input\" },\n                React.createElement(\"input\", { type: \"text\", value: props.max, onChange: onInputChange(\"max\") }))));\n};\nexports.default = exports.OperatorSelector;\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/components/operator-selector/Operator-selector.tsx?");
+
+/***/ }),
+
+/***/ "./src/components/operator-selector/operator-selector.scss":
+/*!*****************************************************************!*\
+  !*** ./src/components/operator-selector/operator-selector.scss ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack://%5Bname%5D/./src/components/operator-selector/operator-selector.scss?");
 
 /***/ }),
 
@@ -227,11 +250,11 @@ eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack://%5Bna
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
-/*! exports provided: OmniButton */
+/*! exports provided: OmniButton, OperatorSelector */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _components_omni_button_Omni_button_tsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/omni-button/Omni-button.tsx */ \"./src/components/omni-button/Omni-button.tsx\");\n/* harmony import */ var _components_omni_button_Omni_button_tsx__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_components_omni_button_Omni_button_tsx__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, \"OmniButton\", function() { return _components_omni_button_Omni_button_tsx__WEBPACK_IMPORTED_MODULE_0___default.a; });\n\n\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _components_omni_button_Omni_button_tsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/omni-button/Omni-button.tsx */ \"./src/components/omni-button/Omni-button.tsx\");\n/* harmony import */ var _components_omni_button_Omni_button_tsx__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_components_omni_button_Omni_button_tsx__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, \"OmniButton\", function() { return _components_omni_button_Omni_button_tsx__WEBPACK_IMPORTED_MODULE_0___default.a; });\n/* harmony import */ var _components_operator_selector_Operator_selector_tsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/operator-selector/Operator-selector.tsx */ \"./src/components/operator-selector/Operator-selector.tsx\");\n/* harmony import */ var _components_operator_selector_Operator_selector_tsx__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_components_operator_selector_Operator_selector_tsx__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, \"OperatorSelector\", function() { return _components_operator_selector_Operator_selector_tsx__WEBPACK_IMPORTED_MODULE_1___default.a; });\n\n\n\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/index.js?");
 
 /***/ })
 

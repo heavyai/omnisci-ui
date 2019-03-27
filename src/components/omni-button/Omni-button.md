@@ -1,22 +1,6 @@
-OmniButton
-Primary:
-
 ```js
-<OmniButton label="Click me" unelevated/>
-```
-
-Secondary:
-
-```js
-<OmniButton label="Click me" outlined/>
-```
-
-Disabled primary:
-```js
-<OmniButton label="Click me" disabled unelevated/>
-```
-
-Disabled secondary
-```js
-<OmniButton label="Click me" disabled outlined/>
+<OmniButton label="Default" unelevated/>
+<OmniButton label="Outline" outlined/>
+<OmniButton label="Disabled" disabled unelevated/>
+<OmniButton label="Disabled outline" disabled outlined/>
 ```

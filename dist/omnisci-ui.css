@@ -331,3 +331,69 @@ svg.mdc-button__icon {
 .mdc-button--dense {
   height: 32px;
   font-size: .8125rem; }
+.operator-selector {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-line-pack: stretch;
+      align-content: stretch;
+  border: 1px solid silver;
+  height: 36px;
+  width: 300px;
+  font-family: Roboto, sans-serif;
+  font-size: 12px; }
+  .operator-selector * {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    height: 100%; }
+  .operator-selector .operator {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 120px;
+            flex: 0 0 120px;
+    background: whitesmoke;
+    padding-left: 8px;
+    color: #7d7d7d; }
+    .operator-selector .operator .label, .operator-selector .operator .arrow {
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center; }
+  .operator-selector .min-input, .operator-selector .max-input {
+    height: 100%;
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
+    .operator-selector .min-input input, .operator-selector .max-input input {
+      width: 100%;
+      text-align: center;
+      border: none; }
+  .operator-selector .between-label {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 0 8px;
+    background: whitesmoke;
+    color: #7d7d7d; }
+  .operator-selector .operator-menu {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 120px;
+            flex: 0 0 120px;
+    height: 180px;
+    background-color: white;
+    z-index: 1;
+    border: 1px solid silver;
+    margin: -1px 0 0 -1px; }
+    .operator-selector .operator-menu .operator-item {
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      padding-left: 8px;
+      color: #7d7d7d; }
+    .operator-selector .operator-menu .operator-item:hover {
+      background: whitesmoke; }

@@ -1,0 +1,70 @@
+@import "../../index";
+
+$x-light-gray: rgb(245, 245, 245);
+$light-gray: silver;
+$mid-gray: rgb(125, 125, 125);
+
+.operator-selector {
+  display: flex;
+  align-content: stretch;
+  border: 1px solid silver;
+  height: 36px;
+  width: 300px;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+
+  & * {
+    display: flex;
+    box-sizing: border-box;
+    height: 100%;
+  }
+
+  .operator {
+    flex: 0 0 120px;
+    background: $x-light-gray;
+    padding-left: 8px;
+    color: $mid-gray;
+
+    .label, .arrow {
+      align-items: center;
+    }
+  }
+
+  .min-input, .max-input {
+    height: 100%;
+    flex: 1;
+
+    input {
+      width: 100%;
+      text-align: center;
+      border: none;
+    }
+  }
+
+  .between-label {
+    align-items: center;
+    padding: 0 8px;
+    background: $x-light-gray;
+    color: $mid-gray;
+  }
+
+  .operator-menu {
+    flex-direction: column;
+    flex: 0 0 120px;
+    height: 180px;
+    background-color: white;
+    z-index: 1;
+    border: 1px solid $light-gray;
+    margin: -1px 0 0 -1px;
+
+    .operator-item {
+      align-items: center;
+      padding-left: 8px;
+      color: $mid-gray;
+    }
+
+    .operator-item:hover {
+      background: $x-light-gray;
+    }
+  }
+}

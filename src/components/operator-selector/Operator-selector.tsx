@@ -7,7 +7,7 @@ export const operatorArgs = {
   "less than": ["max"],
   "greater than": ["min"],
   "equals": ["min"],
-  "is not between": ["min", "max"],
+  "not between": ["min", "max"],
 };
 
 const operatorLabels = Object.keys(operatorArgs)

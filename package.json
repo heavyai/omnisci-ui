@@ -21,6 +21,7 @@
     "test:snapshot": "jest --config jest.config.json --updateSnapshot",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "lint:fix": "yarn lint --fix",
+    "format": "prettier --write '{src,test}/**/*.{js,jsx,ts,tsx}'",
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build"
   },
@@ -40,6 +41,8 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.0",
     "@material/react-button": "0.10.0",
+    "@material/react-switch": "^0.11.0",
+    "@material/react-text-field": "^0.11.0",
     "react": "16.8.3",
     "react-dom": "16.8.3"
   },
@@ -80,6 +83,7 @@
     "node-sass": "4.11.0",
     "null-loader": "0.1.1",
     "postcss-loader": "3.0.0",
+    "prettier": "^1.16.4",
     "react-docgen-typescript": "^1.12.3",
     "react-scripts": "2.1.5",
     "react-styleguidist": "9.0.2",
@@ -91,6 +95,7 @@
     "ts-loader": "^5.3.3",
     "ts-node": "^8.0.2",
     "tslint": "^5.13.1",
+    "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^3.6.0",
     "typescript": "3.3.3333",
     "webpack": "4.29.6",

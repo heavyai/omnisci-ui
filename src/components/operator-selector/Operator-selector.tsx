@@ -1,13 +1,13 @@
-import * as React from "react";
-import "./operator-selector.scss";
+import * as React from "react"
+import "./operator-selector.scss"
 
 export const operatorArgs = {
-  "between": ["min", "max"],
+  between: ["min", "max"],
   "less than": ["max"],
   "greater than": ["min"],
-  "equals": ["min"],
-  "not between": ["min", "max"],
-};
+  equals: ["min"],
+  "not between": ["min", "max"]
+}
 
 const operatorLabels = Object.keys(operatorArgs)
 
@@ -16,26 +16,26 @@ const operatorLabels = Object.keys(operatorArgs)
  */
 export interface IOperatorSelectorProps {
   /** Operator min value */
-  min?: number;
+  min?: number
   /** Operator max value */
-  max?: number;
+  max?: number
   /** Selected operator */
-  operator?: string;
+  operator?: string
   /** If menu should be open */
-  menuIsOpen?: boolean;
+  menuIsOpen?: boolean
   /** When menu is clicked open */
-  onMenuClick?: any;
+  onMenuClick?: any
   /** When a menu item is selected */
-  onMenuSelect?: any;
+  onMenuSelect?: any
   /** When a min or max input is changed */
-  onInputChange?: any;
+  onInputChange?: any
 }
 
 /**
  * Operator Selector
  */
 export const OperatorSelector = (props: IOperatorSelectorProps) => {
-  const onInputChange = (minOrMax) => (e) => {
+  const onInputChange = minOrMax => e => {
     props.onInputChange(minOrMax, e.target.value)
   }
 
@@ -43,34 +43,48 @@ export const OperatorSelector = (props: IOperatorSelectorProps) => {
 
   return (
     <div className="operator-selector">
-      {props.menuIsOpen
-        ? <div className="operator-menu">
-            {operatorLabels.map((operatorLabel, i) =>
-              <div key={i} className="operator-item" onClick={props.onMenuSelect(operatorLabel)}>
-                {operatorLabel}
-              </div>
-            )}
-          </div>
-        : <div className="operator" onClick={props.onMenuClick}>
-            <div className="label">{operator}</div>
-            <div className="arrow">▾</div>
-          </div>}
-      {operatorArgs[operator].includes("min") &&
+      {props.menuIsOpen ? (
+        <div className="operator-menu">
+          {operatorLabels.map((operatorLabel, i) => (
+            <div
+              key={i}
+              className="operator-item"
+              onClick={props.onMenuSelect(operatorLabel)}
+            >
+              {operatorLabel}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="operator" onClick={props.onMenuClick}>
+          <div className="label">{operator}</div>
+          <div className="arrow">▾</div>
+        </div>
+      )}
+      {operatorArgs[operator].includes("min") && (
         <div className="min-input">
-          <input type="text" value={props.min} onChange={onInputChange("min")} />
+          <input
+            type="text"
+            value={props.min || 0}
+            onChange={onInputChange("min")}
+          />
         </div>
-      }
+      )}
       {operatorArgs[operator].includes("min") &&
-        operatorArgs[operator].includes("max") &&
-        <div className="between-label">and</div>
-      }
-      {operatorArgs[operator].includes("max") &&
+        operatorArgs[operator].includes("max") && (
+          <div className="between-label">and</div>
+        )}
+      {operatorArgs[operator].includes("max") && (
         <div className="max-input">
-          <input type="text" value={props.max}  onChange={onInputChange("max")} />
+          <input
+            type="text"
+            value={props.max || 1}
+            onChange={onInputChange("max")}
+          />
         </div>
-      }
+      )}
     </div>
-  );
-};
+  )
+}
 
-export default OperatorSelector;
+export default OperatorSelector

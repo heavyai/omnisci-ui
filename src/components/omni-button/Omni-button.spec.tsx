@@ -1,5 +1,5 @@
 import React from "react"
-import {render} from "enzyme"
+import { render } from "enzyme"
 
 import OmniButton from "./Omni-button"
 

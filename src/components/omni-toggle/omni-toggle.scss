@@ -1,0 +1,20 @@
+@import "../../index";
+@import "@material/switch/mdc-switch";
+// @import "@material/switch/mixins";
+
+.omni-toggle {
+  font-family: "Roboto", sans-serif;
+
+  .switch {
+    @include mdc-switch-toggled-on-color($mdc-theme-primary);
+  }
+
+  .omni-label {
+    color: $light-gray;
+    margin-bottom: 8px;
+  }
+
+  label {
+    display: block;
+  }
+}

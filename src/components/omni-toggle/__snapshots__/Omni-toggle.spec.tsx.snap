@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should render a toggle 1`] = `
+<div
+  class="omni-toggle"
+>
+  <label
+    class="omni-label"
+    for="switch"
+  >
+    Label
+  </label>
+  <div
+    class="mdc-switch switch"
+  >
+    <div
+      class="mdc-switch__track"
+    />
+    <div
+      class="mdc-switch__thumb-underlay"
+    >
+      <div
+        class="mdc-switch__thumb"
+      >
+        <input
+          checked=""
+          class="mdc-switch__native-control"
+          role="switch"
+          type="checkbox"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

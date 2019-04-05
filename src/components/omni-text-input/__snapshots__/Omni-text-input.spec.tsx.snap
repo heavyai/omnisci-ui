@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should render a text input 1`] = `
+<div
+  class="omni-text-input"
+>
+  <div
+    class="mdc-text-field mdc-text-field--outlined"
+  >
+    <label
+      class="mdc-floating-label"
+      for=""
+    >
+      Label
+    </label>
+    <div
+      class="mdc-notched-outline"
+    >
+      <svg
+        focusable="false"
+      >
+        <path
+          class="mdc-notched-outline__path"
+        />
+      </svg>
+    </div>
+    <div
+      class="mdc-notched-outline__idle"
+    />
+  </div>
+  <p
+    aria-hidden="false"
+    class="mdc-text-field-helper-text"
+  >
+    Enter a string
+  </p>
+</div>
+`;

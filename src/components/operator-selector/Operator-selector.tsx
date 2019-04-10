@@ -39,6 +39,10 @@ export const OperatorSelector = (props: IOperatorSelectorProps) => {
     props.onInputChange(minOrMax, e.target.value)
   }
 
+  const onMenuSelect = operatorLabel => () => {
+    props.onMenuSelect(operatorLabel)
+  }
+
   const operator = props.operator || operatorLabels[0]
 
   return (
@@ -49,7 +53,7 @@ export const OperatorSelector = (props: IOperatorSelectorProps) => {
             <div
               key={i}
               className="operator-item"
-              onClick={props.onMenuSelect(operatorLabel)}
+              onClick={onMenuSelect(operatorLabel)}
             >
               {operatorLabel}
             </div>

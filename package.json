@@ -41,8 +41,10 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.0",
     "@material/react-button": "0.10.0",
+    "@material/react-select": "^0.11.0",
     "@material/react-switch": "^0.11.0",
     "@material/react-text-field": "^0.11.0",
+    "@material/shape": "^1.1.1",
     "react": "16.8.3",
     "react-dom": "16.8.3"
   },

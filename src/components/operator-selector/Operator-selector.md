@@ -11,7 +11,7 @@ initialState = {
   operator={state.operator}
   menuIsOpen={ state.isOpen }
   onMenuClick={() => setState({ isOpen: true })}
-  onMenuSelect={(operator) => () => setState({ isOpen: false, operator })}
+  onMenuSelect={(operator) => setState({ isOpen: false, operator })}
   onInputChange={(minOrMax, value) => setState({ [minOrMax]: value })}
 />
 ```

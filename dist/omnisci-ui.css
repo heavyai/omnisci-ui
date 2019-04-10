@@ -941,7 +941,6 @@ svg.mdc-button__icon {
   text-transform: inherit;
   display: block;
   margin-top: 0;
-  /* @alternate */
   line-height: normal;
   margin: 0;
   -webkit-transition: opacity 180ms cubic-bezier(0.4, 0, 0.2, 1);

@@ -8,15 +8,23 @@ import "./omni-button.scss"
 export interface IButtonProps {
   /** Text to show on the button */
   label?: string
+  isOutlined?: boolean
+  isDisabled?: boolean
 }
 
 /**
  * button
  */
+// TODO: onAuxClick onAuxClickCapture are just there to silence a weird ts error
 export const OmniButton= (props: IButtonProps) => {
   return (
     <div className="omni-button">
-      <Button label={props.label} />
+      <Button
+        unelevated={!props.isOutlined}
+        outlined={props.isOutlined}
+        disabled={props.isDisabled}
+        label={props.label}
+      />
     </div>
   )
 }

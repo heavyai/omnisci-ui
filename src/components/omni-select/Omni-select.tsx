@@ -1,40 +1,61 @@
 import * as React from "react"
-import Select from "@material/react-select"
+import { Select } from "@rmwc/select"
+import { ListItem } from "@rmwc/list"
 import "./omni-select.scss"
 
 /**
- * Text input properties.
+ * Selector properties.
  */
 export interface ISelectProps {
-  /** Text to show over the text input */
+  /** Text to show over the select */
   label?: string
+  /** Select text */
   value?: string
+  /** When an item is selected */
+  onChange?: any
+  /** Items for the list*/
   options?: [any]
-  /** When the input value is changed */
-  onInputChange?: any
+  /** If the selector should be disabled */
+  disabled?: boolean
+  /** If the selector is required */
+  required?: boolean
 }
 
 /**
- * Text input
+ * Selector
  */
 export const OmniSelect = (props: ISelectProps) => {
-  const onInputChange = e => {
-    console.log(e.target, e.target.value)
-    props.onInputChange(e.target.value)
+  const onChange = e => {
+    props.onChange(e.detail.value)
   }
   return (
     <div className="omni-select">
       <Select
         label={props.label}
-        onChange={onInputChange}
+        outlined
+        enhanced
+        onChange={onChange}
         value={props.value}
-        outlined={true}
-        className="test"
+        disabled={props.disabled}
+        required={props.required}
       >
-      <option value="" disabled></option>
-      {props.options.map((option, idx) => (
-        <option value={option.value} key={idx}>{option.label}</option>
-      ))}
+        {/* 
+        <option value="" disabled></option>
+          {props.options.map((option, idx) => (
+            <option value={option.value} key={idx}>{option.label}</option>
+          ))}
+        */}
+        {props.options.map((option, idx) => (
+          <ListItem
+            key={idx}
+            value={option.value}
+            activated={option.value === props.value}
+            data-value={option.value}
+          >
+            {option.label}
+          </ListItem>
+        ))}
+        
       </Select>
     </div>
   )

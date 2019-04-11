@@ -1,7 +1,14 @@
 @import "../../index";
 @import "@material/select/mdc-select";
+@import "@material/select/mixins";
+@import "@material/menu/mdc-menu";
+@import "@material/menu-surface/mdc-menu-surface";
+@import "@material/list/mdc-list";
 
 .omni-select {
   font-family: "Roboto", sans-serif;
-
+}
+.mdc-menu-surface {
+  margin-top: 56px;
+  min-width: 200px;
 }

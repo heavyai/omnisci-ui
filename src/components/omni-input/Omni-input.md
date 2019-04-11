@@ -1,7 +1,7 @@
 Standard text input
 ```js
 initialState = {
-  label: "Label",
+  label: "Standard",
   value: null
 };
 <OmniInput
@@ -11,10 +11,9 @@ initialState = {
 />
 ```
 
-Number input
 ```js
 initialState = {
-  label: "Label",
+  label: "Number",
   value: null
 };
 <OmniInput
@@ -25,10 +24,9 @@ initialState = {
 />
 ```
 
-Trailing icon
 ```js
 initialState = {
-  label: "Label",
+  label: "Icons",
   value: null
 };
 <OmniInput
@@ -37,4 +35,43 @@ initialState = {
   onInputChange={(value) => setState({ value })}
   icon="search"
   trailingIcon="close"
+/>
+```
+
+```js
+initialState = {
+  label: "Textarea",
+  value: null
+};
+<OmniInput
+  label={state.label}
+  value={state.value}
+  onInputChange={(value) => setState({ value })}
+  isTextarea={true}
+/>
+```
+
+```js
+initialState = {
+  label: "Disabled",
+  value: null
+};
+<OmniInput
+  label={state.label}
+  value={state.value}
+  isDisabled={true}
+  onInputChange={(value) => setState({ value })}
+/>
+```
+
+```js
+initialState = {
+  label: "Invalid",
+  value: null
+};
+<OmniInput
+  label={state.label}
+  value={state.value}
+  isInvalid={true}
+  onInputChange={(value) => setState({ value })}
 />

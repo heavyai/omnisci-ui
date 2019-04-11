@@ -41,6 +41,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.0",
     "@material/ripple": "^1.1.0",
+    "@rmwc/button": "^5.3.1",
     "@rmwc/line-ripple": "^5.3.0",
     "@rmwc/list": "^5.2.2",
     "@rmwc/menu": "^5.3.0",
@@ -104,7 +105,7 @@
     "tslint": "^5.13.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^3.6.0",
-    "typescript": "3.3.3333",
+    "typescript": "3.4.3",
     "webpack": "4.29.6",
     "webpack-cli": "3.2.3",
     "webpack-node-externals": "1.7.2",

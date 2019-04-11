@@ -18,6 +18,12 @@ export interface IInputProps {
   icon?: string
   /** Right icon */
   trailingIcon?: string
+  /** Textarea version, multirows, char count, ful width */
+  isTextarea?: boolean
+  /** Disabled */
+  isDisabled?: boolean
+  /** Disabled */
+  isInvalid?: boolean
 }
 
 /**
@@ -27,10 +33,19 @@ export const OmniInput = (props: IInputProps) => {
   const onInputChange = e => {
     props.onInputChange(e.target.value)
   }
+
+  const textareaProps =  {
+    textarea: true,
+    fullwidth: true,
+    rows: 8
+  }
+
   return (
     <div className="omni-input">
       <TextField
         outlined
+        disabled={props.isDisabled}
+        invalid={props.isInvalid}
         label={props.label}
         value={props.value || ""}
         onChange={onInputChange}
@@ -45,6 +60,8 @@ export const OmniInput = (props: IInputProps) => {
           tabIndex: 0,
           onClick: () => console.log("click trailing icon")
         } : null}
+
+        {...(props.isTextarea ? textareaProps : {})}
       />
     </div>
   )

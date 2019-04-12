@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should render a toggle 1`] = `
+<div
+  class="omni-button"
+>
+  <button
+    class="mdc-button mdc-button--unelevated"
+  >
+    <span
+      class="mdc-button__label"
+    >
+      Label
+    </span>
+  </button>
+</div>
+`;

@@ -1275,6 +1275,17 @@
     "@material/typography" "^1.0.0"
     tslib "^1.9.3"
 
+"@material/icon-button@^1.0.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@material/icon-button/-/icon-button-1.1.0.tgz#a7c649b3549e6e9ecd9c82a8ef124757bfcc98b8"
+  integrity sha512-3HYOfFhlgpY32HyNt1thQJfTycjy0Cfd4B4IZmt2irfaETdj6JuP0wKs9kdEx1VHTbfWFkJHENArz0lPW+6r2A==
+  dependencies:
+    "@material/base" "^1.0.0"
+    "@material/feature-targeting" "^0.44.1"
+    "@material/ripple" "^1.1.0"
+    "@material/theme" "^1.1.0"
+    tslib "^1.9.3"
+
 "@material/line-ripple@^1.0.0", "@material/line-ripple@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@material/line-ripple/-/line-ripple-1.1.0.tgz#0fef69c14ddf42877f10eed05c1a2489808f1cf4"
@@ -1522,6 +1533,17 @@
     "@material/form-field" "^1.0.0"
     "@rmwc/base" "^5.2.2"
     "@rmwc/types" "^5.2.1"
+
+"@rmwc/icon-button@^5.3.1":
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/@rmwc/icon-button/-/icon-button-5.3.1.tgz#6bcb13c49eb3f39af83cad299b7b5f8c47734021"
+  integrity sha512-NLqAWcufqrrmvDob3T+fJMv41W9k9mB9DIa3ennxP0N/IBNehg744JxpRc+rXRBr94QqY/udivOq9F9LyzbpwQ==
+  dependencies:
+    "@material/icon-button" "^1.0.0"
+    "@rmwc/base" "^5.3.1"
+    "@rmwc/icon" "^5.3.1"
+    "@rmwc/ripple" "^5.3.1"
+    "@rmwc/types" "^5.3.1"
 
 "@rmwc/icon@^5.2.2":
   version "5.2.2"

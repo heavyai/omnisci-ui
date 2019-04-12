@@ -55,7 +55,6 @@ export const OmniSelect = (props: ISelectProps) => {
             {option.label}
           </ListItem>
         ))}
-        
       </Select>
     </div>
   )

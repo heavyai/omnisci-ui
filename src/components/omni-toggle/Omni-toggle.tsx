@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Switch } from '@rmwc/switch';
+import { Switch } from "@rmwc/switch"
 import "./omni-toggle.scss"
 
 /**

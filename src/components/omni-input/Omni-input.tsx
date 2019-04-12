@@ -1,5 +1,5 @@
 import * as React from "react"
-import { TextField } from '@rmwc/textfield';
+import { TextField } from "@rmwc/textfield"
 import "./omni-input.scss"
 
 /**
@@ -34,7 +34,7 @@ export const OmniInput = (props: IInputProps) => {
     props.onInputChange(e.target.value)
   }
 
-  const textareaProps =  {
+  const textareaProps = {
     textarea: true,
     fullwidth: true,
     rows: 8
@@ -50,17 +50,24 @@ export const OmniInput = (props: IInputProps) => {
         value={props.value || ""}
         onChange={onInputChange}
         type={props.type}
-        icon={props.icon ? {
-          icon: props.icon,
-          tabIndex: 0,
-          onClick: () => console.log("click icon")
-        } : null}
-        trailingIcon={props.trailingIcon ? {
-          icon: props.trailingIcon,
-          tabIndex: 0,
-          onClick: () => console.log("click trailing icon")
-        } : null}
-
+        icon={
+          props.icon
+            ? {
+                icon: props.icon,
+                tabIndex: 0,
+                onClick: () => console.log("click icon")
+              }
+            : null
+        }
+        trailingIcon={
+          props.trailingIcon
+            ? {
+                icon: props.trailingIcon,
+                tabIndex: 0,
+                onClick: () => console.log("click trailing icon")
+              }
+            : null
+        }
         {...(props.isTextarea ? textareaProps : {})}
       />
     </div>

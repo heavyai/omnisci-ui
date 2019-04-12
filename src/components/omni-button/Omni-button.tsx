@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Button } from '@rmwc/button';
+import { Button } from "@rmwc/button"
 import "./omni-button.scss"
 
 /**
@@ -15,8 +15,7 @@ export interface IButtonProps {
 /**
  * button
  */
-// TODO: onAuxClick onAuxClickCapture are just there to silence a weird ts error
-export const OmniButton= (props: IButtonProps) => {
+export const OmniButton = (props: IButtonProps) => {
   return (
     <div className="omni-button">
       <Button

@@ -1,23 +1,31 @@
 ```js
+import { Button } from "@rmwc/button";
+import "./omni-button.scss";
 <>
-<OmniButton
-  label="Primary"
+<Button
+  unelevated
+  label={"Primary"}
 />
-<br />
-<OmniButton
-  label="Secondary"
-  isOutlined={true}
+<br /><br />
+<Button
+  outlined
+  label={"Secondary"}
 />
-<br />
-<OmniButton
-  label="Disabled"
-  isDisabled={true}
+<br /><br />
+<Button
+  unelevated
+  disabled
+  label={"Disabled"}
 />
-<br />
-<OmniButton
-  label="Disabled"
-  isDisabled={true}
-  isOutlined={true}
+<br /><br />
+<Button
+  outlined
+  disabled
+  label={"Disabled"}
 />
+<br /><br />
+<Button unelevated>
+  <span style={{color: "yellow"}}>Custom</span> Label
+</Button>
 </>
 ```

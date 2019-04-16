@@ -5,9 +5,9 @@ import * as React from "react"
  */
 export interface ISwitchProps {
   /** Disables the control. */
-  disabled?: boolean;
+  disabled?: boolean
   /** Toggle the control on and off. */
-  checked?: boolean;
+  checked?: boolean
   /** When the toggle changes */
   onChange?: any
 }
@@ -16,7 +16,7 @@ export interface ISwitchProps {
  * Switch
  */
 export const Switch = (props: ISwitchProps) => {
-  return (<div>{props}</div>)
+  return <div>{props}</div>
 }
 
 export default Switch

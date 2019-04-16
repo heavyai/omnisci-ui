@@ -1,39 +1,43 @@
 import * as React from "react"
-import * as RMWC from '@rmwc/types';
+import * as RMWC from "@rmwc/types"
 
 /**
  * Slider properties.
  */
 export interface ISliderProps {
   /** A callback that fires when the Slider stops sliding which takes an event with event.detail.value set to the Slider's value. */
-  onChange?: (evt: RMWC.CustomEventT<{
-      value: number;
-  }>) => void;
+  onChange?: (
+    evt: RMWC.CustomEventT<{
+      value: number
+    }>
+  ) => void
   /** A callback that fires continuously while the Slider is sliding that takes an event with event.detail.value set to the Slider's value. */
-  onInput?: (evt: RMWC.CustomEventT<{
-      value: number;
-  }>) => void;
+  onInput?: (
+    evt: RMWC.CustomEventT<{
+      value: number
+    }>
+  ) => void
   /** The value of the Slider. */
-  value?: number | string;
+  value?: number | string
   /** The minimum value of the Slider. */
-  min?: number | string;
+  min?: number | string
   /** The maximum value of the Slider. */
-  max?: number | string;
+  max?: number | string
   /** A step to quantize values by. */
-  step?: number | string;
+  step?: number | string
   /** Displays the exact value of the Slider on the knob. */
-  discrete?: boolean;
+  discrete?: boolean
   /** Displays the individual step markers on the Slider track. */
-  displayMarkers?: boolean;
+  displayMarkers?: boolean
   /** Disables the control. */
-  disabled?: boolean;
+  disabled?: boolean
 }
 
 /**
  * Slider
  */
 export const Slider = (props: ISliderProps) => {
-  return (<div>{props}</div>)
+  return <div>{props}</div>
 }
 
 export default Slider

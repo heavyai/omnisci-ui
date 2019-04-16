@@ -26,10 +26,7 @@ export const Toggler = (props: ITogglerProps) => {
       className={props.isPrimaryState ? "primary-state" : "secondary-state"}
       onClick={onChange}
     >
-      {props.isPrimaryState ? 
-        props.primaryChildren :
-        props.secondaryChildren
-      }
+      {props.isPrimaryState ? props.primaryChildren : props.secondaryChildren}
     </div>
   )
 }

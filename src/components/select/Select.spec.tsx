@@ -8,9 +8,9 @@ test("Should render a selector", () => {
     label: "Standard",
     value: "1",
     options: [
-      {label: "one", value: "1"},
-      {label: "two", value: "2"},
-      {label: "three", value: "3"}
+      { label: "one", value: "1" },
+      { label: "two", value: "2" },
+      { label: "three", value: "3" }
     ]
   }
   const component = render(<Select {...props} />)

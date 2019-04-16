@@ -1,0 +1,53 @@
+@import "@material/textfield/mdc-text-field";
+
+.mdc-text-field {
+  font-family: "Roboto", sans-serif;
+  height: 32px;
+
+  .mdc-text-field__input {
+    padding: 4px 8px;
+  }
+
+  &.mdc-text-field--with-leading-icon .mdc-text-field__input {
+    padding: 4px 36px;
+  }
+
+  .mdc-notched-outline .mdc-floating-label {
+    left: 0px;
+  }
+
+  &.mdc-text-field--with-leading-icon .mdc-notched-outline .mdc-floating-label {
+    left: 24px;
+  }
+
+  .mdc-notched-outline .mdc-floating-label {
+    top: 8px;
+  }
+
+  &.mdc-text-field--with-leading-icon .mdc-text-field__icon, 
+  &.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
+    bottom: 4px;
+  }
+
+  &.mdc-text-field--outlined.mdc-notched-outline--upgraded .mdc-floating-label--float-above,
+  &.mdc-text-field--outlined .mdc-notched-outline--upgraded .mdc-floating-label--float-above {
+    transform: translateY(-100%) translateX(4px) scale(0.75)
+  }
+
+  &.mdc-text-field--with-leading-icon.mdc-text-field--outlined.mdc-notched-outline--upgraded .mdc-floating-label--float-above,
+  &.mdc-text-field--with-leading-icon.mdc-text-field--outlined .mdc-notched-outline--upgraded .mdc-floating-label--float-above {
+    transform: translateY(-100%) translateX(-20px) scale(0.75)
+  }
+
+  &.mdc-text-field--with-leading-icon .mdc-text-field__icon:first-child {
+    left: 4px;
+  }
+
+  &.mdc-text-field--with-trailing-icon .mdc-text-field__icon ~ .mdc-text-field__icon {
+    right: 4px;
+  }
+
+  &.mdc-text-field--textarea {
+    min-height: 100px;
+  }
+}

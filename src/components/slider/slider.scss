@@ -1,0 +1,7 @@
+@import "@material/slider/mdc-slider";
+@import "@material/slider/mixins";
+
+.mdc-slider {
+  font-family: "Roboto", sans-serif;
+  @include mdc-slider-color-accessible($mdc-theme-primary);
+}

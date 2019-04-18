@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should render a selector 1`] = `
+<div
+  class="mdc-select mdc-select--outlined"
+  role="listbox"
+>
+  <i
+    class="mdc-select__dropdown-icon"
+  />
+  <input
+    type="hidden"
+  />
+  <div
+    aria-disabled="false"
+    aria-expanded="false"
+    class="mdc-select__selected-text"
+    tabindex="0"
+  />
+  <div
+    aria-hidden="true"
+    class="mdc-menu mdc-select__menu mdc-menu-surface"
+    value="1"
+  >
+    <div
+      class="mdc-list mdc-menu__items mdc-list"
+      role="menu"
+    >
+      <div
+        class="mdc-list-item"
+        data-value="1"
+        role="menuitem"
+        tabindex="0"
+        value="1"
+      >
+        one
+      </div>
+      <div
+        class="mdc-list-item"
+        data-value="2"
+        role="menuitem"
+        tabindex="0"
+        value="2"
+      >
+        two
+      </div>
+      <div
+        class="mdc-list-item"
+        data-value="3"
+        role="menuitem"
+        tabindex="0"
+        value="3"
+      >
+        three
+      </div>
+      <div
+        class="mdc-list-item mdc-list-item--activated"
+        data-value="1"
+        tabindex="0"
+        value="1"
+      >
+        one
+      </div>
+      <div
+        class="mdc-list-item"
+        data-value="2"
+        tabindex="0"
+        value="2"
+      >
+        two
+      </div>
+      <div
+        class="mdc-list-item"
+        data-value="3"
+        tabindex="0"
+        value="3"
+      >
+        three
+      </div>
+    </div>
+  </div>
+  <div
+    class="mdc-notched-outline"
+  >
+    <div
+      class="mdc-notched-outline__leading"
+    />
+    <div
+      class="mdc-notched-outline__notch"
+    >
+      <label
+        class="mdc-floating-label"
+      >
+        Standard
+      </label>
+    </div>
+    <div
+      class="mdc-notched-outline__trailing"
+    />
+  </div>
+</div>
+`;

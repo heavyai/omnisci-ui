@@ -1,7 +1,8 @@
-$mdc-theme-primary: #0089D1;
-$mdc-theme-secondary: lime;
-$mdc-theme-on-primary: white;
-$mdc-theme-on-secondary: brown;
-
-$light-gray: #bbb;
-$gray: #666;
+@import "./vars";
+@import "./components/button/button";
+@import "./components/input/input";
+@import "./components/select/select";
+@import "./components/slider/slider";
+@import "./components/switch/switch";
+@import "./components/icon-button/icon-button";
+@import "./components/multi-select/multi-select";

@@ -41,6 +41,7 @@
   ],
   "dependencies": {
     "@babel/polyfill": "^7.4.0",
+    "@material/react-floating-label": "^0.11.0",
     "@material/ripple": "^1.1.0",
     "@rmwc/button": "^5.3.1",
     "@rmwc/icon-button": "^5.3.1",
@@ -53,7 +54,8 @@
     "@rmwc/textfield": "^5.2.2",
     "@rmwc/theme": "^5.3.0",
     "react": "^16.8.3",
-    "react-dom": "^16.8.3"
+    "react-dom": "^16.8.3",
+    "react-select": "^2.4.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

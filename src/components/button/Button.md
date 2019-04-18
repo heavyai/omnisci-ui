@@ -1,6 +1,5 @@
 ```js
 import { Button } from "@rmwc/button";
-import "./button.scss";
 <>
 <Button
   unelevated

@@ -8,8 +8,8 @@ export SASS_PATH=./node_modules
 
 Then run:
 ```
-yarn styleguide
-yarn styleguide:build
-yarn dev
-yarn test
+npm run styleguide
+npm run styleguide:build
+npm run dev
+npm run test
 ```

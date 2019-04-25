@@ -1,6 +1,7 @@
 Standard
 ```js
-import { Switch } from "@rmwc/switch"
+import { Switch } from "@rmwc/switch";
+
 initialState = {
   isChecked: true
 };
@@ -12,7 +13,8 @@ initialState = {
 
 Disabled
 ```js
-import { Switch } from "@rmwc/switch"
+import { Switch } from "@rmwc/switch";
+
 initialState = {
   isChecked: true
 };

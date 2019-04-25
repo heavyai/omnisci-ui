@@ -1,22 +1,14 @@
 import * as React from "react"
-import * as RMWC from "@rmwc/types"
+import "../../index.scss";
 
 /**
  * Slider properties.
  */
 export interface ISliderProps {
   /** A callback that fires when the Slider stops sliding which takes an event with event.detail.value set to the Slider's value. */
-  onChange?: (
-    evt: RMWC.CustomEventT<{
-      value: number
-    }>
-  ) => void
+  onChange?: any
   /** A callback that fires continuously while the Slider is sliding that takes an event with event.detail.value set to the Slider's value. */
-  onInput?: (
-    evt: RMWC.CustomEventT<{
-      value: number
-    }>
-  ) => void
+  onInput?: any
   /** The value of the Slider. */
   value?: number | string
   /** The minimum value of the Slider. */

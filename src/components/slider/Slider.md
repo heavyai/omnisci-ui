@@ -1,6 +1,7 @@
 Standard
 ```js
 import { Slider } from "@rmwc/slider"
+
 initialState = {
   value: null,
   min: 0,
@@ -20,6 +21,7 @@ initialState = {
 Disabled
 ```js
 import { Slider } from "@rmwc/slider"
+
 initialState = {
   value: null,
   min: 0,

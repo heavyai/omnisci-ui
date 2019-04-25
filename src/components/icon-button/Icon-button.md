@@ -1,5 +1,6 @@
 ```js
 import { IconButton } from "@rmwc/icon-button";
+
 <>
 <IconButton
   icon="favorite"
@@ -9,7 +10,7 @@ import { IconButton } from "@rmwc/icon-button";
 <IconButton
   icon={
     <div style={{
-        background: "lime",
+        background: "var(--mdc-theme-primary)",
         width: "24px",
         height: "24px",
         borderRadius: "50%",
@@ -18,7 +19,7 @@ import { IconButton } from "@rmwc/icon-button";
   }
   onIcon={
     <div style={{
-        background: "red",
+        background: "orange",
         width: "24px",
         height: "24px",
         borderRadius: "50%",

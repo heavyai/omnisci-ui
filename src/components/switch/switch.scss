@@ -2,5 +2,5 @@
 // @import "@material/switch/mixins";
 
 .mdc-switch {
-  @include mdc-switch-toggled-on-color($mdc-theme-primary);
+  @include mdc-switch-toggled-on-color(primary);
 }

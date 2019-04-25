@@ -1,9 +1,10 @@
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+// @import "index.scss";
 
 #rsg-root {
 
-  .omni-button {
-    margin-right: 12px;
+  [data-preview="Button"] button {
+    margin: 0 8px;
   }
 
   .operator-selector {

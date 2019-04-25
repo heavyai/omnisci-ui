@@ -1,0 +1,48 @@
+@import "@material/dialog/mdc-dialog";
+
+.mdc-dialog {
+
+  &.danger {
+    .mdc-dialog__title {
+      background-color: $danger;
+      color: white;
+      border-radius: 4px 4px 0 0;
+
+      .mdc-icon-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+      }
+    }
+
+    .mdc-dialog__title + .mdc-dialog__content {
+      padding-top: 16px;
+    }
+
+    .mdc-dialog__content {
+      color: $danger;
+
+      .material-icons {
+        vertical-align: middle;
+        font-size: 32px;
+        padding: 0 12px;
+        font-size: 32px;
+        float: left;
+      }
+    }
+
+    .mdc-button {
+      color: $gray;
+      border: 1px solid $light-gray;
+    }
+
+    .mdc-button:last-child {
+      color: white;
+      background-color: $danger;
+      border: none;
+    }
+  }
+}

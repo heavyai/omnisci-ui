@@ -1,0 +1,77 @@
+@import "@material/dialog/mdc-dialog";
+
+.mdc-dialog {
+
+  .mdc-dialog__title + .mdc-dialog__content {
+    padding-top: 16px;
+  }
+
+  .mdc-dialog__content .material-icons {
+    padding: 0 12px 0 0;
+    font-size: 32px;
+    float: left;
+  }
+
+  .mdc-dialog__title {
+    border-radius: 4px 4px 0 0;
+    background-color: $very-light-gray;
+
+    .mdc-icon-button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      padding: 8px;
+    }
+  }
+
+  .mdc-button {
+    color: $gray;
+    border: 1px solid $light-gray;
+  }
+
+  .mdc-button:last-child {
+    color: white;
+    border: none;
+  }
+
+  &.danger {
+    .mdc-dialog__title {
+      background-color: $danger;
+      color: white;
+    }
+
+    .mdc-dialog__content {
+      color: $danger;
+    }
+
+    .mdc-button:last-child {
+      color: white;
+      background-color: $danger;
+      border: none;
+    }
+  }
+
+  &.warning {
+    .mdc-dialog__title {
+      background-color: $warning;
+      color: white;
+    }
+
+    .mdc-dialog__content {
+      color: $warning;
+    }
+
+    .mdc-button {
+      color: $gray;
+      border: 1px solid $light-gray;
+    }
+
+    .mdc-button:last-child {
+      color: white;
+      background-color: $warning;
+      border: none;
+    }
+  }
+}

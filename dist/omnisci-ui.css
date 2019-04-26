@@ -4015,37 +4015,59 @@ a.mdc-list-item {
 .mdc-dialog-scroll-lock {
   overflow: hidden; }
 
-.mdc-dialog.danger .mdc-dialog__title {
-  background-color: #E41040;
-  color: white;
-  border-radius: 4px 4px 0 0; }
-  .mdc-dialog.danger .mdc-dialog__title .mdc-icon-button {
+.mdc-dialog .mdc-dialog__title + .mdc-dialog__content {
+  padding-top: 16px; }
+
+.mdc-dialog .mdc-dialog__content .material-icons {
+  padding: 0 12px 0 0;
+  font-size: 32px;
+  float: left; }
+
+.mdc-dialog .mdc-dialog__title {
+  border-radius: 4px 4px 0 0;
+  background-color: whitesmoke; }
+  .mdc-dialog .mdc-dialog__title .mdc-icon-button {
     position: absolute;
     top: 0;
     right: 0;
-    width: 32px;
-    height: 32px;
-    padding: 0; }
+    width: 40px;
+    height: 40px;
+    padding: 8px; }
 
-.mdc-dialog.danger .mdc-dialog__title + .mdc-dialog__content {
-  padding-top: 16px; }
+.mdc-dialog .mdc-button {
+  color: #666;
+  border: 1px solid #bbb; }
+
+.mdc-dialog .mdc-button:last-child {
+  color: white;
+  border: none; }
+
+.mdc-dialog.danger .mdc-dialog__title {
+  background-color: #E41040;
+  color: white; }
 
 .mdc-dialog.danger .mdc-dialog__content {
   color: #E41040; }
-  .mdc-dialog.danger .mdc-dialog__content .material-icons {
-    vertical-align: middle;
-    font-size: 32px;
-    padding: 0 12px;
-    font-size: 32px;
-    float: left; }
-
-.mdc-dialog.danger .mdc-button {
-  color: #666;
-  border: 1px solid #bbb; }
 
 .mdc-dialog.danger .mdc-button:last-child {
   color: white;
   background-color: #E41040;
+  border: none; }
+
+.mdc-dialog.warning .mdc-dialog__title {
+  background-color: #F5A623;
+  color: white; }
+
+.mdc-dialog.warning .mdc-dialog__content {
+  color: #F5A623; }
+
+.mdc-dialog.warning .mdc-button {
+  color: #666;
+  border: 1px solid #bbb; }
+
+.mdc-dialog.warning .mdc-button:last-child {
+  color: white;
+  background-color: #F5A623;
   border: none; }
 
 .operator-selector {

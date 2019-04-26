@@ -11,11 +11,12 @@ import { IconButton } from "@rmwc/icon-button";
 import { Icon } from "@rmwc/icon";
 
 initialState = {
-  isOpen: false
+  isOpen: false,
+  type: "danger"
 };
 <>
   <Dialog
-    className="danger"
+    className={state.type}
     open={state.isOpen}
     onClose={evt => {
       setState({isOpen: false})
@@ -31,19 +32,10 @@ initialState = {
       />
     </DialogTitle>
     <DialogContent>
-      <Icon icon="error_outline"/>
-      This is a danger dialog.
-      This is a danger dialog.
-      This is a danger dialog.
-      This is a danger dialog.
-      This is a danger dialog.
-      This is a danger dialog.
-      This is a danger dialog.
-      This is a danger dialog.
-      This is a danger dialog.
-      This is a danger dialog.
-      This is a danger dialog.
-      This is a danger dialog.
+      { ["danger", "warning"].includes(state.type) && (
+        <Icon icon="error_outline"/>
+      )}
+      This is a {state.type} dialog.
     </DialogContent>
     <DialogActions>
       <DialogButton theme="secondary" action="close">Cancel</DialogButton>
@@ -53,8 +45,14 @@ initialState = {
     </DialogActions>
   </Dialog>
 
-  <Button unelevated onClick={() => setState({isOpen: true})}>
+  <Button unelevated onClick={() => setState({isOpen: true, type: "danger"})}>
     Open Danger Modal
+  </Button>
+  <Button unelevated onClick={() => setState({isOpen: true, type: "warning"})}>
+    Open Warning Modal
+  </Button>
+  <Button unelevated onClick={() => setState({isOpen: true, type: null})}>
+    Open Standard Modal
   </Button>
 </>
 ```

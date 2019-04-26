@@ -2,8 +2,10 @@
 
 #rsg-root {
 
-  .omni-button {
-    margin-right: 12px;
+  [data-preview*="Button"], [data-preview*="Modal"] {
+    button {
+      margin-right: 12px;
+    }
   }
 
   .operator-selector {

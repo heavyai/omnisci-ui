@@ -1,0 +1,29 @@
+@import "@material/button/mdc-button";
+@import "react-dates/lib/css/_datepicker";
+
+.DayPicker {
+  font-family: "Roboto", sans-serif;
+  
+  .CalendarDay__selected_span,
+  .CalendarDay__hovered_span:hover,
+  .CalendarDay__hovered_span {
+    background: aliceblue;
+    color: $mdc-theme-primary;
+    border: 1px solid white;
+  }
+
+  .CalendarDay__selected,
+  .CalendarDay__selected:hover  {
+    background: $mdc-theme-primary;
+    color: white;
+  }
+
+  input {
+    padding: 4px;
+    margin: 0 4px 8px 14px;
+
+    &.invalid {
+      outline-color: $danger;
+    }
+  }
+}

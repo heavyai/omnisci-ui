@@ -3,7 +3,7 @@
 #rsg-root {
 
   [data-preview*="Button"], [data-preview*="Modal"] {
-    button {
+    & > div > button {
       margin-right: 12px;
     }
   }

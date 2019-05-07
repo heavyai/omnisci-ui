@@ -33,9 +33,14 @@ initialState = {
     </DialogTitle>
     <DialogContent>
       { ["danger", "warning"].includes(state.type) && (
-        <Icon icon="error_outline"/>
+        <Icon icon="warning_outline"/>
       )}
-      This is a {state.type} dialog.
+      { state.type === "success" && (
+        <Icon icon="check_circle_outline"/>
+      )}
+      <div className="dialog-message">
+        This is a {state.type} dialog. 
+      </div>
     </DialogContent>
     <DialogActions>
       <DialogButton theme="secondary" action="close">Cancel</DialogButton>
@@ -50,6 +55,9 @@ initialState = {
   </Button>
   <Button unelevated onClick={() => setState({isOpen: true, type: "warning"})}>
     Open Warning Modal
+  </Button>
+  <Button unelevated onClick={() => setState({isOpen: true, type: "success"})}>
+    Open Success Modal
   </Button>
   <Button unelevated onClick={() => setState({isOpen: true, type: null})}>
     Open Standard Modal

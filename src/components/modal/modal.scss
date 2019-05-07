@@ -2,19 +2,14 @@
 
 .mdc-dialog {
 
-  .mdc-dialog__title + .mdc-dialog__content {
-    padding-top: 16px;
-  }
-
-  .mdc-dialog__content .material-icons {
-    padding: 0 12px 0 0;
-    font-size: 32px;
-    float: left;
-  }
-
   .mdc-dialog__title {
     border-radius: 4px 4px 0 0;
-    background-color: $very-light-gray;
+    background-color: $info;
+    color: white;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
 
     .mdc-icon-button {
       position: absolute;
@@ -26,20 +21,46 @@
     }
   }
 
-  .mdc-button {
+  .mdc-dialog__title + .mdc-dialog__content {
+    padding-top: 16px;
+    display: flex;
+  }
+
+  .mdc-dialog__surface {
+    min-width: 420px;
+  }
+
+  .mdc-dialog__content .material-icons {
+    padding: 0 4px 0 0;
+    font-size: 32px;
+    float: left;
+    width: 32px;
+    display: flex;
+    flex: 0 32px;
+  }
+
+  .mdc-dialog__actions {
+    border: 1px solid #ddd;
+  }
+
+  .dialog-message {
+    float: left;
+    display: flex;
+    flex: auto;
+  }
+
+  .mdc-button, .mdc-button:not(:disabled) {
     color: $gray;
-    border: 1px solid $light-gray;
+    height: 32px;
   }
 
   .mdc-button:last-child {
     color: white;
-    border: none;
   }
 
   &.danger {
     .mdc-dialog__title {
       background-color: $danger;
-      color: white;
     }
 
     .mdc-dialog__content {
@@ -49,29 +70,44 @@
     .mdc-button:last-child {
       color: white;
       background-color: $danger;
-      border: none;
     }
   }
 
   &.warning {
     .mdc-dialog__title {
       background-color: $warning;
-      color: white;
     }
 
     .mdc-dialog__content {
-      color: $warning;
+      color: $gray;
     }
 
-    .mdc-button {
-      color: $gray;
-      border: 1px solid $light-gray;
+    .mdc-dialog__content .material-icons {
+      color: $warning;
     }
 
     .mdc-button:last-child {
       color: white;
       background-color: $warning;
-      border: none;
+    }
+  }
+
+  &.success {
+    .mdc-dialog__title {
+      background-color: $success;
+    }
+
+    .mdc-dialog__content {
+      color: $gray;
+    }
+
+    .mdc-dialog__content .material-icons {
+      color: $success;
+    }
+
+    .mdc-button:last-child {
+      color: white;
+      background-color: $success;
     }
   }
 }

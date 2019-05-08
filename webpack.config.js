@@ -1,7 +1,7 @@
 const webpack = require("webpack");
 const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const indexPath = path.resolve("./src/index.js");
+const indexPath = path.resolve("./src/index.ts");
 
 const config = env => {
   return {

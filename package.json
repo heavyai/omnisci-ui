@@ -4,6 +4,7 @@
   "description": "OmniSci component ui library",
   "author": "OmniSci",
   "main": "dist/omnisci-ui.js",
+  "types": "src/index.ts",
   "contributors": [
     {
       "name": "Christophe Viau",

@@ -2,60 +2,62 @@
 
 .mdc-dialog {
 
-  .mdc-dialog__title {
-    border-radius: 4px 4px 0 0;
-    background-color: $info;
-    color: white;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    padding: 0 24px;
+  .mdc-dialog__container {
+    .mdc-dialog__title {
+      border-radius: 4px 4px 0 0;
+      background-color: $info;
+      color: white;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
 
-    .mdc-icon-button {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 40px;
-      height: 40px;
-      padding: 8px;
+      .mdc-icon-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40px;
+        height: 40px;
+        padding: 8px;
+      }
     }
-  }
 
-  .mdc-dialog__title + .mdc-dialog__content {
-    padding-top: 16px;
-    display: flex;
-  }
+    .mdc-dialog__title + .mdc-dialog__content {
+      padding-top: 16px;
+      display: flex;
+    }
 
-  .mdc-dialog__surface {
-    min-width: 420px;
-  }
+    .mdc-dialog__surface {
+      min-width: 420px;
+    }
 
-  .mdc-dialog__content .material-icons {
-    padding: 0 4px 0 0;
-    font-size: 32px;
-    float: left;
-    width: 32px;
-    display: flex;
-    flex: 0 32px;
-  }
+    .mdc-dialog__content .material-icons {
+      padding: 0 4px 0 0;
+      font-size: 32px;
+      float: left;
+      width: 32px;
+      display: flex;
+      flex: 0 32px;
+    }
 
-  .mdc-dialog__actions {
-    border: 1px solid #ddd;
-  }
+    .mdc-dialog__actions {
+      border: 1px solid #ddd;
+    }
 
-  .dialog-message {
-    float: left;
-    display: flex;
-    flex: auto;
-  }
+    .dialog-message {
+      float: left;
+      display: flex;
+      flex: auto;
+    }
 
-  .mdc-button, .mdc-button:not(:disabled) {
-    color: $gray;
-    height: 32px;
-  }
+    .mdc-button, .mdc-button:not(:disabled) {
+      color: $gray;
+      height: 32px;
+    }
 
-  .mdc-button:last-child {
-    color: white;
+    .mdc-button:last-child {
+      color: white;
+    }
   }
 
   &.danger {

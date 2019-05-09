@@ -25,7 +25,7 @@
     "format": "prettier --write '{src,test}/**/*.{js,jsx,ts,tsx}'",
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build",
-    "ts": "tsc"
+    "ts": "tsc --noEmit"
   },
   "repository": {
     "type": "git",

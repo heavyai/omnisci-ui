@@ -2,11 +2,7 @@
 initialState = {
   label: "Standard",
   value: null, 
-  options: [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-  ]
+  options: new Array(200).fill(0).map((d, i) => ({label: i, value: i}))
 };
 
 <MultiSelect

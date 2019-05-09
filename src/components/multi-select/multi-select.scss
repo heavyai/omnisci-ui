@@ -23,5 +23,30 @@
   }
 
   .select__control--is-focused {
+    border-color: $mdc-theme-primary;
+    box-shadow: none;
+
+    &:hover {
+      border-color: $mdc-theme-primary;
+    }
+  }
+
+  .select__option {
+
+    &:active {
+      background-color: transparent;
+    }
+
+    &.select__option--is-selected {
+      background-color: rgba($mdc-theme-primary, 0.3);
+    }
+
+    &.select__option--is-selected {
+      background-color: rgba($mdc-theme-primary, 0.3);
+    }
+
+    &.select__option--is-focused {
+      background-color: rgba($mdc-theme-primary, 0.3);
+    }
   }
 }

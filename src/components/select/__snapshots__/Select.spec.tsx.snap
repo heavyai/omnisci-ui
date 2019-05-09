@@ -27,33 +27,6 @@ exports[`Should render a selector 1`] = `
       role="menu"
     >
       <div
-        class="mdc-list-item"
-        data-value="1"
-        role="menuitem"
-        tabindex="0"
-        value="1"
-      >
-        one
-      </div>
-      <div
-        class="mdc-list-item"
-        data-value="2"
-        role="menuitem"
-        tabindex="0"
-        value="2"
-      >
-        two
-      </div>
-      <div
-        class="mdc-list-item"
-        data-value="3"
-        role="menuitem"
-        tabindex="0"
-        value="3"
-      >
-        three
-      </div>
-      <div
         class="mdc-list-item mdc-list-item--activated"
         data-value="1"
         tabindex="0"

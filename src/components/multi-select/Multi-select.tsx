@@ -1,7 +1,6 @@
 import * as React from "react"
 import Select, { components } from "react-select"
 import FloatingLabel from "@material/react-floating-label"
-import { ListItem } from "@rmwc/list"
 import { FormattedOption } from "@rmwc/select/dist/index.d"
 import "@material/react-floating-label/index.scss"
 import "../../vars.scss"

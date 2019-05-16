@@ -1,1 +1,42 @@
 @import "@material/button/mdc-button";
+@import "../../vars";
+
+.mdc-button:not(.mdc-ripple-upgraded) {
+
+  &.mdc-button--unelevated,
+  &.mdc-button--outlined {
+    &:hover, &:focus, &:active {
+      &::before, &::after {
+        opacity: 0 !important;
+      }
+    }
+  }
+
+  &.mdc-button--unelevated {
+    &:active, &:hover {
+      background-color: $mdc-theme-primary-active;
+    }
+
+    &:disabled {
+      background-color: $mdc-theme-primary;
+      opacity: 0.24;
+      color: white;
+    }
+  }
+
+  &.mdc-button--outlined {
+    border-color: $light-gray;
+    border-width: 1px;
+    color: $gray;
+
+    &:active, &:hover {
+      background-color: $very-light-gray;
+    }
+
+    &:disabled {
+      opacity: 0.24;
+    }
+  }
+
+}
+

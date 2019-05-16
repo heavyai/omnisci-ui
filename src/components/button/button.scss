@@ -15,12 +15,36 @@
   &.mdc-button--unelevated {
     &:active, &:hover {
       background-color: $mdc-theme-primary-active;
+
+      &.danger {
+        background-color: $danger-active;
+      }
+
+      &.warning {
+        background-color: $warning-active;
+      }
+
+      &.success {
+        background-color: $success-active;
+      }
     }
 
     &:disabled {
       background-color: $mdc-theme-primary;
       opacity: 0.24;
       color: white;
+    }
+
+    &.danger {
+      background-color: $danger;
+    }
+
+    &.warning {
+      background-color: $warning;
+    }
+
+    &.success {
+      background-color: $success;
     }
   }
 

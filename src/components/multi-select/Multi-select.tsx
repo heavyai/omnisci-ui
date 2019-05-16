@@ -15,7 +15,7 @@ export interface IMultiSelectProps {
 
 export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
 
-  SelectContainer = ({ children, ...childProps }) => {
+  private SelectContainer = ({ children, ...childProps }) => {
     const isFloated = Boolean(childProps.hasValue || childProps.selectProps.inputValue)
     return (
       <components.SelectContainer {...childProps}>
@@ -30,7 +30,7 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
     )
   }
 
-  Placeholder = () => null
+  private Placeholder = () => null
 
   render () {
     return (

@@ -1,4 +1,75 @@
 ```js
+import { SimpleDangerDialog } from "./Dialog"
+import { Button } from "@rmwc/button";
+
+initialState = {
+  isOpen: false,
+  lastAction: null
+};
+
+<>
+<SimpleDangerDialog
+  primaryLabel={"Do it"}
+  secondaryLabel={"Cancel"}
+  message={"This is an important message"}
+  open={state.isOpen}
+  onClose={action => {
+    setState({isOpen: false, lastAction: action})
+  }}
+/>
+
+<Button
+  unelevated
+  onClick={() => setState({isOpen: true})}
+  label={"Open Danger Modal"}
+/>
+</>
+```
+
+```js
+import { DangerDialog } from "./Dialog"
+import {
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogButton
+} from "@rmwc/dialog";
+import { Button } from "@rmwc/button";
+
+initialState = {
+  isOpen: false,
+  lastAction: null
+};
+
+<>
+<DangerDialog
+  open={state.isOpen}
+  onClose={action => {
+    setState({isOpen: false, lastAction: action})
+  }}
+>
+  <DialogTitle>
+    Dialog title
+  </DialogTitle>
+    <DialogContent>
+      This is dangerous. 
+    </DialogContent>
+    <DialogActions>
+      <DialogButton unelevated action="accept" isDefaultAction>
+        Do it
+      </DialogButton>
+    </DialogActions>
+</DangerDialog>
+
+<Button
+  unelevated
+  onClick={() => setState({isOpen: true})}
+  label={"Open Danger Modal"}
+/>
+</>
+```
+
+```js
 import {
   Dialog,
   DialogTitle,

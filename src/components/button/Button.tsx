@@ -17,6 +17,7 @@ export interface IButtonProps {
   /** A trailing icon for the Button */
   trailingIcon?: RMWC.IconPropT
   className?: string
+  onClick: any
 }
 
 /**
@@ -89,4 +90,13 @@ export const SuccessButton = (props: IButtonProps) => {
       {props.children}
     </PrimaryButton>
   )
+}
+
+export default {
+  PrimaryButton,
+  SecondaryButton,
+  DangerButton,
+  WarningButton,
+  InfoButton,
+  SuccessButton
 }

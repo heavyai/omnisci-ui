@@ -9,6 +9,7 @@ initialState = {
 
 <>
 <SimpleDangerDialog
+  title={"Important title"}
   primaryLabel={"Do it"}
   secondaryLabel={"Cancel"}
   message={"This is an important message"}

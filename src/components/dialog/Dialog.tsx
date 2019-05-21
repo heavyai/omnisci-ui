@@ -20,9 +20,10 @@ export interface ISimpleDialogProps {
   onOpen?: any;
   /** Callback for when the Dialog closes. */
   onClose?: any;
-  message?: any;
-  primaryLabel?: React.ReactNode | any
-  secondaryLabel?: React.ReactNode | any
+  title?: React.ReactNode | string;
+  message?: React.ReactNode | string;
+  primaryLabel?: React.ReactNode | string;
+  secondaryLabel?: React.ReactNode | string;
 }
 
 export interface IDialogProps {
@@ -39,14 +40,14 @@ export interface IDialogProps {
  * Dialog
  */
 export const SimpleDangerDialog = (props: ISimpleDialogProps) => {
-  const {primaryLabel, secondaryLabel, message, onClose, ...topLevelProps} = props
+  const {primaryLabel, secondaryLabel, message, onClose, title, ...topLevelProps} = props
   return (
     <Dialog
       className={"danger"}
       {...topLevelProps}
     >
       <DialogTitle>
-        Dialog title
+        {title}
         <IconButton
           icon="close"
           onClick={onClose}

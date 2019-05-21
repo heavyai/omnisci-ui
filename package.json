@@ -4,7 +4,7 @@
   "description": "OmniSci component ui library",
   "author": "OmniSci",
   "main": "dist/omnisci-ui.js",
-  "types": "src/index.ts",
+  "types": "dist/index.d.ts",
   "contributors": [
     {
       "name": "Christophe Viau",
@@ -13,8 +13,8 @@
   ],
   "scripts": {
     "build": "npm run build:prod && npm run build:dev",
-    "build:prod": "webpack --env.prod",
-    "build:dev": "webpack --env.dev",
+    "build:prod": "npm run webpack:prod && npm run ts:prod",
+    "build:dev": "npm run webpack:dev",
     "prod": "webpack --env.prod --watch",
     "dev": "webpack --env.dev --watch",
     "clean": "npm cache clean && rm -rf node_modules",
@@ -25,7 +25,10 @@
     "format": "prettier --write '{src,test}/**/*.{js,jsx,ts,tsx}'",
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build",
-    "ts": "tsc --noEmit"
+    "ts:prod": "tsc --emitDeclarationOnly",
+    "ts:check": "tsc --noEmit",
+    "webpack:dev": "SASS_PATH=./node_modules webpack --env.dev",
+    "webpack:prod": "SASS_PATH=./node_modules webpack --env.prod"
   },
   "repository": {
     "type": "git",
@@ -37,11 +40,13 @@
   },
   "homepage": "https://github.com/omnisci/omnisci-ui",
   "browserslist": [
-    "last 2 versions",
-    "not ie 10"
+    "defaults",
+    "Explorer 11"
   ],
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/polyfill": "^7.4.0",
+    "@material/button": "^2.1.1",
     "@material/react-floating-label": "^0.11.0",
     "@material/ripple": "^1.1.0",
     "@rmwc/button": "^5.3.1",

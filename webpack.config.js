@@ -1,10 +1,9 @@
-const webpack = require("webpack");
-const path = require("path");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const indexPath = path.resolve("./src/index.ts");
+const path = require("path")
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const indexPath = path.resolve("./src/index.ts")
 
-const config = env => {
-  return {
+const config = () => (
+  {
     entry: {
       "omnisci-ui": indexPath
     },
@@ -14,7 +13,8 @@ const config = env => {
     devtool: "eval",
 
     resolve: {
-      extensions: [ '.ts', '.tsx', '.js', '.jsx' ]
+      extensions: [".ts", ".tsx", ".js", ".jsx"],
+      modules: [path.resolve("./src"), "node_modules"]
     },
 
     output: {
@@ -26,12 +26,23 @@ const config = env => {
 
     module: {
       rules: [
-        { 
-          test: /\.tsx?$/,
-          loader: 'ts-loader'
+        {
+          test: /\.(tsx?|jsx?)$/i,
+          exclude: /node_modules/,
+          include: path.resolve(__dirname, "src/"),
+          use: [
+            {
+              loader: "babel-loader",
+              options: {
+                cacheDirectory: ".babel-cache"
+              }
+            }
+          ]
         },
         {
           test: /\.(sass|scss)$/,
+          exclude: /node_modules/,
+          include: path.resolve(__dirname, "src/"),
           use: ExtractTextPlugin.extract({
             use: [
               {
@@ -50,6 +61,29 @@ const config = env => {
               }
             ]
           })
+        },
+        {
+          test: /\.(sass|scss|css)$/,
+          include: [
+            path.resolve(__dirname, "node_modules/material-components-web"),
+            path.resolve(__dirname, "node_modules/@material")
+          ],
+          use: ExtractTextPlugin.extract({
+            use: [
+              {
+                loader: "css-loader"
+              },
+              {
+                loader: "sass-loader",
+                options: {
+                  includePaths: [
+                    path.resolve(__dirname, "node_modules/material-components-web"),
+                    path.resolve(__dirname, "node_modules/@material")
+                  ]
+                }
+              }
+            ]
+          })
         }
       ]
     },
@@ -59,7 +93,7 @@ const config = env => {
         allChunks: true
       })
     ]
-  };
-};
+  }
+)
 
-module.exports = config;
+module.exports = config

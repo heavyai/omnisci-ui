@@ -20,6 +20,7 @@ coverage
 .grunt
 .sass-cache
 .babel-cache
+.eslintcache
 
 # node-waf configuration
 .lock-wscript

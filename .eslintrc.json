@@ -36,7 +36,7 @@
     "id-blacklist": 0, // will add variable names to this list if abused.
     "id-length": 0, // variable naming is difficult enough without limits.
     "id-match": 0, // covered by camelCase.
-    "indent": [2, 2], // improves consistency.
+    "indent": 0, // improves consistency.
     "init-declarations": 2, // not assigning an initialized variable should be explicit, not a mistake.
     "jsx-quotes": 2, // improves consistency; more common to have to quote single quotes than double so double is default.
     "key-spacing": 2, // improves consistency.
@@ -159,7 +159,7 @@
     "no-this-before-super": 2, // catches a reference error.
     "no-throw-literal": 2, // be consistent about only throwing Error objects.
     "no-trailing-spaces": 2, // unnecessary; github doesn't like them.
-    "no-undef": 0, // catches ReferenceErrors.
+    "no-undef": 0, // handled by typescript
     "no-undef-init": 2, // unnecessary.
     "no-undefined": 2, // better to check typeof
     "no-underscore-dangle": 0, // should not rely on variable name to reason about scoping, as it may change.
@@ -170,7 +170,7 @@
     "no-unsafe-finally": 2, // leads to unexpected behavior.
     "no-unused-expressions": 2, // usually a typo; has o effect.
     "no-unused-labels": 2, // don't use labels.
-    "no-unused-vars": 2, // probably a mistake.
+    "no-unused-vars": 0, // handled by typescript
     "no-use-before-define": [2, {"functions": false}], // avoids temporal dead zone; functions below can improve readability.
     "no-useless-call": 2, // slower than normal invocation.
     "no-useless-computed-key": 2, // unnecessary; can cause confusion.
@@ -183,7 +183,7 @@
     "no-whitespace-before-property": 2, // typos.
     "no-with": 2, // can add unexpected variables to scope.
     // "no-wrap-func": 0, // removed.
-    "object-curly-spacing": 2, // helps differentiate blocks (spaced) from objects (not spaced).
+    "object-curly-spacing": [2, "always"], // helps differentiate blocks (spaced) from objects (not spaced).
     "object-shorthand": 2, // increases consistency. #ES6only
     "one-var": 0, // grouped statement types are more consistent and readable.
     "one-var-declaration-per-line": 0, // superceded by one-var.
@@ -236,7 +236,7 @@
     "node": true,
     "jasmine": true
   },
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 6,
     "ecmaFeatures": {

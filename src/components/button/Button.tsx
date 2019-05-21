@@ -24,53 +24,41 @@ export interface IButtonProps {
  * button
  */
 
-export const PrimaryButton = (props: IButtonProps) => {
-  return (
-    <RMWCButton unelevated ripple={false} {...props}>
-      {props.children}
-    </RMWCButton>
-  )
-}
+export const PrimaryButton = (props: IButtonProps) => (
+  <RMWCButton unelevated ripple={false} {...props}>
+    {props.children}
+  </RMWCButton>
+)
 
-export const SecondaryButton = (props: IButtonProps) => {
-  return (
-    <RMWCButton outlined ripple={false} {...props}>
-      {props.children}
-    </RMWCButton>
-  )
-}
+export const SecondaryButton = (props: IButtonProps) => (
+  <RMWCButton outlined ripple={false} {...props}>
+    {props.children}
+  </RMWCButton>
+)
 
-export const DangerButton = (props: IButtonProps) => {
-  return (
-    <PrimaryButton className={"danger"} {...props}>
-      {props.children}
-    </PrimaryButton>
-  )
-}
+export const DangerButton = (props: IButtonProps) => (
+  <PrimaryButton className={"danger"} {...props}>
+    {props.children}
+  </PrimaryButton>
+)
 
-export const WarningButton = (props: IButtonProps) => {
-  return (
-    <PrimaryButton className={"warning"} {...props}>
-      {props.children}
-    </PrimaryButton>
-  )
-}
+export const WarningButton = (props: IButtonProps) => (
+  <PrimaryButton className={"warning"} {...props}>
+    {props.children}
+  </PrimaryButton>
+)
 
-export const InfoButton = (props: IButtonProps) => {
-  return (
-    <PrimaryButton className={"info"} {...props}>
-      {props.children}
-    </PrimaryButton>
-  )
-}
+export const InfoButton = (props: IButtonProps) => (
+  <PrimaryButton className={"info"} {...props}>
+    {props.children}
+  </PrimaryButton>
+)
 
-export const SuccessButton = (props: IButtonProps) => {
-  return (
-    <PrimaryButton className={"success"} {...props}>
-      {props.children}
-    </PrimaryButton>
-  )
-}
+export const SuccessButton = (props: IButtonProps) => (
+  <PrimaryButton className={"success"} {...props}>
+    {props.children}
+  </PrimaryButton>
+)
 
 export default {
   PrimaryButton,

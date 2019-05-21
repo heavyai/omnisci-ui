@@ -24,8 +24,6 @@ export interface IIconButtonProps {
 /**
  * Icon button
  */
-export const IconButton = (props: IIconButtonProps) => {
-  return <div>{props}</div>
-}
+export const IconButton = (props: IIconButtonProps) => <div>{props}</div>
 
 export default IconButton

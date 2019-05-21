@@ -9,8 +9,6 @@ export interface IDatePickerProps {}
 /**
  * Date picker
  */
-export const DatePicker = (props: IDatePickerProps) => {
-  return <div>{props}</div>
-}
+export const DatePicker = (props: IDatePickerProps) => <div>{props}</div>
 
 export default DatePicker

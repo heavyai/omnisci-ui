@@ -44,8 +44,6 @@ export interface IInputProps {
 /**
  * Input
  */
-export const Input = (props: IInputProps) => {
-  return <div>{props}</div>
-}
+export const Input = (props: IInputProps) => <div>{props}</div>
 
 export default Input

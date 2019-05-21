@@ -3,8 +3,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
-  DialogButton
+  DialogActions
 } from "@rmwc/dialog";
 import { IconButton } from "@rmwc/icon-button";
 import { Icon } from "@rmwc/icon";

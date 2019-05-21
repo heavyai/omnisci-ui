@@ -54,17 +54,19 @@ export const SimpleDangerDialog = (props: ISimpleDialogProps) => {
         />
       </DialogTitle>
       <DialogContent>
-          <Icon icon="warning_outline"/>
+        <Icon icon="warning_outline"/>
         <div className="dialog-message">
           {message}
         </div>
       </DialogContent>
       <DialogActions>
-        <SecondaryButton
-          onClick={() => onClose("cancel")}
-        >
-          {secondaryLabel}
-        </SecondaryButton>
+        {secondaryLabel &&
+          <SecondaryButton
+            onClick={() => onClose("cancel")}
+          >
+            {secondaryLabel}
+          </SecondaryButton>
+        }
         <DangerButton
           onClick={() => onClose("accept")}
         >

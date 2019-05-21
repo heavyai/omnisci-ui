@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { FunctionComponent } from "react";
 /**
  * Dialog properties.
  */
@@ -26,10 +26,10 @@ export interface IDialogProps {
 /**
  * Dialog
  */
-export declare const SimpleDangerDialog: (props: ISimpleDialogProps) => JSX.Element;
+export declare const SimpleDangerDialog: FunctionComponent<ISimpleDialogProps>;
 export declare const DangerDialog: (props: IDialogProps) => JSX.Element;
 declare const _default: {
     DangerDialog: (props: IDialogProps) => JSX.Element;
-    SimpleDangerDialog: (props: ISimpleDialogProps) => JSX.Element;
+    SimpleDangerDialog: React.FunctionComponent<ISimpleDialogProps>;
 };
 export default _default;

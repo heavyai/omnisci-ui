@@ -1,12 +1,12 @@
-import * as React from "react"
+import React, { FunctionComponent } from "react"
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions
-} from "@rmwc/dialog";
-import { IconButton } from "@rmwc/icon-button";
-import { Icon } from "@rmwc/icon";
+} from "@rmwc/dialog"
+import { IconButton } from "@rmwc/icon-button"
+import { Icon } from "@rmwc/icon"
 import { DangerButton, SecondaryButton } from "../button/Button"
 
 /**
@@ -38,12 +38,15 @@ export interface IDialogProps {
 /**
  * Dialog
  */
-export const SimpleDangerDialog = (props: ISimpleDialogProps) => {
-  const {primaryLabel, secondaryLabel, message, onClose, title, ...topLevelProps} = props
+export const SimpleDangerDialog: FunctionComponent<ISimpleDialogProps> = ({primaryLabel, secondaryLabel, message, onClose, onOpen, title, open}) => {
+  const handleAccept = () => onClose("accept")
+  const handleCancel = () => onClose("cancel")
+
   return (
     <Dialog
-      className={"danger"}
-      {...topLevelProps}
+      className="danger"
+      open={open}
+      onOpen={onOpen}
     >
       <DialogTitle>
         {title}
@@ -61,13 +64,13 @@ export const SimpleDangerDialog = (props: ISimpleDialogProps) => {
       <DialogActions>
         {secondaryLabel &&
           <SecondaryButton
-            onClick={() => onClose("cancel")}
+            onClick={handleCancel}
           >
             {secondaryLabel}
           </SecondaryButton>
         }
         <DangerButton
-          onClick={() => onClose("accept")}
+          onClick={handleAccept}
         >
           {primaryLabel}
         </DangerButton>
@@ -77,16 +80,13 @@ export const SimpleDangerDialog = (props: ISimpleDialogProps) => {
 }
 
 
-export const DangerDialog = (props: IDialogProps) => {
-  return (
-    <Dialog
-      className={"danger"}
-      {...props}
-    >
-      {props.children}
-    </Dialog>
-  )
-}
+export const DangerDialog = (props: IDialogProps) =>
+  <Dialog
+    className={"danger"}
+    {...props}
+  >
+    {props.children}
+  </Dialog>
 
 export default {
   DangerDialog,

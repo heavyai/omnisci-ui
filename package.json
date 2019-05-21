@@ -4,7 +4,7 @@
   "description": "OmniSci component ui library",
   "author": "OmniSci",
   "main": "dist/omnisci-ui.js",
-  "types": "src/index.ts",
+  "types": "dist/index.d.ts",
   "contributors": [
     {
       "name": "Christophe Viau",
@@ -13,8 +13,8 @@
   ],
   "scripts": {
     "build": "npm run build:prod && npm run build:dev",
-    "build:prod": "webpack --env.prod",
-    "build:dev": "webpack --env.dev",
+    "build:prod": "SASS_PATH=./node_modules webpack --env.prod",
+    "build:dev": "SASS_PATH=./node_modules webpack --env.dev",
     "prod": "webpack --env.prod --watch",
     "dev": "webpack --env.dev --watch",
     "clean": "npm cache clean && rm -rf node_modules",
@@ -25,7 +25,8 @@
     "format": "prettier --write '{src,test}/**/*.{js,jsx,ts,tsx}'",
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build",
-    "ts": "tsc --noEmit"
+    "ts:build": "tsc --emitDeclarationOnly",
+    "ts:check": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -37,8 +38,8 @@
   },
   "homepage": "https://github.com/omnisci/omnisci-ui",
   "browserslist": [
-    "last 2 versions",
-    "not ie 10"
+    "defaults",
+    "Explorer 11"
   ],
   "dependencies": {
     "@babel/polyfill": "^7.4.0",

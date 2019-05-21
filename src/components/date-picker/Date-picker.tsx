@@ -4,9 +4,7 @@ import * as React from "react"
 /**
  * Date picker properties.
  */
-export interface IDatePickerProps {
-
-}
+export interface IDatePickerProps {}
 
 /**
  * Date picker

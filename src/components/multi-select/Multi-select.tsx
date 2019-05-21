@@ -14,7 +14,6 @@ export interface IMultiSelectProps {
 }
 
 export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
-
   private SelectContainer = ({ children, ...childProps }) => {
     return (
       <components.SelectContainer {...childProps}>
@@ -31,7 +30,7 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
 
   private Placeholder = () => null
 
-  render () {
+  render() {
     return (
       <Select
         className={"multi-select"}
@@ -40,7 +39,6 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
           SelectContainer: this.SelectContainer,
           Placeholder: this.Placeholder
         }}
-
         {...this.props}
       />
     )

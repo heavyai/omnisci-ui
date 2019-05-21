@@ -19,6 +19,7 @@ coverage
 # Builds
 .grunt
 .sass-cache
+.babel-cache
 
 # node-waf configuration
 .lock-wscript
@@ -36,5 +37,6 @@ node_modules
 # OSX
 .DS_Store
 
+# Package lock files
 package-lock.json
 yarn.lock

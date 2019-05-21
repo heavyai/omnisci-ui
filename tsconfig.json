@@ -1,10 +1,11 @@
 {
     "compilerOptions": {
-        "allowJs": true,
         "baseUrl": "./src",
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
-        "rootDir": "./",
+        "rootDir": "./src",
+        "declaration": true,
+        "declarationDir": "./dist",
         "jsx": "react",
         "module": "commonjs",
         "target": "es2016",

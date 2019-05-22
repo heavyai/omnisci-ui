@@ -11,7 +11,7 @@
       height: 48px;
       display: flex;
       align-items: center;
-      padding: 0 24px;
+      padding: 0 16px;
       text-transform: capitalize;
 
       .mdc-icon-button {
@@ -28,6 +28,10 @@
           opacity: 0;
         }
       }
+    }
+
+    .mdc-dialog__content {
+      padding: 16px;
     }
 
     .mdc-dialog__title + .mdc-dialog__content {

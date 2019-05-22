@@ -4190,7 +4190,7 @@ svg.mdc-button__icon {
   min-width: 420px; }
 
 .mdc-dialog .mdc-dialog__container .mdc-dialog__content .material-icons {
-  padding: 0 4px 0 0;
+  padding: 0 8px 0 0;
   font-size: 32px;
   float: left;
   width: 32px;

@@ -56,7 +56,13 @@ initialState = {
       This is dangerous. 
     </DialogContent>
     <DialogActions>
-      <DialogButton unelevated action="accept" isDefaultAction>
+      <DialogButton
+        unelevated
+        ripple={false}
+        className="danger"
+        action="accept"
+        isDefaultAction
+      >
         Do it
       </DialogButton>
     </DialogActions>

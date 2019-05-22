@@ -46,10 +46,15 @@ export const SimpleDangerDialog: FunctionComponent<ISimpleDialogProps> = ({
   const handleCancel = () => onClose("cancel")
 
   return (
-    <Dialog className="danger" open={open} onOpen={onOpen}>
+    <Dialog
+      className="danger"
+      open={open}
+      onOpen={onOpen}
+      preventOutsideDismiss={true}
+    >
       <DialogTitle>
         {title}
-        <IconButton icon="close" onClick={onClose} />
+        <IconButton icon="close" onClick={onClose} ripple={false} />
       </DialogTitle>
       <DialogContent>
         <Icon icon="warning_outline" />

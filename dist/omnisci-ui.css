@@ -145,8 +145,8 @@ svg.mdc-button__icon {
 
 .mdc-button--outlined {
   border-style: solid;
-  padding: 0 15px 0 15px;
-  border-width: 1px; }
+  padding: 0 14px 0 14px;
+  border-width: 2px; }
   .mdc-button--outlined:disabled {
     border-color: rgba(0, 0, 0, 0.37); }
   .mdc-button--outlined:not(:disabled) {
@@ -3880,6 +3880,8 @@ a.mdc-list-item {
     width: 40px;
     height: 40px;
     padding: 8px; }
+  .mdc-dialog .mdc-dialog__container .mdc-dialog__title .mdc-icon-button:not(.mdc-ripple-upgraded):focus::before, .mdc-dialog .mdc-dialog__container .mdc-dialog__title .mdc-icon-button:not(.mdc-ripple-upgraded):focus::after {
+    opacity: 0; }
 
 .mdc-dialog .mdc-dialog__container .mdc-dialog__title + .mdc-dialog__content {
   padding-top: 16px;
@@ -4094,8 +4096,8 @@ svg.mdc-button__icon {
 
 .mdc-button--outlined {
   border-style: solid;
-  padding: 0 15px 0 15px;
-  border-width: 1px; }
+  padding: 0 14px 0 14px;
+  border-width: 2px; }
   .mdc-button--outlined:disabled {
     border-color: rgba(0, 0, 0, 0.37); }
   .mdc-button--outlined:not(:disabled) {

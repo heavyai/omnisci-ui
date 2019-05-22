@@ -20,6 +20,12 @@
         height: 40px;
         padding: 8px;
       }
+
+      .mdc-icon-button:not(.mdc-ripple-upgraded):focus {
+        &::before, &::after {
+          opacity: 0;
+        }
+      }
     }
 
     .mdc-dialog__title + .mdc-dialog__content {

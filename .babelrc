@@ -4,17 +4,21 @@
       "@babel/env",
       {
         "modules": false,
-        "useBuiltIns": "entry"
+        "useBuiltIns": "entry",
+        "corejs": "2"
       }
     ],
     "@babel/react",
     "@babel/preset-typescript"
   ],
-  "plugins": ["@babel/plugin-proposal-object-rest-spread"],
+  "plugins": [
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-proposal-class-properties"
+  ],
   "env": {
     "test": {
       "presets": ["@babel/env", "@babel/react", "@babel/preset-typescript"],
-      "plugins": ["@babel/plugin-proposal-object-rest-spread"]
+      "plugins": ["@babel/plugin-proposal-object-rest-spread", "@babel/plugin-proposal-class-properties"]
     }
   }
 }

@@ -36,8 +36,6 @@ export interface ISliderProps {
 /**
  * Slider
  */
-export const Slider = (props: ISliderProps) => {
-  return <div>{props}</div>
-}
+export const Slider = (props: ISliderProps) => <div>{props}</div>
 
 export default Slider

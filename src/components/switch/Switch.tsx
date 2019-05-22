@@ -15,8 +15,6 @@ export interface ISwitchProps {
 /**
  * Switch
  */
-export const Switch = (props: ISwitchProps) => {
-  return <div>{props}</div>
-}
+export const Switch = (props: ISwitchProps) => <div>{props}</div>
 
 export default Switch

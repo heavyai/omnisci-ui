@@ -1,14 +1,11 @@
 import * as React from "react"
 import * as RMWC from "@rmwc/types"
+import { Button as RMWCButton } from "@rmwc/button"
 
 /**
  * Button properties.
  */
 export interface IButtonProps {
-  /** Make the button unelevated. */
-  unelevated?: boolean
-  /** Make the button outlined. */
-  outlined?: boolean
   /** Make the button disabled */
   disabled?: boolean
   /** Content specified as a label prop. */
@@ -19,13 +16,55 @@ export interface IButtonProps {
   icon?: RMWC.IconPropT
   /** A trailing icon for the Button */
   trailingIcon?: RMWC.IconPropT
+  className?: string
+  onClick: any
 }
 
 /**
  * button
  */
-export const Button = (props: IButtonProps) => {
-  return <div>{props}</div>
-}
 
-export default Button
+export const PrimaryButton = (props: IButtonProps) => (
+  <RMWCButton unelevated ripple={false} {...props}>
+    {props.children}
+  </RMWCButton>
+)
+
+export const SecondaryButton = (props: IButtonProps) => (
+  <RMWCButton outlined ripple={false} {...props}>
+    {props.children}
+  </RMWCButton>
+)
+
+export const DangerButton = (props: IButtonProps) => (
+  <PrimaryButton className={"danger"} {...props}>
+    {props.children}
+  </PrimaryButton>
+)
+
+export const WarningButton = (props: IButtonProps) => (
+  <PrimaryButton className={"warning"} {...props}>
+    {props.children}
+  </PrimaryButton>
+)
+
+export const InfoButton = (props: IButtonProps) => (
+  <PrimaryButton className={"info"} {...props}>
+    {props.children}
+  </PrimaryButton>
+)
+
+export const SuccessButton = (props: IButtonProps) => (
+  <PrimaryButton className={"success"} {...props}>
+    {props.children}
+  </PrimaryButton>
+)
+
+export default {
+  PrimaryButton,
+  SecondaryButton,
+  DangerButton,
+  WarningButton,
+  InfoButton,
+  SuccessButton
+}

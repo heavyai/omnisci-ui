@@ -1,37 +1,41 @@
 ```js
 import { Button } from "@rmwc/button";
+import {
+  PrimaryButton,
+  SecondaryButton,
+  DangerButton,
+  WarningButton,
+  SuccessButton,
+} from "./Button";
 <>
-<Button
-  unelevated
-  label={"Primary"}
-/>
-
-<Button
-  outlined
-  label={"Secondary"}
-/>
-
-<Button
-  unelevated
-  disabled
-  label={"Disabled"}
-/>
-
-<Button
-  outlined
-  disabled
-  label={"Disabled"}
-/>
-
-<Button unelevated>
+<PrimaryButton label={"Primary"} />
+<PrimaryButton disabled label={"Disabled"} />
+<hr />
+<SecondaryButton label={"Secondary"} />
+<SecondaryButton disabled label={"Disabled"} />
+<hr />
+<DangerButton label={"Danger"} />
+<DangerButton disabled label={"Disabled"} />
+<hr />
+<WarningButton label={"Warning"} />
+<WarningButton disabled label={"Disabled"} />
+<hr />
+<SuccessButton label={"Success"} />
+<SuccessButton disabled label={"Disabled"} />
+<hr />
+<PrimaryButton>
   <span style={{color: "yellow"}}>Custom</span> Label
-</Button>
-
-<Button
-  unelevated
+</PrimaryButton>
+<PrimaryButton
   label={"Icons"}
   icon={"favorite"}
   trailingIcon={"favorite_border"}
+/>
+<hr />
+<Button
+  unelevated
+  ripple={false}
+  label={"RMWC"}
 />
 </>
 ```

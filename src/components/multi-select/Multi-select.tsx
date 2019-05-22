@@ -13,36 +13,34 @@ export interface IMultiSelectProps {
   onChange?: any
 }
 
-export const MultiSelect = (props: IMultiSelectProps) => {
+export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
+  private SelectContainer = ({ children, ...childProps }) => (
+    <components.SelectContainer {...childProps}>
+      <span className="select-container-wrapper">{children}</span>
+      <FloatingLabel
+        className={"floating-label"}
+        float={childProps.hasValue || childProps.selectProps.inputValue}
+      >
+        {childProps.selectProps.placeholder}
+      </FloatingLabel>
+    </components.SelectContainer>
+  )
 
-  const SelectContainer = ({ children, ...childProps }) => {
+  private Placeholder = () => null
+
+  render() {
     return (
-      <components.SelectContainer {...childProps}>
-        <span className="select-container-wrapper">{children}</span>
-        <FloatingLabel
-          className={"floating-label"}
-          float={childProps.hasValue || childProps.selectProps.inputValue}
-        >
-          {childProps.selectProps.placeholder}
-        </FloatingLabel>
-      </components.SelectContainer>
+      <Select
+        className={"multi-select"}
+        classNamePrefix={"select"}
+        components={{
+          SelectContainer: this.SelectContainer,
+          Placeholder: this.Placeholder
+        }}
+        {...this.props}
+      />
     )
   }
-
-  const Placeholder = () => null
-
-  return (
-    <Select
-      className={"multi-select"}
-      classNamePrefix={"select"}
-      components={{
-        SelectContainer,
-        Placeholder
-      }}
-
-      {...props}
-    />
-  )
 }
 
 export default MultiSelect

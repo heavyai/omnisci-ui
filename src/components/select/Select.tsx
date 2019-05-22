@@ -32,7 +32,7 @@ export interface ISelectProps {
  * Selector
  */
 export const Select = (props: ISelectProps) => {
-  const {options, ...topLevelProps} = props
+  const { options, ...topLevelProps } = props
   return (
     <RmwcSelect outlined={true} enhanced={true} {...topLevelProps}>
       {props.options.map((option, idx) => (

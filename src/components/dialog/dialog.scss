@@ -1,4 +1,5 @@
 @import "@material/dialog/mdc-dialog";
+@import "../button/button";
 
 .mdc-dialog {
 
@@ -19,6 +20,12 @@
         width: 40px;
         height: 40px;
         padding: 8px;
+      }
+
+      .mdc-icon-button:not(.mdc-ripple-upgraded):focus {
+        &::before, &::after {
+          opacity: 0;
+        }
       }
     }
 
@@ -53,6 +60,7 @@
     .mdc-button, .mdc-button:not(:disabled) {
       color: $gray;
       height: 32px;
+      margin-left: 8px;
     }
 
     .mdc-button:last-child {

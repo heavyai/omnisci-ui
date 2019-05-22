@@ -13,6 +13,7 @@ export interface ISimpleDialogProps {
     message?: React.ReactNode | string;
     primaryLabel?: React.ReactNode | string;
     secondaryLabel?: React.ReactNode | string;
+    className?: string;
 }
 export interface IDialogProps {
     /** Whether or not the Dialog is showing. */
@@ -26,10 +27,13 @@ export interface IDialogProps {
 /**
  * Dialog
  */
-export declare const SimpleDangerDialog: FunctionComponent<ISimpleDialogProps>;
+export declare const SimpleDialog: FunctionComponent<ISimpleDialogProps>;
+export declare const SimpleDangerDialog: (props: IDialogProps) => JSX.Element;
+export declare const SimpleWarningDialog: (props: IDialogProps) => JSX.Element;
 export declare const DangerDialog: (props: IDialogProps) => JSX.Element;
 declare const _default: {
     DangerDialog: (props: IDialogProps) => JSX.Element;
-    SimpleDangerDialog: React.FunctionComponent<ISimpleDialogProps>;
+    SimpleDangerDialog: (props: IDialogProps) => JSX.Element;
+    SimpleWarningDialog: (props: IDialogProps) => JSX.Element;
 };
 export default _default;

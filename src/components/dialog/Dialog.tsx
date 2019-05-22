@@ -18,6 +18,7 @@ export interface ISimpleDialogProps {
   message?: React.ReactNode | string
   primaryLabel?: React.ReactNode | string
   secondaryLabel?: React.ReactNode | string
+  className?: string
 }
 
 export interface IDialogProps {
@@ -33,21 +34,22 @@ export interface IDialogProps {
 /**
  * Dialog
  */
-export const SimpleDangerDialog: FunctionComponent<ISimpleDialogProps> = ({
+export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   primaryLabel,
   secondaryLabel,
   message,
   onClose,
   onOpen,
   title,
-  open
+  open,
+  className
 }) => {
   const handleAccept = () => onClose("accept")
   const handleCancel = () => onClose("cancel")
 
   return (
     <Dialog
-      className="danger"
+      className={className}
       open={open}
       onOpen={onOpen}
       preventOutsideDismiss={true}
@@ -72,6 +74,18 @@ export const SimpleDangerDialog: FunctionComponent<ISimpleDialogProps> = ({
   )
 }
 
+export const SimpleDangerDialog = (props: IDialogProps) => (
+  <SimpleDialog className={"danger"} {...props}>
+    {props.children}
+  </SimpleDialog>
+)
+
+export const SimpleWarningDialog = (props: IDialogProps) => (
+  <SimpleDialog className={"warning"} {...props}>
+    {props.children}
+  </SimpleDialog>
+)
+
 export const DangerDialog = (props: IDialogProps) => (
   <Dialog className={"danger"} {...props}>
     {props.children}
@@ -80,5 +94,6 @@ export const DangerDialog = (props: IDialogProps) => (
 
 export default {
   DangerDialog,
-  SimpleDangerDialog
+  SimpleDangerDialog,
+  SimpleWarningDialog
 }

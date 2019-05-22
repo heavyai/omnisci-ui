@@ -4170,7 +4170,8 @@ svg.mdc-button__icon {
   height: 48px;
   display: flex;
   align-items: center;
-  padding: 0 24px; }
+  padding: 0 24px;
+  text-transform: capitalize; }
   .mdc-dialog .mdc-dialog__container .mdc-dialog__title .mdc-icon-button {
     position: absolute;
     top: 0;

@@ -2,7 +2,12 @@ import React, { FunctionComponent } from "react"
 import { Dialog, DialogTitle, DialogContent, DialogActions } from "@rmwc/dialog"
 import { IconButton } from "@rmwc/icon-button"
 import { Icon } from "@rmwc/icon"
-import { DangerButton, SecondaryButton } from "../button/Button"
+import {
+  DangerButton,
+  WarningButton,
+  SecondaryButton,
+  PrimaryButton
+} from "../button/Button"
 
 /**
  * Dialog properties.
@@ -18,7 +23,7 @@ export interface ISimpleDialogProps {
   message?: React.ReactNode | string
   primaryLabel?: React.ReactNode | string
   secondaryLabel?: React.ReactNode | string
-  className?: string
+  type?: string
 }
 
 export interface IDialogProps {
@@ -42,14 +47,14 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   onOpen,
   title,
   open,
-  className
+  type
 }) => {
   const handleAccept = () => onClose("accept")
   const handleCancel = () => onClose("cancel")
 
   return (
     <Dialog
-      className={className}
+      className={type}
       open={open}
       onOpen={onOpen}
       preventOutsideDismiss={true}
@@ -68,20 +73,28 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
             {secondaryLabel}
           </SecondaryButton>
         )}
-        <DangerButton onClick={handleAccept}>{primaryLabel}</DangerButton>
+        {type === "danger" && (
+          <DangerButton onClick={handleAccept}>{primaryLabel}</DangerButton>
+        )}
+        {type === "warning" && (
+          <WarningButton onClick={handleAccept}>{primaryLabel}</WarningButton>
+        )}
+        {type !== "danger" && type !== "warning" && (
+          <PrimaryButton onClick={handleAccept}>{primaryLabel}</PrimaryButton>
+        )}
       </DialogActions>
     </Dialog>
   )
 }
 
 export const SimpleDangerDialog = (props: IDialogProps) => (
-  <SimpleDialog className={"danger"} {...props}>
+  <SimpleDialog type={"danger"} {...props}>
     {props.children}
   </SimpleDialog>
 )
 
 export const SimpleWarningDialog = (props: IDialogProps) => (
-  <SimpleDialog className={"warning"} {...props}>
+  <SimpleDialog type={"warning"} {...props}>
     {props.children}
   </SimpleDialog>
 )

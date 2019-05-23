@@ -13,7 +13,7 @@ export interface ISimpleDialogProps {
     message?: React.ReactNode | string;
     primaryLabel?: React.ReactNode | string;
     secondaryLabel?: React.ReactNode | string;
-    className?: string;
+    type?: string;
 }
 export interface IDialogProps {
     /** Whether or not the Dialog is showing. */

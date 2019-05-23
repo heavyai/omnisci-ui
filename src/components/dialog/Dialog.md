@@ -1,6 +1,6 @@
 ```js
 import { SimpleDangerDialog } from "./Dialog"
-import { Button } from "@rmwc/button";
+import { DangerButton } from "../button/Button"
 
 initialState = {
   isOpen: false,
@@ -19,7 +19,7 @@ initialState = {
   }}
 />
 
-<Button
+<DangerButton
   unelevated
   onClick={() => setState({isOpen: true})}
   label={"Open Danger Dialog"}
@@ -29,7 +29,7 @@ initialState = {
 
 ```js
 import { SimpleWarningDialog } from "./Dialog"
-import { Button } from "@rmwc/button";
+import { WarningButton } from "../button/Button"
 
 initialState = {
   isOpen: false,
@@ -41,14 +41,14 @@ initialState = {
   title={"Important title"}
   primaryLabel={"Do it"}
   secondaryLabel={"Cancel"}
-  message={"This is a warning"}
+  message={"This is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warning"}
   open={state.isOpen}
   onClose={action => {
     setState({isOpen: false, lastAction: action})
   }}
 />
 
-<Button
+<WarningButton
   unelevated
   onClick={() => setState({isOpen: true})}
   label={"Open Warning Dialog"}

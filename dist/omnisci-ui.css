@@ -4179,6 +4179,8 @@ svg.mdc-button__icon {
     width: 40px;
     height: 40px;
     padding: 8px; }
+    .mdc-dialog .mdc-dialog__container .mdc-dialog__title .mdc-icon-button::-moz-focus-inner {
+      border: 0; }
   .mdc-dialog .mdc-dialog__container .mdc-dialog__title .mdc-icon-button:not(.mdc-ripple-upgraded):focus::before, .mdc-dialog .mdc-dialog__container .mdc-dialog__title .mdc-icon-button:not(.mdc-ripple-upgraded):focus::after {
     opacity: 0; }
 
@@ -4195,8 +4197,8 @@ svg.mdc-button__icon {
 .mdc-dialog .mdc-dialog__container .mdc-dialog__content .material-icons {
   padding: 0 8px 0 0;
   font-size: 32px;
-  float: left;
   width: 32px;
+  min-width: 32px;
   display: flex;
   flex: 0 32px; }
 

@@ -2,7 +2,12 @@ import React, { FunctionComponent } from "react"
 import { Dialog, DialogTitle, DialogContent, DialogActions } from "@rmwc/dialog"
 import { IconButton } from "@rmwc/icon-button"
 import { Icon } from "@rmwc/icon"
-import { DangerButton, SecondaryButton } from "../button/Button"
+import {
+  DangerButton,
+  WarningButton,
+  SecondaryButton,
+  PrimaryButton
+} from "../button/Button"
 
 /**
  * Dialog properties.
@@ -18,6 +23,7 @@ export interface ISimpleDialogProps {
   message?: React.ReactNode | string
   primaryLabel?: React.ReactNode | string
   secondaryLabel?: React.ReactNode | string
+  type?: string
 }
 
 export interface IDialogProps {
@@ -33,21 +39,22 @@ export interface IDialogProps {
 /**
  * Dialog
  */
-export const SimpleDangerDialog: FunctionComponent<ISimpleDialogProps> = ({
+export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   primaryLabel,
   secondaryLabel,
   message,
   onClose,
   onOpen,
   title,
-  open
+  open,
+  type
 }) => {
   const handleAccept = () => onClose("accept")
   const handleCancel = () => onClose("cancel")
 
   return (
     <Dialog
-      className="danger"
+      className={type}
       open={open}
       onOpen={onOpen}
       preventOutsideDismiss={true}
@@ -66,11 +73,31 @@ export const SimpleDangerDialog: FunctionComponent<ISimpleDialogProps> = ({
             {secondaryLabel}
           </SecondaryButton>
         )}
-        <DangerButton onClick={handleAccept}>{primaryLabel}</DangerButton>
+        {type === "danger" && (
+          <DangerButton onClick={handleAccept}>{primaryLabel}</DangerButton>
+        )}
+        {type === "warning" && (
+          <WarningButton onClick={handleAccept}>{primaryLabel}</WarningButton>
+        )}
+        {type !== "danger" && type !== "warning" && (
+          <PrimaryButton onClick={handleAccept}>{primaryLabel}</PrimaryButton>
+        )}
       </DialogActions>
     </Dialog>
   )
 }
+
+export const SimpleDangerDialog = (props: IDialogProps) => (
+  <SimpleDialog type={"danger"} {...props}>
+    {props.children}
+  </SimpleDialog>
+)
+
+export const SimpleWarningDialog = (props: IDialogProps) => (
+  <SimpleDialog type={"warning"} {...props}>
+    {props.children}
+  </SimpleDialog>
+)
 
 export const DangerDialog = (props: IDialogProps) => (
   <Dialog className={"danger"} {...props}>
@@ -80,5 +107,6 @@ export const DangerDialog = (props: IDialogProps) => (
 
 export default {
   DangerDialog,
-  SimpleDangerDialog
+  SimpleDangerDialog,
+  SimpleWarningDialog
 }

@@ -11,7 +11,8 @@
       height: 48px;
       display: flex;
       align-items: center;
-      padding: 0 24px;
+      padding: 0 16px;
+      text-transform: capitalize;
 
       .mdc-icon-button {
         position: absolute;
@@ -20,6 +21,10 @@
         width: 40px;
         height: 40px;
         padding: 8px;
+
+        &::-moz-focus-inner {
+          border: 0;
+        }
       }
 
       .mdc-icon-button:not(.mdc-ripple-upgraded):focus {
@@ -27,6 +32,10 @@
           opacity: 0;
         }
       }
+    }
+
+    .mdc-dialog__content {
+      padding: 16px;
     }
 
     .mdc-dialog__title + .mdc-dialog__content {
@@ -39,10 +48,10 @@
     }
 
     .mdc-dialog__content .material-icons {
-      padding: 0 4px 0 0;
+      padding: 0 8px 0 0;
       font-size: 32px;
-      float: left;
       width: 32px;
+      min-width: 32px;
       display: flex;
       flex: 0 32px;
     }

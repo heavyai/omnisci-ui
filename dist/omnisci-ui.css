@@ -3654,6 +3654,12 @@ a.mdc-list-item {
     background-color: rgba(0, 137, 209, 0.3); }
   .multi-select .select__option.select__option--is-focused {
     background-color: rgba(0, 137, 209, 0.3); }
+  .multi-select.error .select__control {
+    border: 1px solid #D83C3C; }
+  .multi-select.error .mdc-floating-label {
+    color: #D83C3C; }
+  .multi-select.required .mdc-floating-label::after {
+    content: " *"; }
 
 .mdc-dialog,
 .mdc-dialog__scrim {

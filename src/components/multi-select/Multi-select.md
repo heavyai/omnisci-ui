@@ -34,3 +34,44 @@ initialState = {
   onChange={(e) => setState({ value: e })}
 />
 ```
+
+```js
+<MultiSelect
+  isDisabled
+  placeholder={"Disabled"}
+/>
+```
+
+```js
+initialState = {
+  label: "Error",
+  value: {label: 2, value: 2}, 
+  options: new Array(200).fill(0).map((d, i) => ({label: i, value: i}))
+};
+
+<MultiSelect
+  isClearable
+  hasError
+  options={state.options}
+  value={state.value}
+  placeholder={state.label}
+  onChange={(e) => setState({ value: e })}
+/>
+```
+
+```js
+initialState = {
+  label: "Required",
+  value: {label: 2, value: 2}, 
+  options: new Array(200).fill(0).map((d, i) => ({label: i, value: i}))
+};
+
+<MultiSelect
+  isClearable
+  isRequired
+  options={state.options}
+  value={state.value}
+  placeholder={state.label}
+  onChange={(e) => setState({ value: e })}
+/>
+```

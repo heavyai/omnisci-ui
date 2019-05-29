@@ -62,6 +62,7 @@
     "@rmwc/textfield": "^5.2.2",
     "@rmwc/theme": "^5.3.0",
     "@typescript-eslint/parser": "^1.9.0",
+    "classnames": "^2.2.6",
     "moment": "^2.24.0",
     "react": "^16.8.3",
     "react-dates": "^20.1.0",

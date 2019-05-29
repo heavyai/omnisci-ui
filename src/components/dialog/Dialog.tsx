@@ -5,6 +5,7 @@ import { Icon } from "@rmwc/icon"
 import {
   DangerButton,
   WarningButton,
+  SuccessButton,
   SecondaryButton,
   PrimaryButton
 } from "../button/Button"
@@ -64,7 +65,9 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
         <IconButton icon="close" onClick={onClose} ripple={false} />
       </DialogTitle>
       <DialogContent>
-        <Icon icon="warning_outline" />
+        {(type === "warning" || type === "danger") && (
+          <Icon icon="warning_outline" />
+        )}
         <div className="dialog-message">{message}</div>
       </DialogContent>
       <DialogActions>
@@ -73,15 +76,28 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
             {secondaryLabel}
           </SecondaryButton>
         )}
-        {type === "danger" && (
-          <DangerButton onClick={handleAccept}>{primaryLabel}</DangerButton>
-        )}
-        {type === "warning" && (
-          <WarningButton onClick={handleAccept}>{primaryLabel}</WarningButton>
-        )}
-        {type !== "danger" && type !== "warning" && (
-          <PrimaryButton onClick={handleAccept}>{primaryLabel}</PrimaryButton>
-        )}
+        {
+          {
+            danger: (
+              <DangerButton onClick={handleAccept}>{primaryLabel}</DangerButton>
+            ),
+            warning: (
+              <WarningButton onClick={handleAccept}>
+                {primaryLabel}
+              </WarningButton>
+            ),
+            success: (
+              <SuccessButton onClick={handleAccept}>
+                {primaryLabel}
+              </SuccessButton>
+            ),
+            info: (
+              <PrimaryButton onClick={handleAccept}>
+                {primaryLabel}
+              </PrimaryButton>
+            )
+          }[type]
+        }
       </DialogActions>
     </Dialog>
   )
@@ -99,6 +115,18 @@ export const SimpleWarningDialog = (props: IDialogProps) => (
   </SimpleDialog>
 )
 
+export const SimpleSuccessDialog = (props: IDialogProps) => (
+  <SimpleDialog type={"success"} {...props}>
+    {props.children}
+  </SimpleDialog>
+)
+
+export const SimpleInfoDialog = (props: IDialogProps) => (
+  <SimpleDialog type={"info"} {...props}>
+    {props.children}
+  </SimpleDialog>
+)
+
 export const DangerDialog = (props: IDialogProps) => (
   <Dialog className={"danger"} {...props}>
     {props.children}
@@ -108,5 +136,6 @@ export const DangerDialog = (props: IDialogProps) => (
 export default {
   DangerDialog,
   SimpleDangerDialog,
-  SimpleWarningDialog
+  SimpleWarningDialog,
+  SimpleSuccessDialog
 }

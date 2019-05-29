@@ -48,4 +48,21 @@
       background-color: rgba($mdc-theme-primary, 0.3);
     }
   }
+
+  &.error {
+
+    .select__control {
+      border: 1px solid $danger;
+    }
+
+    .mdc-floating-label {
+      color: $danger;
+    }
+  }
+
+  &.required {
+    .mdc-floating-label::after {
+      content: " *";
+    }
+  }
 }

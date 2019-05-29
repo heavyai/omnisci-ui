@@ -1,6 +1,7 @@
 import * as React from "react"
 import Select, { components } from "react-select"
 import FloatingLabel from "@material/react-floating-label"
+import cx from "classnames"
 import { FormattedOption } from "@rmwc/select/dist/index.d"
 import "@material/react-floating-label/index.scss"
 import "../../vars.scss"
@@ -11,6 +12,8 @@ export interface IMultiSelectProps {
   value?: FormattedOption
   /** When the input changes */
   onChange?: any
+  hasError?: boolean
+  isRequired?: boolean
 }
 
 export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
@@ -31,7 +34,10 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
   render() {
     return (
       <Select
-        className={"multi-select"}
+        className={cx("multi-select", {
+          error: this.props.hasError,
+          required: this.props.isRequired
+        })}
         classNamePrefix={"select"}
         components={{
           SelectContainer: this.SelectContainer,

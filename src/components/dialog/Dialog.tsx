@@ -76,12 +76,28 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
             {secondaryLabel}
           </SecondaryButton>
         )}
-        {{
-          danger: <DangerButton onClick={handleAccept}>{primaryLabel}</DangerButton>,
-          warning: <WarningButton onClick={handleAccept}>{primaryLabel}</WarningButton>,
-          success: <SuccessButton onClick={handleAccept}>{primaryLabel}</SuccessButton>,
-          info: <PrimaryButton onClick={handleAccept}>{primaryLabel}</PrimaryButton>
-        }[type]}
+        {
+          {
+            danger: (
+              <DangerButton onClick={handleAccept}>{primaryLabel}</DangerButton>
+            ),
+            warning: (
+              <WarningButton onClick={handleAccept}>
+                {primaryLabel}
+              </WarningButton>
+            ),
+            success: (
+              <SuccessButton onClick={handleAccept}>
+                {primaryLabel}
+              </SuccessButton>
+            ),
+            info: (
+              <PrimaryButton onClick={handleAccept}>
+                {primaryLabel}
+              </PrimaryButton>
+            )
+          }[type]
+        }
       </DialogActions>
     </Dialog>
   )

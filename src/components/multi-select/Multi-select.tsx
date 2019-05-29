@@ -35,8 +35,8 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
     return (
       <Select
         className={cx("multi-select", {
-          "error": this.props.hasError,
-          "required": this.props.isRequired
+          error: this.props.hasError,
+          required: this.props.isRequired
         })}
         classNamePrefix={"select"}
         components={{

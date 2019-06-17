@@ -1,5 +1,5 @@
 ```js
-import { Button } from "@rmwc/button";
+import { Button, ButtonIcon } from "@rmwc/button";
 import {
   PrimaryButton,
   SecondaryButton,
@@ -8,34 +8,30 @@ import {
   SuccessButton,
 } from "./Button";
 <>
-<PrimaryButton label={"Primary"} />
-<PrimaryButton disabled label={"Disabled"} />
+<PrimaryButton>Primary</PrimaryButton>
+<PrimaryButton disabled>Disabled</PrimaryButton>
 <hr />
-<SecondaryButton label={"Secondary"} />
-<SecondaryButton disabled label={"Disabled"} />
+<SecondaryButton>Secondary</SecondaryButton>
+<SecondaryButton disabled>Disabled</SecondaryButton>
 <hr />
-<DangerButton label={"Danger"} />
-<DangerButton disabled label={"Disabled"} />
+<DangerButton>Danger</DangerButton>
+<DangerButton disabled>Disabled</DangerButton>
 <hr />
-<WarningButton label={"Warning"} />
-<WarningButton disabled label={"Disabled"} />
+<WarningButton>Warning</WarningButton>
+<WarningButton disabled>Disabled</WarningButton>
 <hr />
-<SuccessButton label={"Success"} />
-<SuccessButton disabled label={"Disabled"} />
+<SuccessButton>Success</SuccessButton>
+<SuccessButton disabled>Disabled</SuccessButton>
 <hr />
 <PrimaryButton>
   <span style={{color: "yellow"}}>Custom</span> Label
 </PrimaryButton>
-<PrimaryButton
-  label={"Icons"}
-  icon={"favorite"}
-  trailingIcon={"favorite_border"}
-/>
+<PrimaryButton><ButtonIcon icon={"favorite"} />With icon</PrimaryButton>
 <hr />
 <Button
   unelevated
   ripple={false}
-  label={"RMWC"}
-/>
+ >RMWC
+</Button>
 </>
 ```

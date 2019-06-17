@@ -22,8 +22,9 @@ initialState = {
 <DangerButton
   unelevated
   onClick={() => setState({isOpen: true})}
-  label={"Open Danger Dialog"}
-/>
+>
+Open Danger Dialog
+</DangerButton>
 </>
 ```
 
@@ -51,8 +52,9 @@ initialState = {
 <WarningButton
   unelevated
   onClick={() => setState({isOpen: true})}
-  label={"Open Warning Dialog"}
-/>
+>
+Open Warning Dialog
+</WarningButton>
 </>
 ```
 
@@ -80,8 +82,9 @@ initialState = {
 <SuccessButton
   unelevated
   onClick={() => setState({isOpen: true})}
-  label={"Open Success Dialog"}
-/>
+>
+Open Success Dialog
+</SuccessButton>
 </>
 ```
 
@@ -109,8 +112,9 @@ initialState = {
 <PrimaryButton
   unelevated
   onClick={() => setState({isOpen: true})}
-  label={"Open Success Dialog"}
-/>
+>
+Open Success Dialog
+</PrimaryButton>
 </>
 ```
 

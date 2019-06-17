@@ -10,8 +10,9 @@
   }
 
   .mdc-floating-label {
-    margin: 10px;
+    margin: 2px 8px;
     color: $light-gray;
+    pointer-events: none;
 
     &.mdc-floating-label--float-above {
       transform: translateY(-100%) scale(0.75);

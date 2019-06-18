@@ -2,7 +2,23 @@
 
 .mdc-text-field.mdc-text-field--upgraded {
   font-family: "Roboto", sans-serif;
-  height: 32px;
+
+  &:not(.mdc-text-field--textarea) {
+    height: 32px;
+  }
+
+  &.mdc-text-field--textarea,
+  &.mdc-text-field--textarea .mdc-text-field__input {
+    min-height: 32px;
+  }
+
+  &.mdc-text-field--textarea {
+    display: inline-flex;
+
+    &.mdc-text-field--fullwidth {
+      resize: vertical;
+    }
+  }
 
   .mdc-text-field__input {
     padding: 4px 8px;
@@ -36,9 +52,5 @@
 
   &.mdc-text-field--with-trailing-icon .mdc-text-field__icon ~ .mdc-text-field__icon {
     right: 4px;
-  }
-
-  &.mdc-text-field--textarea {
-    min-height: 100px;
   }
 }

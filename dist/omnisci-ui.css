@@ -4016,7 +4016,9 @@ svg.mdc-button__icon {
     opacity: 0; }
 
 .mdc-dialog .mdc-dialog__container .mdc-dialog__content {
-  padding: 16px; }
+  padding: 16px;
+  color: #222;
+  font-size: 14px; }
 
 .mdc-dialog .mdc-dialog__container .mdc-dialog__title + .mdc-dialog__content {
   padding-top: 16px;
@@ -4060,23 +4062,18 @@ svg.mdc-button__icon {
   background-color: #D83C3C; }
 
 .mdc-dialog.warning .mdc-dialog__title {
-  background-color: #F2B700; }
-
-.mdc-dialog.warning .mdc-dialog__content {
-  color: #666; }
+  background-color: #F2B700;
+  color: #222; }
 
 .mdc-dialog.warning .mdc-dialog__content .material-icons {
   color: #F2B700; }
 
 .mdc-dialog.warning .mdc-button:last-child {
-  color: white;
+  color: #222;
   background-color: #F2B700; }
 
 .mdc-dialog.success .mdc-dialog__title {
   background-color: #5BCE00; }
-
-.mdc-dialog.success .mdc-dialog__content {
-  color: #666; }
 
 .mdc-dialog.success .mdc-dialog__content .material-icons {
   color: #5BCE00; }
@@ -4084,6 +4081,9 @@ svg.mdc-button__icon {
 .mdc-dialog.success .mdc-button:last-child {
   color: white;
   background-color: #5BCE00; }
+
+.mdc-dialog.info .mdc-dialog__content .material-icons {
+  color: #3BA1D9; }
 
 .mdc-button {
   font-family: Roboto, sans-serif;

@@ -50,49 +50,54 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   open,
   type
 }) => {
-  const handleAccept = () => onClose("accept")
-  const handleCancel = () => onClose("cancel")
+  const handlePrimary = () => onClose(primaryLabel)
+  const handleSecondary = () => onClose(secondaryLabel)
 
   return (
     <Dialog
       className={type}
       open={open}
       onOpen={onOpen}
-      preventOutsideDismiss={true}
     >
       <DialogTitle>
         {title}
-        <IconButton icon="close" onClick={onClose} ripple={false} />
+        <IconButton icon="close" onClick={handleSecondary} ripple={false} />
       </DialogTitle>
       <DialogContent>
         {(type === "warning" || type === "danger") && (
           <Icon icon="warning_outline" />
         )}
+        {(type === "success") && (
+          <Icon icon="check_circle_outline" />
+        )}
+        {(type === "info") && (
+          <Icon icon="info_outline" />
+        )}
         <div className="dialog-message">{message}</div>
       </DialogContent>
       <DialogActions>
         {secondaryLabel && (
-          <SecondaryButton onClick={handleCancel}>
+          <SecondaryButton onClick={handleSecondary}>
             {secondaryLabel}
           </SecondaryButton>
         )}
         {
           {
             danger: (
-              <DangerButton onClick={handleAccept}>{primaryLabel}</DangerButton>
+              <DangerButton onClick={handlePrimary}>{primaryLabel}</DangerButton>
             ),
             warning: (
-              <WarningButton onClick={handleAccept}>
+              <WarningButton onClick={handlePrimary}>
                 {primaryLabel}
               </WarningButton>
             ),
             success: (
-              <SuccessButton onClick={handleAccept}>
+              <SuccessButton onClick={handlePrimary}>
                 {primaryLabel}
               </SuccessButton>
             ),
             info: (
-              <PrimaryButton onClick={handleAccept}>
+              <PrimaryButton onClick={handlePrimary}>
                 {primaryLabel}
               </PrimaryButton>
             )

@@ -14,8 +14,8 @@ initialState = {
   secondaryLabel={"Cancel"}
   message={"This is an important message"}
   open={state.isOpen}
-  onClose={action => {
-    setState({isOpen: false, lastAction: action})
+  onClose={buttonLabel => {
+    setState({isOpen: false, lastAction: buttonLabel})
   }}
 />
 
@@ -44,8 +44,8 @@ initialState = {
   secondaryLabel={"Cancel"}
   message={"This is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warning"}
   open={state.isOpen}
-  onClose={action => {
-    setState({isOpen: false, lastAction: action})
+  onClose={buttonLabel => {
+    setState({isOpen: false, lastAction: buttonLabel})
   }}
 />
 
@@ -74,8 +74,8 @@ initialState = {
   secondaryLabel={"Cancel"}
   message={"This is a success"}
   open={state.isOpen}
-  onClose={action => {
-    setState({isOpen: false, lastAction: action})
+  onClose={buttonLabel => {
+    setState({isOpen: false, lastAction: buttonLabel})
   }}
 />
 
@@ -104,8 +104,8 @@ initialState = {
   secondaryLabel={"Cancel"}
   message={"This is an info"}
   open={state.isOpen}
-  onClose={action => {
-    setState({isOpen: false, lastAction: action})
+  onClose={buttonLabel => {
+    setState({isOpen: false, lastAction: buttonLabel})
   }}
 />
 
@@ -136,8 +136,8 @@ initialState = {
 <>
 <DangerDialog
   open={state.isOpen}
-  onClose={action => {
-    setState({isOpen: false, lastAction: action})
+  onClose={e => {
+    setState({isOpen: false})
   }}
 >
   <DialogTitle>
@@ -151,7 +151,7 @@ initialState = {
         unelevated
         ripple={false}
         className="danger"
-        action="accept"
+        action="agree"
         isDefaultAction
       >
         Do it

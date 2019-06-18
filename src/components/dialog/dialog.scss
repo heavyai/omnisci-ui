@@ -36,6 +36,8 @@
 
     .mdc-dialog__content {
       padding: 16px;
+      color: $very-dark-gray;
+      font-size: 14px;
     }
 
     .mdc-dialog__title + .mdc-dialog__content {
@@ -95,10 +97,7 @@
   &.warning {
     .mdc-dialog__title {
       background-color: $warning;
-    }
-
-    .mdc-dialog__content {
-      color: $gray;
+      color: $very-dark-gray;
     }
 
     .mdc-dialog__content .material-icons {
@@ -106,7 +105,7 @@
     }
 
     .mdc-button:last-child {
-      color: white;
+      color: $very-dark-gray;
       background-color: $warning;
     }
   }
@@ -116,10 +115,6 @@
       background-color: $success;
     }
 
-    .mdc-dialog__content {
-      color: $gray;
-    }
-
     .mdc-dialog__content .material-icons {
       color: $success;
     }
@@ -127,6 +122,12 @@
     .mdc-button:last-child {
       color: white;
       background-color: $success;
+    }
+  }
+
+  &.info {
+    .mdc-dialog__content .material-icons {
+      color: $info;
     }
   }
 }

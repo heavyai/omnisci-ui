@@ -10,14 +10,15 @@
   }
 
   .mdc-floating-label {
-    margin: 2px 8px;
+    margin: 10px 14px;
     color: $light-gray;
     pointer-events: none;
 
     &.mdc-floating-label--float-above {
-      transform: translateY(-100%) scale(0.75);
+      transform: translateY(-50%) scale(0.75);
       background: white;
       padding: 0 4px;
+      margin: 0 14px;
       color: initial;
     }
   }

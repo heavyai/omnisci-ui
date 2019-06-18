@@ -21,8 +21,21 @@
       outline: none;
     }
 
+    &.mdc-text-field--focused {
+      .mdc-floating-label {
+        background: white;
+        margin: 4px 8px;
+      }
+      .mdc-notched-outline .mdc-notched-outline__path {
+        stroke: none;
+      }
+    }
+
     &.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-text-field__input:focus,
     &.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-text-field__input:active {
+      border: 1px solid $mdc-theme-primary!important;
+      border-color: $mdc-theme-primary!important;
+      border-radius: 4px;
     }
 
     &.mdc-text-field--fullwidth .mdc-text-field__input {
@@ -30,7 +43,13 @@
     }
 
     .mdc-floating-label {
+      margin: 0 8px;
       right: initial;
+      z-index: 1;
+    }
+
+    .mdc-floating-label.mdc-floating-label--float-above {
+      top: 18px;
     }
   }
 

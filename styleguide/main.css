@@ -1647,10 +1647,24 @@ svg.mdc-button__icon {
     overflow: visible; }
     .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea .mdc-text-field__input {
       outline: none; }
+    .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea.mdc-text-field--focused .mdc-floating-label {
+      background: white;
+      margin: 4px 8px; }
+    .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea.mdc-text-field--focused .mdc-notched-outline .mdc-notched-outline__path {
+      stroke: none; }
+    .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-text-field__input:focus,
+    .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-text-field__input:active {
+      border: 1px solid #0089D1 !important;
+      border-color: #0089D1 !important;
+      border-radius: 4px; }
     .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea.mdc-text-field--fullwidth .mdc-text-field__input {
       resize: vertical; }
     .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea .mdc-floating-label {
-      right: initial; }
+      margin: 0 8px;
+      right: initial;
+      z-index: 1; }
+    .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea .mdc-floating-label.mdc-floating-label--float-above {
+      top: 18px; }
   .mdc-text-field.mdc-text-field--upgraded .mdc-text-field__input {
     padding: 4px 8px; }
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--with-leading-icon .mdc-text-field__input {
@@ -3399,14 +3413,15 @@ a.mdc-list-item {
     display: inline-block;
     width: 100%; }
   .multi-select .mdc-floating-label {
-    margin: 2px 8px;
+    margin: 10px 14px;
     color: #ddd;
     pointer-events: none; }
     .multi-select .mdc-floating-label.mdc-floating-label--float-above {
-      -webkit-transform: translateY(-100%) scale(0.75);
-              transform: translateY(-100%) scale(0.75);
+      -webkit-transform: translateY(-50%) scale(0.75);
+              transform: translateY(-50%) scale(0.75);
       background: white;
       padding: 0 4px;
+      margin: 0 14px;
       color: initial; }
   .multi-select .select__control--is-focused {
     border-color: #0089D1;

@@ -373,40 +373,36 @@ svg.mdc-button__icon {
 .mdc-button--unelevated.mdc-ripple-upgraded {
   --mdc-ripple-fg-opacity: 0.24; }
 
-.mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:focus::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:focus::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:focus::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:focus::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active::after {
-  opacity: 0 !important; }
-
-.mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover {
-  background-color: #027BBC; }
-  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active.danger, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover.danger {
-    background-color: #c62121; }
-  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active.warning, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover.warning {
-    background-color: #e2aa00; }
-  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active.success, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover.success {
-    background-color: #54bc00; }
-
-.mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:disabled {
-  background-color: #0089D1;
-  opacity: 0.24;
-  color: white; }
-
-.mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated.danger {
-  background-color: #D83C3C; }
-
-.mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated.warning {
-  background-color: #F2B700; }
-
-.mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated.success {
-  background-color: #5BCE00; }
-
-.mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined {
-  border-color: #ddd;
-  border-width: 1px;
-  color: #666; }
-  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover {
-    background-color: whitesmoke; }
-  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:disabled {
-    opacity: 0.24; }
+.mdc-button:not(.mdc-ripple-upgraded) {
+  text-transform: initial; }
+  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:focus::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:focus::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:focus::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:focus::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active::after {
+    opacity: 0 !important; }
+  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover {
+    background-color: #027BBC; }
+    .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active.danger, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover.danger {
+      background-color: #c62121; }
+    .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active.warning, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover.warning {
+      background-color: #e2aa00; }
+    .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active.success, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover.success {
+      background-color: #54bc00; }
+  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:disabled {
+    background-color: #0089D1;
+    opacity: 0.24;
+    color: white; }
+  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated.danger {
+    background-color: #D83C3C; }
+  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated.warning {
+    background-color: #F2B700; }
+  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated.success {
+    background-color: #5BCE00; }
+  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined {
+    border-color: #ddd;
+    border-width: 1px;
+    color: #666; }
+    .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover {
+      background-color: whitesmoke; }
+    .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:disabled {
+      opacity: 0.24; }
 
 .mdc-floating-label {
   font-family: Roboto, sans-serif;
@@ -3959,40 +3955,36 @@ svg.mdc-button__icon {
 .mdc-button--unelevated.mdc-ripple-upgraded {
   --mdc-ripple-fg-opacity: 0.24; }
 
-.mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:focus::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:focus::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:focus::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:focus::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active::after {
-  opacity: 0 !important; }
-
-.mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover {
-  background-color: #027BBC; }
-  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active.danger, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover.danger {
-    background-color: #c62121; }
-  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active.warning, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover.warning {
-    background-color: #e2aa00; }
-  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active.success, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover.success {
-    background-color: #54bc00; }
-
-.mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:disabled {
-  background-color: #0089D1;
-  opacity: 0.24;
-  color: white; }
-
-.mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated.danger {
-  background-color: #D83C3C; }
-
-.mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated.warning {
-  background-color: #F2B700; }
-
-.mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated.success {
-  background-color: #5BCE00; }
-
-.mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined {
-  border-color: #ddd;
-  border-width: 1px;
-  color: #666; }
-  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover {
-    background-color: whitesmoke; }
-  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:disabled {
-    opacity: 0.24; }
+.mdc-button:not(.mdc-ripple-upgraded) {
+  text-transform: initial; }
+  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:focus::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:focus::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:focus::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:focus::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active::after {
+    opacity: 0 !important; }
+  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover {
+    background-color: #027BBC; }
+    .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active.danger, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover.danger {
+      background-color: #c62121; }
+    .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active.warning, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover.warning {
+      background-color: #e2aa00; }
+    .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active.success, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover.success {
+      background-color: #54bc00; }
+  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:disabled {
+    background-color: #0089D1;
+    opacity: 0.24;
+    color: white; }
+  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated.danger {
+    background-color: #D83C3C; }
+  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated.warning {
+    background-color: #F2B700; }
+  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated.success {
+    background-color: #5BCE00; }
+  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined {
+    border-color: #ddd;
+    border-width: 1px;
+    color: #666; }
+    .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover {
+      background-color: whitesmoke; }
+    .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:disabled {
+      opacity: 0.24; }
 
 .mdc-dialog .mdc-dialog__container .mdc-dialog__title {
   border-radius: 4px 4px 0 0;

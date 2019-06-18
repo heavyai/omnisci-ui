@@ -1700,9 +1700,15 @@ svg.mdc-button__icon {
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea .mdc-text-field__input {
     min-height: 32px; }
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea {
-    display: inline-flex; }
-    .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea.mdc-text-field--fullwidth {
+    display: inline-flex;
+    border: none;
+    overflow: visible; }
+    .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea .mdc-text-field__input {
+      outline: none; }
+    .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea.mdc-text-field--fullwidth .mdc-text-field__input {
       resize: vertical; }
+    .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea .mdc-floating-label {
+      right: initial; }
   .mdc-text-field.mdc-text-field--upgraded .mdc-text-field__input {
     padding: 4px 8px; }
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--with-leading-icon .mdc-text-field__input {
@@ -1721,6 +1727,9 @@ svg.mdc-button__icon {
     left: 4px; }
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--with-trailing-icon .mdc-text-field__icon ~ .mdc-text-field__icon {
     right: 4px; }
+  .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea .mdc-floating-label--float-above {
+    -webkit-transform: translateY(-100%) translateX(4px) scale(0.75);
+            transform: translateY(-100%) translateX(4px) scale(0.75); }
 
 @-webkit-keyframes mdc-select-float-native-control {
   0% {

@@ -83,7 +83,6 @@ initialState = {
 <TextField
   outlined
   textarea
-  fullwidth
   label={state.label}
   value={state.value}
   onChange={(e) => setState({ value: e.target.value })}

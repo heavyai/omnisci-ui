@@ -14,9 +14,23 @@
 
   &.mdc-text-field--textarea {
     display: inline-flex;
+    border: none;
+    overflow: visible;
 
-    &.mdc-text-field--fullwidth {
+    .mdc-text-field__input {
+      outline: none;
+    }
+
+    &.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-text-field__input:focus,
+    &.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-text-field__input:active {
+    }
+
+    &.mdc-text-field--fullwidth .mdc-text-field__input {
       resize: vertical;
+    }
+
+    .mdc-floating-label {
+      right: initial;
     }
   }
 
@@ -53,4 +67,9 @@
   &.mdc-text-field--with-trailing-icon .mdc-text-field__icon ~ .mdc-text-field__icon {
     right: 4px;
   }
+
+  &.mdc-text-field--textarea .mdc-floating-label--float-above {
+    transform: translateY(-100%) translateX(4px) scale(0.75)
+  }
+
 }

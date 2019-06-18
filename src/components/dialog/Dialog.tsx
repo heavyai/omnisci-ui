@@ -29,7 +29,7 @@ export interface ISimpleDialogProps {
 
 export interface IDialogProps {
   /** Whether or not the Dialog is showing. */
-  open?: boolean
+  open: boolean
   /** Callback for when the Dialog opens. */
   onOpen?: any
   /** Callback for when the Dialog closes. */

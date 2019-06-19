@@ -10,7 +10,7 @@ const config = () => (
 
     mode: "development",
 
-    devtool: "eval",
+    devtool: "cheap-source-map",
 
     resolve: {
       extensions: [".ts", ".tsx", ".js", ".jsx"],

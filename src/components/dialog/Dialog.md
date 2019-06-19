@@ -151,7 +151,7 @@ initialState = {
         unelevated
         ripple={false}
         className="danger"
-        action="agree"
+        action="accept"
         isDefaultAction
       >
         Do it

@@ -13,3 +13,5 @@ npm run styleguide:build
 npm run dev
 npm run test
 ```
+
+For the curious, [here's an example](https://codepen.io/biovisualize/pen/XLNeoO?editors=1010) of using omnisci-ui in the browser (IE11 compatible).

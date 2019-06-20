@@ -76,13 +76,29 @@ initialState = {
 ```js
 import { TextField } from "@rmwc/textfield"
 initialState = {
-  label: "Textarea",
+  label: "Textarea full width",
   value: ""
 };
 <TextField
   outlined
   textarea
   fullwidth
+  label={state.label}
+  value={state.value}
+  onChange={(e) => setState({ value: e.target.value })}
+  rows={8}
+/>
+```
+
+```js
+import { TextField } from "@rmwc/textfield"
+initialState = {
+  label: "Textarea resizable",
+  value: ""
+};
+<TextField
+  outlined
+  textarea
   label={state.label}
   value={state.value}
   onChange={(e) => setState({ value: e.target.value })}

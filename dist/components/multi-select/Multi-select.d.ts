@@ -8,6 +8,8 @@ export interface IMultiSelectProps {
     value?: FormattedOption;
     /** When the input changes */
     onChange?: any;
+    hasError?: boolean;
+    isRequired?: boolean;
 }
 export declare class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
     private SelectContainer;

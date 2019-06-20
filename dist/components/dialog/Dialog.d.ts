@@ -30,10 +30,13 @@ export interface IDialogProps {
 export declare const SimpleDialog: FunctionComponent<ISimpleDialogProps>;
 export declare const SimpleDangerDialog: (props: IDialogProps) => JSX.Element;
 export declare const SimpleWarningDialog: (props: IDialogProps) => JSX.Element;
+export declare const SimpleSuccessDialog: (props: IDialogProps) => JSX.Element;
+export declare const SimpleInfoDialog: (props: IDialogProps) => JSX.Element;
 export declare const DangerDialog: (props: IDialogProps) => JSX.Element;
 declare const _default: {
     DangerDialog: (props: IDialogProps) => JSX.Element;
     SimpleDangerDialog: (props: IDialogProps) => JSX.Element;
     SimpleWarningDialog: (props: IDialogProps) => JSX.Element;
+    SimpleSuccessDialog: (props: IDialogProps) => JSX.Element;
 };
 export default _default;

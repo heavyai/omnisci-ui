@@ -1,8 +1,24 @@
 @import "@material/textfield/mdc-text-field";
 
-.mdc-text-field {
+.mdc-text-field.mdc-text-field--upgraded {
   font-family: "Roboto", sans-serif;
-  height: 32px;
+
+  &:not(.mdc-text-field--textarea) {
+    height: 32px;
+  }
+
+  &.mdc-text-field--textarea,
+  &.mdc-text-field--textarea .mdc-text-field__input {
+    min-height: 32px;
+  }
+
+  &.mdc-text-field--textarea {
+    display: inline-flex;
+
+    &.mdc-text-field--fullwidth {
+      resize: vertical;
+    }
+  }
 
   .mdc-text-field__input {
     padding: 4px 8px;
@@ -12,31 +28,26 @@
     padding: 4px 36px;
   }
 
-  .mdc-notched-outline .mdc-floating-label {
-    left: 0px;
+  .mdc-floating-label {
+    top: 8px;
+    bottom: initial;
   }
 
-  &.mdc-text-field--with-leading-icon .mdc-notched-outline .mdc-floating-label {
+  .mdc-floating-label.mdc-floating-label--float-above {
+    top: 16px;
+  }
+
+  &.mdc-text-field--with-leading-icon .mdc-floating-label {
     left: 24px;
   }
 
-  .mdc-notched-outline .mdc-floating-label {
-    top: 8px;
+  &.mdc-text-field--with-leading-icon .mdc-floating-label.mdc-floating-label--float-above {
+    left: 36px;
   }
 
   &.mdc-text-field--with-leading-icon .mdc-text-field__icon, 
   &.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
     bottom: 4px;
-  }
-
-  &.mdc-text-field--outlined.mdc-notched-outline--upgraded .mdc-floating-label--float-above,
-  &.mdc-text-field--outlined .mdc-notched-outline--upgraded .mdc-floating-label--float-above {
-    transform: translateY(-100%) translateX(4px) scale(0.75)
-  }
-
-  &.mdc-text-field--with-leading-icon.mdc-text-field--outlined.mdc-notched-outline--upgraded .mdc-floating-label--float-above,
-  &.mdc-text-field--with-leading-icon.mdc-text-field--outlined .mdc-notched-outline--upgraded .mdc-floating-label--float-above {
-    transform: translateY(-100%) translateX(-20px) scale(0.75)
   }
 
   &.mdc-text-field--with-leading-icon .mdc-text-field__icon:first-child {
@@ -45,9 +56,5 @@
 
   &.mdc-text-field--with-trailing-icon .mdc-text-field__icon ~ .mdc-text-field__icon {
     right: 4px;
-  }
-
-  &.mdc-text-field--textarea {
-    min-height: 100px;
   }
 }

@@ -142,5 +142,6 @@ export default {
   DangerDialog,
   SimpleDangerDialog,
   SimpleWarningDialog,
-  SimpleSuccessDialog
+  SimpleSuccessDialog,
+  SimpleInfoDialog
 }

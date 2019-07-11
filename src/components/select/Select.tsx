@@ -31,12 +31,10 @@ export interface ISelectProps {
 /**
  * Selector
  */
-export const Select = (props: ISelectProps) => {
-  return (
-    <RmwcSelect outlined enhanced {...props}>
-      {props.children}
-    </RmwcSelect>
-  )
-}
+export const Select = (props: ISelectProps) => (
+  <RmwcSelect outlined enhanced {...props}>
+    {props.children}
+  </RmwcSelect>
+)
 
 export default Select

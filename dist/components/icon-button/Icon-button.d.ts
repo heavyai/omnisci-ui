@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import * as React from "react";
 import * as RMWC from "@rmwc/types";
 /**
  * Icon button properties.
@@ -16,6 +16,8 @@ export interface IIconButtonProps {
     icon?: RMWC.IconPropT;
     /** If specified, renders a toggle with this icon as the on state. */
     onIcon?: RMWC.IconPropT;
+    /** Content specified as children. */
+    children?: React.ReactNode;
 }
 /**
  * Icon button

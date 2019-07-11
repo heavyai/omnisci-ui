@@ -1,5 +1,6 @@
 import * as React from "react"
 import * as RMWC from "@rmwc/types"
+import { IconButton as RMWCIconButton } from "@rmwc/icon-button"
 
 /**
  * Icon button properties.
@@ -19,11 +20,17 @@ export interface IIconButtonProps {
   icon?: RMWC.IconPropT
   /** If specified, renders a toggle with this icon as the on state. */
   onIcon?: RMWC.IconPropT
+  /** Content specified as children. */
+  children?: React.ReactNode
 }
 
 /**
  * Icon button
  */
-export const IconButton = (props: IIconButtonProps) => <div>{props}</div>
+export const IconButton = (props: IIconButtonProps) => (
+  <RMWCIconButton ripple={false} {...props}>
+    {props.children}
+  </RMWCIconButton>
+)
 
 export default IconButton

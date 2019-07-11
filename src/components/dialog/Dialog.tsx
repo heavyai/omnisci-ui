@@ -54,11 +54,7 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   const handleSecondary = () => onClose(secondaryLabel)
 
   return (
-    <Dialog
-      className={type}
-      open={open}
-      onOpen={onOpen}
-    >
+    <Dialog className={type} open={open} onOpen={onOpen}>
       <DialogTitle>
         {title}
         <IconButton icon="close" onClick={handleSecondary} ripple={false} />
@@ -67,12 +63,8 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
         {(type === "warning" || type === "danger") && (
           <Icon icon="warning_outline" />
         )}
-        {(type === "success") && (
-          <Icon icon="check_circle_outline" />
-        )}
-        {(type === "info") && (
-          <Icon icon="info_outline" />
-        )}
+        {type === "success" && <Icon icon="check_circle_outline" />}
+        {type === "info" && <Icon icon="info_outline" />}
         <div className="dialog-message">{message}</div>
       </DialogContent>
       <DialogActions>
@@ -84,7 +76,9 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
         {
           {
             danger: (
-              <DangerButton onClick={handlePrimary}>{primaryLabel}</DangerButton>
+              <DangerButton onClick={handlePrimary}>
+                {primaryLabel}
+              </DangerButton>
             ),
             warning: (
               <WarningButton onClick={handlePrimary}>
@@ -156,7 +150,7 @@ export const InfoDialog = (props: IDialogProps) => (
   </Dialog>
 )
 
- export default {
+export default {
   DangerDialog,
   WarningDialog,
   SuccessDialog,
@@ -165,5 +159,4 @@ export const InfoDialog = (props: IDialogProps) => (
   SimpleWarningDialog,
   SimpleSuccessDialog,
   SimpleInfoDialog
- }
-
+}

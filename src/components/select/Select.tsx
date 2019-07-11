@@ -26,27 +26,16 @@ export interface ISelectProps {
   icon?: RMWC.IconPropT
   /** When the input changes */
   onChange?: any
+  children?: any
 }
 
 /**
  * Selector
  */
-export const Select = (props: ISelectProps) => {
-  const { options, ...topLevelProps } = props
-  return (
-    <RmwcSelect outlined={true} enhanced={true} {...topLevelProps}>
-      {props.options.map((option, idx) => (
-        <ListItem
-          key={idx}
-          value={option.value}
-          activated={option.value === props.value}
-          data-value={option.value}
-        >
-          {option.label}
-        </ListItem>
-      ))}
-    </RmwcSelect>
-  )
-}
+export const Select = (props: ISelectProps) => (
+  <RmwcSelect outlined enhanced {...props}>
+    {props.children}
+  </RmwcSelect>
+)
 
 export default Select

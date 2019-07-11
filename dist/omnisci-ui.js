@@ -1943,6 +1943,18 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 
 /***/ }),
 
+/***/ "./src/components/icon-button/Icon-button.tsx":
+/*!****************************************************!*\
+  !*** ./src/components/icon-button/Icon-button.tsx ***!
+  \****************************************************/
+/*! exports provided: IconButton, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"IconButton\", function() { return IconButton; });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _rmwc_icon_button__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @rmwc/icon-button */ \"./node_modules/@rmwc/icon-button/next/index.js\");\nfunction _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }\n\n\n\n/**\n * Icon button properties.\n */\n\n/**\n * Icon button\n */\nvar IconButton = function IconButton(props) {\n  return react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](_rmwc_icon_button__WEBPACK_IMPORTED_MODULE_1__[\"IconButton\"], _extends({\n    ripple: false\n  }, props), props.children);\n};\n/* harmony default export */ __webpack_exports__[\"default\"] = (IconButton);\n\n//# sourceURL=webpack://%5Bname%5D/./src/components/icon-button/Icon-button.tsx?");
+
+/***/ }),
+
 /***/ "./src/components/multi-select/Multi-select.tsx":
 /*!******************************************************!*\
   !*** ./src/components/multi-select/Multi-select.tsx ***!
@@ -1955,29 +1967,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 
 /***/ }),
 
-/***/ "./src/components/operator-selector/Operator-selector.tsx":
-/*!****************************************************************!*\
-  !*** ./src/components/operator-selector/Operator-selector.tsx ***!
-  \****************************************************************/
-/*! exports provided: operatorArgs, OperatorSelector, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"operatorArgs\", function() { return operatorArgs; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"OperatorSelector\", function() { return OperatorSelector; });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _operator_selector_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./operator-selector.scss */ \"./src/components/operator-selector/operator-selector.scss\");\n/* harmony import */ var _operator_selector_scss__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_operator_selector_scss__WEBPACK_IMPORTED_MODULE_1__);\n\n\nvar operatorArgs = {\n  between: [\"min\", \"max\"],\n  \"less than\": [\"max\"],\n  \"greater than\": [\"min\"],\n  equals: [\"min\"],\n  \"not between\": [\"min\", \"max\"]\n};\nvar operatorLabels = Object.keys(operatorArgs);\n/**\n * Operator Selector properties.\n */\n\n/**\n * Operator Selector\n */\nvar OperatorSelector = function OperatorSelector(props) {\n  var onInputChange = function onInputChange(minOrMax) {\n    return function (e) {\n      props.onInputChange(minOrMax, e.target.value);\n    };\n  };\n\n  var onMenuSelect = function onMenuSelect(operatorLabel) {\n    return function () {\n      props.onMenuSelect(operatorLabel);\n    };\n  };\n\n  var operator = props.operator || operatorLabels[0];\n  return react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](\"div\", {\n    className: \"operator-selector\"\n  }, props.menuIsOpen ? react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](\"div\", {\n    className: \"operator-menu\"\n  }, operatorLabels.map(function (operatorLabel, i) {\n    return react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](\"div\", {\n      key: i,\n      className: \"operator-item\",\n      onClick: onMenuSelect(operatorLabel)\n    }, operatorLabel);\n  })) : react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](\"div\", {\n    className: \"operator\",\n    onClick: props.onMenuClick\n  }, react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](\"div\", {\n    className: \"label\"\n  }, operator), react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](\"div\", {\n    className: \"arrow\"\n  }, \"\\u25BE\")), operatorArgs[operator].includes(\"min\") && react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](\"div\", {\n    className: \"min-input\"\n  }, react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](\"input\", {\n    type: \"text\",\n    value: props.min || 0,\n    onChange: onInputChange(\"min\")\n  })), operatorArgs[operator].includes(\"min\") && operatorArgs[operator].includes(\"max\") && react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](\"div\", {\n    className: \"between-label\"\n  }, \"and\"), operatorArgs[operator].includes(\"max\") && react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](\"div\", {\n    className: \"max-input\"\n  }, react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](\"input\", {\n    type: \"text\",\n    value: props.max || 1,\n    onChange: onInputChange(\"max\")\n  })));\n};\n/* harmony default export */ __webpack_exports__[\"default\"] = (OperatorSelector);\n\n//# sourceURL=webpack://%5Bname%5D/./src/components/operator-selector/Operator-selector.tsx?");
-
-/***/ }),
-
-/***/ "./src/components/operator-selector/operator-selector.scss":
-/*!*****************************************************************!*\
-  !*** ./src/components/operator-selector/operator-selector.scss ***!
-  \*****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack://%5Bname%5D/./src/components/operator-selector/operator-selector.scss?");
-
-/***/ }),
-
 /***/ "./src/components/select/Select.tsx":
 /*!******************************************!*\
   !*** ./src/components/select/Select.tsx ***!
@@ -1986,7 +1975,7 @@ eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack://%5Bna
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"Select\", function() { return Select; });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _rmwc_select__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @rmwc/select */ \"./node_modules/@rmwc/select/next/index.js\");\n/* harmony import */ var _rmwc_list__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @rmwc/list */ \"./node_modules/@rmwc/list/next/index.js\");\nfunction _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }\n\nfunction _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }\n\nfunction _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }\n\n\n\n\n/**\n * Selector properties.\n */\n\n/**\n * Selector\n */\nvar Select = function Select(props) {\n  var options = props.options,\n      topLevelProps = _objectWithoutProperties(props, [\"options\"]);\n\n  return react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](_rmwc_select__WEBPACK_IMPORTED_MODULE_1__[\"Select\"], _extends({\n    outlined: true,\n    enhanced: true\n  }, topLevelProps), props.options.map(function (option, idx) {\n    return react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](_rmwc_list__WEBPACK_IMPORTED_MODULE_2__[\"ListItem\"], {\n      key: idx,\n      value: option.value,\n      activated: option.value === props.value,\n      \"data-value\": option.value\n    }, option.label);\n  }));\n};\n/* harmony default export */ __webpack_exports__[\"default\"] = (Select);\n\n//# sourceURL=webpack://%5Bname%5D/./src/components/select/Select.tsx?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"Select\", function() { return Select; });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _rmwc_select__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @rmwc/select */ \"./node_modules/@rmwc/select/next/index.js\");\nfunction _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }\n\n\n\n\n/**\n * Selector\n */\nvar Select = function Select(props) {\n  return react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](_rmwc_select__WEBPACK_IMPORTED_MODULE_1__[\"Select\"], _extends({\n    outlined: true,\n    enhanced: true\n  }, props), props.children);\n};\n/* harmony default export */ __webpack_exports__[\"default\"] = (Select);\n\n//# sourceURL=webpack://%5Bname%5D/./src/components/select/Select.tsx?");
 
 /***/ }),
 
@@ -2002,15 +1991,26 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 
 /***/ }),
 
+/***/ "./src/index.scss":
+/*!************************!*\
+  !*** ./src/index.scss ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack://%5Bname%5D/./src/index.scss?");
+
+/***/ }),
+
 /***/ "./src/index.ts":
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/*! exports provided: Select, OperatorSelector, Toggler, MultiSelect, Dialog, Button */
+/*! exports provided: Button, Dialog, IconButton, MultiSelect, Select, Toggler */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _components_operator_selector_Operator_selector__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/operator-selector/Operator-selector */ \"./src/components/operator-selector/Operator-selector.tsx\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"OperatorSelector\", function() { return _components_operator_selector_Operator_selector__WEBPACK_IMPORTED_MODULE_0__[\"default\"]; });\n\n/* harmony import */ var _components_select_Select__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/select/Select */ \"./src/components/select/Select.tsx\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Select\", function() { return _components_select_Select__WEBPACK_IMPORTED_MODULE_1__[\"default\"]; });\n\n/* harmony import */ var _components_toggler_Toggler__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/toggler/Toggler */ \"./src/components/toggler/Toggler.tsx\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Toggler\", function() { return _components_toggler_Toggler__WEBPACK_IMPORTED_MODULE_2__[\"default\"]; });\n\n/* harmony import */ var _components_multi_select_Multi_select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/multi-select/Multi-select */ \"./src/components/multi-select/Multi-select.tsx\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"MultiSelect\", function() { return _components_multi_select_Multi_select__WEBPACK_IMPORTED_MODULE_3__[\"default\"]; });\n\n/* harmony import */ var _components_dialog_Dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/dialog/Dialog */ \"./src/components/dialog/Dialog.tsx\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Dialog\", function() { return _components_dialog_Dialog__WEBPACK_IMPORTED_MODULE_4__[\"default\"]; });\n\n/* harmony import */ var _components_button_Button__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/button/Button */ \"./src/components/button/Button.tsx\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Button\", function() { return _components_button_Button__WEBPACK_IMPORTED_MODULE_5__[\"default\"]; });\n\n\n\n\n\n\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/index.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _components_button_Button__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/button/Button */ \"./src/components/button/Button.tsx\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Button\", function() { return _components_button_Button__WEBPACK_IMPORTED_MODULE_0__[\"default\"]; });\n\n/* harmony import */ var _components_dialog_Dialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/dialog/Dialog */ \"./src/components/dialog/Dialog.tsx\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Dialog\", function() { return _components_dialog_Dialog__WEBPACK_IMPORTED_MODULE_1__[\"default\"]; });\n\n/* harmony import */ var _components_icon_button_Icon_button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/icon-button/Icon-button */ \"./src/components/icon-button/Icon-button.tsx\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"IconButton\", function() { return _components_icon_button_Icon_button__WEBPACK_IMPORTED_MODULE_2__[\"default\"]; });\n\n/* harmony import */ var _components_multi_select_Multi_select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/multi-select/Multi-select */ \"./src/components/multi-select/Multi-select.tsx\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"MultiSelect\", function() { return _components_multi_select_Multi_select__WEBPACK_IMPORTED_MODULE_3__[\"default\"]; });\n\n/* harmony import */ var _components_select_Select__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/select/Select */ \"./src/components/select/Select.tsx\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Select\", function() { return _components_select_Select__WEBPACK_IMPORTED_MODULE_4__[\"default\"]; });\n\n/* harmony import */ var _components_toggler_Toggler__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/toggler/Toggler */ \"./src/components/toggler/Toggler.tsx\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Toggler\", function() { return _components_toggler_Toggler__WEBPACK_IMPORTED_MODULE_5__[\"default\"]; });\n\n/* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./index.scss */ \"./src/index.scss\");\n/* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_index_scss__WEBPACK_IMPORTED_MODULE_6__);\n\n\n\n\n\n\n\n\n\n//# sourceURL=webpack://%5Bname%5D/./src/index.ts?");
 
 /***/ }),
 

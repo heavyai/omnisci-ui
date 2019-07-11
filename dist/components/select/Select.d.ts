@@ -23,6 +23,7 @@ export interface ISelectProps {
     icon?: RMWC.IconPropT;
     /** When the input changes */
     onChange?: any;
+    children?: any;
 }
 /**
  * Selector

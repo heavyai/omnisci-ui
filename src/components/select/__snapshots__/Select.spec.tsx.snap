@@ -27,8 +27,9 @@ exports[`Should render a selector 1`] = `
       role="menu"
     >
       <div
-        class="mdc-list-item mdc-list-item--activated"
+        class="mdc-list-item"
         data-value="1"
+        role="menuitem"
         tabindex="0"
         value="1"
       >
@@ -37,6 +38,7 @@ exports[`Should render a selector 1`] = `
       <div
         class="mdc-list-item"
         data-value="2"
+        role="menuitem"
         tabindex="0"
         value="2"
       >
@@ -45,6 +47,7 @@ exports[`Should render a selector 1`] = `
       <div
         class="mdc-list-item"
         data-value="3"
+        role="menuitem"
         tabindex="0"
         value="3"
       >

@@ -119,6 +119,37 @@ Open Success Dialog
 ```
 
 ```js
+import { SimpleInfoDialog } from "./Dialog"
+import { PrimaryButton } from "../button/Button"
+
+initialState = {
+  isOpen: false,
+  lastAction: null
+};
+
+<>
+<SimpleInfoDialog
+  hideCloseIcon
+  title={"Title"}
+  primaryLabel={"Do it"}
+  secondaryLabel={"Cancel"}
+  message={"This is an info dialog without a close X icon"}
+  open={state.isOpen}
+  onClose={buttonLabel => {
+    setState({isOpen: false, lastAction: buttonLabel})
+  }}
+/>
+
+<PrimaryButton
+  unelevated
+  onClick={() => setState({isOpen: true})}
+>
+Open Success Dialog
+</PrimaryButton>
+</>
+```
+
+```js
 import { DangerDialog } from "./Dialog"
 import {
   DialogTitle,

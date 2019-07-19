@@ -65566,7 +65566,8 @@ var SimpleDialog = function SimpleDialog(_ref) {
       onOpen = _ref.onOpen,
       title = _ref.title,
       open = _ref.open,
-      type = _ref.type;
+      type = _ref.type,
+      hideCloseIcon = _ref.hideCloseIcon;
 
   var handlePrimary = function handlePrimary() {
     return onClose(primaryLabel);
@@ -65580,7 +65581,7 @@ var SimpleDialog = function SimpleDialog(_ref) {
     className: type,
     open: open,
     onOpen: onOpen
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_dialog__WEBPACK_IMPORTED_MODULE_1__["DialogTitle"], null, title, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_icon_button__WEBPACK_IMPORTED_MODULE_2__["IconButton"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_dialog__WEBPACK_IMPORTED_MODULE_1__["DialogTitle"], null, title, !hideCloseIcon && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_icon_button__WEBPACK_IMPORTED_MODULE_2__["IconButton"], {
     icon: "close",
     onClick: handleSecondary,
     ripple: false

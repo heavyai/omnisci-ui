@@ -373,7 +373,8 @@ svg.mdc-button__icon {
   --mdc-ripple-fg-opacity: 0.24; }
 
 .mdc-button:not(.mdc-ripple-upgraded) {
-  text-transform: initial; }
+  text-transform: initial;
+  letter-spacing: normal; }
   .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:focus::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:focus::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:focus::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:focus::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active::after {
     opacity: 0 !important; }
   .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover {
@@ -4271,7 +4272,8 @@ svg.mdc-button__icon {
   --mdc-ripple-fg-opacity: 0.24; }
 
 .mdc-button:not(.mdc-ripple-upgraded) {
-  text-transform: initial; }
+  text-transform: initial;
+  letter-spacing: normal; }
   .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:focus::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:focus::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:focus::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:focus::after, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active::before, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active::after {
     opacity: 0 !important; }
   .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:active, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--unelevated:hover {
@@ -5532,3 +5534,5 @@ svg.mdc-button__icon {
     margin: 0 4px 8px 14px; }
     .DayPicker input.invalid {
       outline-color: #D83C3C; }
+
+/*# sourceMappingURL=omnisci-ui.css.map*/

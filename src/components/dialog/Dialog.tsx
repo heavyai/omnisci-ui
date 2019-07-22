@@ -25,6 +25,8 @@ export interface ISimpleDialogProps {
   primaryLabel?: React.ReactNode | string
   secondaryLabel?: React.ReactNode | string
   type?: string
+  hideCloseIcon?: boolean
+  onCloseFromHeader?: any
 }
 
 export interface IDialogProps {
@@ -48,16 +50,21 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   onOpen,
   title,
   open,
-  type
+  type,
+  hideCloseIcon,
+  onCloseFromHeader
 }) => {
   const handlePrimary = () => onClose(primaryLabel)
   const handleSecondary = () => onClose(secondaryLabel)
+  const handleCloseFromHeader = () => onCloseFromHeader ? onCloseFromHeader() : onClose()
 
   return (
     <Dialog className={type} open={open} onOpen={onOpen}>
       <DialogTitle>
         {title}
-        <IconButton icon="close" onClick={handleSecondary} ripple={false} />
+        {!hideCloseIcon && (
+          <IconButton icon="close" onClick={handleCloseFromHeader} ripple={false} />
+        )}
       </DialogTitle>
       <DialogContent>
         {(type === "warning" || type === "danger") && (

@@ -3,6 +3,7 @@
 
 .mdc-button:not(.mdc-ripple-upgraded) {
   text-transform: initial;
+  letter-spacing: normal;
 
   &.mdc-button--unelevated,
   &.mdc-button--outlined {

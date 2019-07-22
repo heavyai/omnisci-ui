@@ -59,6 +59,41 @@ Open Warning Dialog
 ```
 
 ```js
+import { SimpleWarningDialog } from "./Dialog"
+import { WarningButton } from "../button/Button"
+
+initialState = {
+  isOpen: false,
+  lastAction: null
+};
+
+<>
+<SimpleWarningDialog
+  title={"Important title"}
+  primaryLabel={"Do it"}
+  secondaryLabel={"Cancel"}
+  message={"This is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warning"}
+  open={state.isOpen}
+  onClose={buttonLabel => {
+    console.log(buttonLabel)
+    setState({isOpen: false, lastAction: buttonLabel})
+  }}
+  onCloseFromHeader={buttonLabel => {
+    console.log("closed from header")
+    setState({isOpen: false, lastAction: buttonLabel})
+  }}
+/>
+
+<WarningButton
+  unelevated
+  onClick={() => setState({isOpen: true})}
+>
+  onCloseFromHeader
+</WarningButton>
+</>
+```
+
+```js
 import { SimpleSuccessDialog } from "./Dialog"
 import { SuccessButton } from "../button/Button"
 

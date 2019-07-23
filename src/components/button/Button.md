@@ -11,8 +11,8 @@ import {
 <PrimaryButton>Primary</PrimaryButton>
 <PrimaryButton disabled>Disabled</PrimaryButton>
 <hr />
-<SecondaryButton>Secondary</SecondaryButton>
-<SecondaryButton disabled>Disabled</SecondaryButton>
+<SecondaryButton><ButtonIcon icon={"favorite"} />Secondary</SecondaryButton>
+<SecondaryButton disabled><ButtonIcon icon={"favorite"} />Disabled</SecondaryButton>
 <hr />
 <DangerButton>Danger</DangerButton>
 <DangerButton disabled>Disabled</DangerButton>

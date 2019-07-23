@@ -398,11 +398,21 @@ svg.mdc-button__icon {
   .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined {
     border-color: #ddd;
     border-width: 1px;
-    color: #666; }
+    color: #666;
+    background: white; }
     .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover {
       background-color: whitesmoke; }
+    .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined svg,
+    .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined svg use {
+      fill: #666; }
     .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:disabled {
-      opacity: 0.24; }
+      opacity: 1 !important;
+      border-color: #ccc;
+      color: #ddd;
+      cursor: not-allowed; }
+      .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:disabled svg,
+      .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:disabled svg use {
+        fill: #ccc; }
 
 .mdc-floating-label {
   font-family: Roboto, sans-serif;
@@ -4307,11 +4317,21 @@ svg.mdc-button__icon {
   .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined {
     border-color: #ddd;
     border-width: 1px;
-    color: #666; }
+    color: #666;
+    background: white; }
     .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active, .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover {
       background-color: whitesmoke; }
+    .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined svg,
+    .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined svg use {
+      fill: #666; }
     .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:disabled {
-      opacity: 0.24; }
+      opacity: 1 !important;
+      border-color: #ccc;
+      color: #ddd;
+      cursor: not-allowed; }
+      .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:disabled svg,
+      .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:disabled svg use {
+        fill: #ccc; }
 
 .mdc-dialog .mdc-dialog__container .mdc-dialog__title {
   border-radius: 4px 4px 0 0;

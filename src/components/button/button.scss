@@ -54,13 +54,27 @@
     border-color: $light-gray;
     border-width: 1px;
     color: $gray;
+    background: white;
 
     &:active, &:hover {
       background-color: $very-light-gray;
     }
 
+    svg,
+    svg use {
+      fill: $gray;
+    }
+
     &:disabled {
-      opacity: 0.24;
+      opacity: 1!important;
+      border-color: #ccc;
+      color: $light-gray;
+      cursor: not-allowed;
+
+      svg,
+      svg use {
+        fill: #ccc;
+      }
     }
   }
 

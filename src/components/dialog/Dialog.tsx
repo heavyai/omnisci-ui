@@ -138,9 +138,32 @@ export const DangerDialog = (props: IDialogProps) => (
   </Dialog>
 )
 
-export default {
+export const WarningDialog = (props: IDialogProps) => (
+  <Dialog className={"warning"} {...props}>
+    {props.children}
+  </Dialog>
+)
+
+export const SuccessDialog = (props: IDialogProps) => (
+  <Dialog className={"success"} {...props}>
+    {props.children}
+  </Dialog>
+)
+
+export const InfoDialog = (props: IDialogProps) => (
+  <Dialog className={"info"} {...props}>
+    {props.children}
+  </Dialog>
+)
+
+ export default {
   DangerDialog,
+  WarningDialog,
+  SuccessDialog,
+  InfoDialog,
   SimpleDangerDialog,
   SimpleWarningDialog,
-  SimpleSuccessDialog
-}
+  SimpleSuccessDialog,
+  SimpleInfoDialog
+ }
+

@@ -2,6 +2,7 @@
 @import "../../vars";
 
 .mdc-button:not(.mdc-ripple-upgraded) {
+  text-transform: initial;
 
   &.mdc-button--unelevated,
   &.mdc-button--outlined {

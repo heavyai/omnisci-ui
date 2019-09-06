@@ -14,6 +14,8 @@ export interface ISimpleDialogProps {
     primaryLabel?: React.ReactNode | string;
     secondaryLabel?: React.ReactNode | string;
     type?: string;
+    hideCloseIcon?: boolean;
+    onCloseFromHeader?: any;
 }
 export interface IDialogProps {
     /** Whether or not the Dialog is showing. */

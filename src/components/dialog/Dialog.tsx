@@ -56,14 +56,20 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
 }) => {
   const handlePrimary = () => onClose(primaryLabel)
   const handleSecondary = () => onClose(secondaryLabel)
-  const handleCloseFromHeader = () => onCloseFromHeader ? onCloseFromHeader() : onClose()
+  /* eslint-disable no-confusing-arrow */
+  const handleCloseFromHeader = () =>
+    onCloseFromHeader ? onCloseFromHeader() : onClose()
 
   return (
     <Dialog className={type} open={open} onOpen={onOpen}>
       <DialogTitle>
         {title}
         {!hideCloseIcon && (
-          <IconButton icon="close" onClick={handleCloseFromHeader} ripple={false} />
+          <IconButton
+            icon="close"
+            onClick={handleCloseFromHeader}
+            ripple={false}
+          />
         )}
       </DialogTitle>
       <DialogContent>

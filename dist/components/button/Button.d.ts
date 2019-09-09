@@ -12,8 +12,6 @@ export interface IButtonProps {
     children?: React.ReactNode;
     /** An Icon for the Button */
     icon?: RMWC.IconPropT;
-    /** A trailing icon for the Button */
-    trailingIcon?: RMWC.IconPropT;
     className?: string;
     onClick: any;
 }

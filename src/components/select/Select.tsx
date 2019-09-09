@@ -1,6 +1,5 @@
 import * as React from "react"
 import * as RMWC from "@rmwc/types"
-import { FormattedOption } from "@rmwc/select/dist/index.d"
 import { Select as RmwcSelect } from "@rmwc/select"
 import { ListItem } from "@rmwc/list"
 
@@ -11,7 +10,7 @@ export interface ISelectProps {
   /** The value for a controlled select. */
   value?: string
   /** Options accepts value => label maps */
-  options?: FormattedOption[]
+  options?: any
   /** A label for the form control. */
   label?: string
   /** Makes the select outlined. */

@@ -13,7 +13,7 @@ initialState = {
 ```
 
 ```js
-import { TextField } from "@rmwc/textfield"
+import { TextField, TextFieldIcon } from "@rmwc/textfield"
 initialState = {
   label: "Icons",
   value: ""
@@ -24,10 +24,11 @@ initialState = {
   value={state.value}
   onChange={(e) => setState({ value: e.target.value })}
   icon={"search"}
-  trailingIcon={{
-    icon: "close",
-    onClick: (e) => console.log("click trailing icon")
-  }}
+  trailingIcon={
+    <TextFieldIcon
+      icon="close"
+      onClick={() => console.log("click trailing icon")}/>
+  }
 />
 ```
 
@@ -82,11 +83,10 @@ initialState = {
 <TextField
   outlined
   textarea
-  fullwidth
   label={state.label}
   value={state.value}
   onChange={(e) => setState({ value: e.target.value })}
-  rows={8}
+  fullwidth
 />
 ```
 

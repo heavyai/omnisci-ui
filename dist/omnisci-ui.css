@@ -1898,14 +1898,16 @@ svg.mdc-button__icon {
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--with-leading-icon .mdc-text-field__input {
     padding: 4px 36px; }
   .mdc-text-field.mdc-text-field--upgraded .mdc-floating-label {
-    top: 8px;
+    top: 6px;
     bottom: initial; }
   .mdc-text-field.mdc-text-field--upgraded .mdc-floating-label.mdc-floating-label--float-above {
-    top: 16px; }
+    -webkit-transform: translateY(-70%) translateX(0) scale(0.75);
+            transform: translateY(-70%) translateX(0) scale(0.75); }
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--with-leading-icon .mdc-floating-label {
     left: 24px; }
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--with-leading-icon .mdc-floating-label.mdc-floating-label--float-above {
-    left: 36px; }
+    -webkit-transform: translateY(-70%) translateX(-20px) scale(0.75);
+            transform: translateY(-70%) translateX(-20px) scale(0.75); }
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--with-leading-icon .mdc-text-field__icon,
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
     bottom: 4px; }
@@ -3768,13 +3770,13 @@ a.mdc-list-item {
     display: inline-block;
     width: 100%; }
   .multi-select .mdc-floating-label {
-    margin: 10px;
+    margin: 10px 14px;
     color: #ddd;
     pointer-events: none; }
     .multi-select .mdc-floating-label.mdc-floating-label--float-above {
-      margin: 4px;
       background: white;
       padding: 0 4px;
+      margin: 2px 14px;
       color: initial; }
   .multi-select .select__control--is-focused {
     border-color: #0089D1;

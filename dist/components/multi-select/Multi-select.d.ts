@@ -1,11 +1,10 @@
 import * as React from "react";
-import { FormattedOption } from "@rmwc/select/dist/index.d";
 import "@material/react-floating-label/index.scss";
 import "../../vars.scss";
 export interface IMultiSelectProps {
     label?: string;
-    options?: FormattedOption[];
-    value?: FormattedOption;
+    options?: any;
+    value?: any;
     /** When the input changes */
     onChange?: any;
     hasError?: boolean;

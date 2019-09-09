@@ -22,8 +22,9 @@ initialState = {
 <DangerButton
   unelevated
   onClick={() => setState({isOpen: true})}
-  label={"Open Danger Dialog"}
-/>
+>
+Open Danger Dialog
+</DangerButton>
 </>
 ```
 
@@ -51,8 +52,44 @@ initialState = {
 <WarningButton
   unelevated
   onClick={() => setState({isOpen: true})}
-  label={"Open Warning Dialog"}
+>
+Open Warning Dialog
+</WarningButton>
+</>
+```
+
+```js
+import { SimpleWarningDialog } from "./Dialog"
+import { WarningButton } from "../button/Button"
+
+initialState = {
+  isOpen: false,
+  lastAction: null
+};
+
+<>
+<SimpleWarningDialog
+  title={"Important title"}
+  primaryLabel={"Do it"}
+  secondaryLabel={"Cancel"}
+  message={"This is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warning"}
+  open={state.isOpen}
+  onClose={buttonLabel => {
+    console.log(buttonLabel)
+    setState({isOpen: false, lastAction: buttonLabel})
+  }}
+  onCloseFromHeader={buttonLabel => {
+    console.log("closed from header")
+    setState({isOpen: false, lastAction: buttonLabel})
+  }}
 />
+
+<WarningButton
+  unelevated
+  onClick={() => setState({isOpen: true})}
+>
+  onCloseFromHeader
+</WarningButton>
 </>
 ```
 
@@ -115,8 +152,9 @@ initialState = {
 <SuccessButton
   unelevated
   onClick={() => setState({isOpen: true})}
-  label={"Open Success Dialog"}
-/>
+>
+Open Success Dialog
+</SuccessButton>
 </>
 ```
 
@@ -144,8 +182,40 @@ initialState = {
 <PrimaryButton
   unelevated
   onClick={() => setState({isOpen: true})}
-  label={"Open Success Dialog"}
+>
+Open Success Dialog
+</PrimaryButton>
+</>
+```
+
+```js
+import { SimpleInfoDialog } from "./Dialog"
+import { PrimaryButton } from "../button/Button"
+
+initialState = {
+  isOpen: false,
+  lastAction: null
+};
+
+<>
+<SimpleInfoDialog
+  hideCloseIcon
+  title={"Title"}
+  primaryLabel={"Do it"}
+  secondaryLabel={"Cancel"}
+  message={"This is an info dialog without a close X icon"}
+  open={state.isOpen}
+  onClose={buttonLabel => {
+    setState({isOpen: false, lastAction: buttonLabel})
+  }}
 />
+
+<PrimaryButton
+  unelevated
+  onClick={() => setState({isOpen: true})}
+>
+Open Success Dialog
+</PrimaryButton>
 </>
 ```
 

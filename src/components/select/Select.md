@@ -1,4 +1,12 @@
 
+```
+<Select
+  label="Outlined"
+  outlined
+  options={['Cookies', 'Pizza', 'Icecream']}
+/>
+```
+
 Standard selector
 ```js
 initialState = {
@@ -52,7 +60,7 @@ initialState = {
 />
 ```
 
-Required state
+Icon
 ```js
 initialState = {
   label: "Icon",
@@ -67,7 +75,7 @@ initialState = {
   label={state.label}
   value={state.value}
   options={state.options}
-  icon={"favorite"}
+  withLeadingIcon={"favorite"}
   onChange={(e) => setState({ value: e.detail.value })}
 />
 ```

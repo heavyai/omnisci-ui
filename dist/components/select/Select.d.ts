@@ -1,6 +1,5 @@
 /// <reference types="react" />
 import * as RMWC from "@rmwc/types";
-import { FormattedOption } from "@rmwc/select/dist/index.d";
 /**
  * Selector properties.
  */
@@ -8,7 +7,7 @@ export interface ISelectProps {
     /** The value for a controlled select. */
     value?: string;
     /** Options accepts value => label maps */
-    options?: FormattedOption[];
+    options?: any;
     /** A label for the form control. */
     label?: string;
     /** Makes the select outlined. */

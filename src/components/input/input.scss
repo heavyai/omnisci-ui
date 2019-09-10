@@ -4,12 +4,12 @@
   font-family: "Roboto", sans-serif;
 
   &:not(.mdc-text-field--textarea) {
-    height: 32px;
+    height: 36px;
   }
 
   &.mdc-text-field--textarea,
   &.mdc-text-field--textarea .mdc-text-field__input {
-    min-height: 32px;
+    min-height: 36px;
   }
 
   &.mdc-text-field--textarea {
@@ -29,13 +29,12 @@
   }
 
   .mdc-floating-label {
-    top: 6px;
+    top: 8px;
     bottom: initial;
   }
 
   .mdc-floating-label.mdc-floating-label--float-above {
-    // top: 16px;
-    transform: translateY(-70%) translateX(0) scale(0.75)
+    transform: translateY(-75%) translateX(0) scale(0.75)
   }
 
   &.mdc-text-field--with-leading-icon .mdc-floating-label {
@@ -43,12 +42,12 @@
   }
 
   &.mdc-text-field--with-leading-icon .mdc-floating-label.mdc-floating-label--float-above {
-    transform: translateY(-70%) translateX(-20px) scale(0.75)
+    transform: translateY(-75%) translateX(-20px) scale(0.75)
   }
 
   &.mdc-text-field--with-leading-icon .mdc-text-field__icon, 
   &.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
-    bottom: 4px;
+    bottom: 6px;
   }
 
   &.mdc-text-field--with-leading-icon .mdc-text-field__icon:first-child {
@@ -56,10 +55,43 @@
   }
 
   &.mdc-text-field--with-trailing-icon .mdc-text-field__icon ~ .mdc-text-field__icon {
-    right: 4px;
+    right: 0;
+  }
+}
+
+.dark .mdc-text-field.mdc-text-field--upgraded {
+  &.mdc-text-field--outlined:not(.mdc-text-field--disabled) {
+    background-color: $grayDp24;
+
+    .mdc-text-field__input {
+      color: $textOnDark;
+    }
+
+    .mdc-floating-label {
+      color: $dimTextOnDark;
+    }
+
+    &.mdc-text-field--with-leading-icon .mdc-text-field__icon, 
+    &.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
+      color: $dimTextOnDark;
+    }
   }
 
-  &.mdc-text-field--textarea .mdc-floating-label--float-above {
-    // transform: translateY(-100%) translateX(4px) scale(0.75)
+  &.mdc-text-field--outlined.mdc-text-field--disabled {
+    background-color: $disabledButtonBackgroundColor;
+    border: 1px solid $disabledButtonBorderColor !important;
+
+    .mdc-text-field__input {
+      color: $disabledButtonFontColor;
+    }
+
+    .mdc-floating-label {
+      color: $disabledButtonFontColor;
+    }
+
+    &.mdc-text-field--with-leading-icon .mdc-text-field__icon, 
+    &.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
+      color: $disabledButtonFontColor;
+    }
   }
 }

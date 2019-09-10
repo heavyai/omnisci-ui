@@ -67,3 +67,67 @@
     }
   }
 }
+
+.dark .multi-select {
+  .select-container-wrapper {
+    .select__control {
+      background-color: $grayDp24;
+      border: none;
+
+      .select__single-value {
+        color: $textOnDark !important;
+      }
+
+      .select__input input{
+        color: $textOnDark !important;
+      }
+      
+      .select__indicator-separator {
+        background-color: $dimTextOnDark !important;
+      }
+
+      .select__dropdown-indicator,
+      .select__clear-indicator {
+        svg {
+          fill: $dimTextOnDark !important;
+        }
+      }
+    }
+  }
+
+  .mdc-floating-label {
+    color: $dimTextOnDark;
+
+    &.mdc-floating-label--float-above {
+      background: none;
+    }
+  }
+
+  &.select--is-disabled {
+    .select-container-wrapper {
+      .select__control {
+        background-color: $disabledButtonBackgroundColor;
+        border: none;
+
+        .select__single-value {
+          color: $disabledButtonFontColor !important;
+        }
+
+        .select__input input{
+          color: $disabledButtonFontColor !important;
+        }
+        
+        .select__indicator-separator {
+          background-color: $disabledButtonFontColor !important;
+        }
+
+        .select__dropdown-indicator,
+        .select__clear-indicator {
+          svg {
+            fill: $disabledButtonFontColor !important;
+          }
+        }
+      }
+    }
+  }
+}

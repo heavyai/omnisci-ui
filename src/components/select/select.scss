@@ -4,10 +4,69 @@
 @import "@material/menu-surface/mdc-menu-surface";
 @import "@material/list/mdc-list";
 
-.omni-select {
-  font-family: "Roboto", sans-serif;
+.mdc-select--outlined {
+  &, .mdc-select__selected-text {
+    height: 36px;
+  }
+
+  .mdc-select__selected-text {
+    padding: 2px 0 0 8px;
+  }
+
+  .mdc-floating-label {
+
+    &:not(.mdc-floating-label--float-above) {
+      left: 4px;
+      top: 8px;
+    }
+  }
+
+  .mdc-select__dropdown-icon {
+    bottom: 6px;
+  }
+
+  &.mdc-select--with-leading-icon {
+    .mdc-select__icon {
+      bottom: 6px;
+      left: 8px;
+    }
+
+    .mdc-select__selected-text {
+      padding: 4px 0 0 36px;
+    }
+  }
 }
-.mdc-menu-surface {
-  margin-top: 56px;
-  min-width: 200px;
+
+.dark {
+  .mdc-select--outlined:not(.mdc-select--disabled) {
+    background-color: $grayDp24;
+
+    .mdc-select__selected-text {
+      color: $textOnDark;
+    }
+
+    .mdc-floating-label {
+      color: $dimTextOnDark;
+    }
+
+    &.mdc-select--with-leading-icon .mdc-select__icon {
+      color: $dimTextOnDark;
+    }
+  }
+
+  .mdc-select--outlined.mdc-select--disabled {
+    background-color: $disabledButtonBackgroundColor;
+
+    .mdc-select__selected-text {
+      color: $disabledButtonFontColor;
+    }
+
+    .mdc-floating-label {
+      color: $disabledButtonFontColor;
+    }
+
+    &.mdc-select--with-leading-icon .mdc-select__icon {
+      color: $disabledButtonFontColor;
+    }
+  }
 }

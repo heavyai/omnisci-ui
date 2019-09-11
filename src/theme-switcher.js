@@ -12,6 +12,3 @@ button.addEventListener(
   },
   false
 )
-
-// hardcoded to dark
-body.classList.add("dark")

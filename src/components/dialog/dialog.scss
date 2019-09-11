@@ -131,3 +131,12 @@
     }
   }
 }
+
+.dark .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined {
+  background-color: white !important;
+  border: 1px solid $light-gray !important;
+
+  .mdc-button__label {
+    color: $gray;
+  }
+}

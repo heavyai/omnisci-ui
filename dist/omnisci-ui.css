@@ -4601,4 +4601,10 @@ svg.mdc-button__icon {
 .mdc-dialog.info .mdc-dialog__content .material-icons {
   color: #3BA1D9; }
 
+.dark .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined {
+  background-color: white !important;
+  border: 1px solid #ddd !important; }
+  .dark .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined .mdc-button__label {
+    color: #666; }
+
 /*# sourceMappingURL=omnisci-ui.css.map*/

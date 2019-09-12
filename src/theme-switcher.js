@@ -12,3 +12,5 @@ button.addEventListener(
   },
   false
 )
+
+body.classList.toggle("dark")

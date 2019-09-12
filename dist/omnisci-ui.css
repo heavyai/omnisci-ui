@@ -3251,7 +3251,7 @@ a.mdc-list-item {
   height: 36px; }
 
 .mdc-select--outlined .mdc-select__selected-text {
-  padding: 2px 0 0 8px; }
+  padding: 4px 0 0 8px; }
 
 .mdc-select--outlined .mdc-floating-label:not(.mdc-floating-label--float-above) {
   left: 4px;
@@ -3266,6 +3266,27 @@ a.mdc-list-item {
 
 .mdc-select--outlined.mdc-select--with-leading-icon .mdc-select__selected-text {
   padding: 4px 0 0 36px; }
+
+.mdc-select__menu.mdc-menu-surface {
+  margin-top: 36px; }
+  .mdc-select__menu.mdc-menu-surface .mdc-list {
+    color: #222; }
+    .mdc-select__menu.mdc-menu-surface .mdc-list .mdc-list-item--activated {
+      background-color: whitesmoke; }
+      .mdc-select__menu.mdc-menu-surface .mdc-list .mdc-list-item--activated::before {
+        opacity: 0; }
+
+.dark .mdc-select__menu.mdc-menu-surface {
+  margin-top: 36px;
+  background-color: #383838; }
+  .dark .mdc-select__menu.mdc-menu-surface .mdc-list {
+    color: #888; }
+    .dark .mdc-select__menu.mdc-menu-surface .mdc-list .mdc-list-item--activated {
+      color: #eee;
+      background-color: #444444; }
+    .dark .mdc-select__menu.mdc-menu-surface .mdc-list .mdc-list-item:hover {
+      color: #eee;
+      background-color: #444444; }
 
 .dark .mdc-select--outlined:not(.mdc-select--disabled) {
   background-color: #383838; }
@@ -3914,8 +3935,12 @@ a.mdc-list-item {
       border-color: #0089D1; }
   .multi-select .select__option:active {
     background-color: transparent; }
-  .multi-select .select__option.select__option--is-selected, .multi-select .select__option.select__option--is-focused {
-    background-color: rgba(0, 137, 209, 0.3); }
+  .multi-select .select__option.select__option--is-selected {
+    color: #222;
+    background-color: whitesmoke; }
+  .multi-select .select__option.select__option--is-selected {
+    color: #0089D1;
+    background-color: whitesmoke; }
   .multi-select.error .select__control {
     border: 1px solid #D83C3C; }
   .multi-select.error .mdc-floating-label {
@@ -3950,7 +3975,7 @@ a.mdc-list-item {
 
 .dark .multi-select .select__option.select__option--is-selected, .dark .multi-select .select__option.select__option--is-focused {
   color: #eee;
-  background-color: #0089D1; }
+  background-color: #444444; }
 
 .dark .multi-select.select--is-disabled .select-container-wrapper .select__control {
   background-color: #313131;

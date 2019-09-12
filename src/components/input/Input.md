@@ -24,11 +24,10 @@ initialState = {
   value={state.value}
   onChange={(e) => setState({ value: e.target.value })}
   icon={"search"}
-  trailingIcon={
-    <TextFieldIcon
-      icon="close"
-      onClick={() => console.log("click trailing icon")}/>
-  }
+  trailingIcon={{
+    icon: "close",
+    onClick: () => console.log("click trailing icon")
+  }}
 />
 ```
 

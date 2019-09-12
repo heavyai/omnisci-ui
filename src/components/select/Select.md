@@ -75,7 +75,7 @@ initialState = {
   label={state.label}
   value={state.value}
   options={state.options}
-  withLeadingIcon={"favorite"}
+  icon={"favorite"}
   onChange={(e) => setState({ value: e.detail.value })}
 />
 ```

@@ -9827,8 +9827,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 var __read = (undefined && undefined.__read) || function (o, n) {
@@ -10837,8 +10839,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -10913,8 +10917,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -11019,8 +11025,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -11043,8 +11051,8 @@ var DialogQueue = /** @class */ (function (_super) {
         this.props.dialogs.off('change', this.forceUpdate);
     };
     DialogQueue.prototype.removeDialog = function (evt, dialog) {
-        var _this = this;
         var _a;
+        var _this = this;
         this.setState({
             closingDialogs: __assign({}, this.state.closingDialogs, (_a = {}, _a[dialog.id] = true, _a))
         }, function () {
@@ -11197,8 +11205,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -11542,8 +11552,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -11637,8 +11649,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -11798,8 +11812,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -11956,8 +11972,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -12049,8 +12067,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -12203,8 +12223,8 @@ var CollapsibleList = /** @class */ (function (_super) {
         }
     };
     CollapsibleList.prototype.render = function () {
-        var _this = this;
         var _a;
+        var _this = this;
         var _b = this.props, children = _b.children, handle = _b.handle, onOpen = _b.onOpen, onClose = _b.onClose, openProp = _b.open, startOpen = _b.startOpen, rest = __rest(_b, ["children", "handle", "onOpen", "onClose", "open", "startOpen"]);
         var _c = this.state, open = _c.open, childrenStyle = _c.childrenStyle;
         return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](CollapsibleRoot, __assign({}, rest, { onFocus: this.handleFocus, ref: function (el) { return (_this.root = el); }, className: Object(_rmwc_base__WEBPACK_IMPORTED_MODULE_1__["classNames"])('rmwc-collapsible-list', (_a = {},
@@ -12305,8 +12325,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -12445,8 +12467,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -12718,8 +12742,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -13037,8 +13063,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -13277,8 +13305,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -13399,8 +13429,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -13408,6 +13440,14 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
 // Default provider options
 var providerDefaults = {
     ripple: true,
+    tooltip: {
+        align: 'top',
+        showArrow: false,
+        activateOn: ['hover', 'focus'],
+        enterDelay: 0,
+        leaveDelay: 0
+    },
+    typography: {},
     icon: {
         icon: '',
         basename: 'material-icons',
@@ -13437,6 +13477,7 @@ var RMWCProvider = function (_a) {
     value.icon = iconOptions;
     return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](ProviderContext.Provider, { value: __assign({}, value, rest) }, children));
 };
+RMWCProvider.displayName = 'RMWCProvider';
 
 
 /***/ }),
@@ -13489,8 +13530,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -13736,8 +13779,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -13967,8 +14012,7 @@ var SelectBase = /** @class */ (function (_super) {
         return {
             getValue: function () {
                 var value = '';
-                var listItem = _this.menuElement &&
-                    _this.menuElement.querySelector('.mdc-list-item--activated');
+                var listItem = _this.menu && _this.menu.items[_this.state.selectedIndex];
                 if (listItem &&
                     listItem.hasAttribute(_material_select__WEBPACK_IMPORTED_MODULE_2__["MDCSelectFoundation"].strings.ENHANCED_VALUE_ATTR)) {
                     value = listItem.getAttribute(_material_select__WEBPACK_IMPORTED_MODULE_2__["MDCSelectFoundation"].strings.ENHANCED_VALUE_ATTR);
@@ -13982,9 +14026,13 @@ var SelectBase = /** @class */ (function (_super) {
                         ? _this.menu.items.indexOf(element)
                         : -1;
                     var selectedItem = _this.menu && _this.menu.items[selectedIndex];
-                    var selectedTextContent_1 = selectedItem && selectedItem.textContent
-                        ? selectedItem.textContent.trim()
-                        : '';
+                    var selectedTextContent_1 = '';
+                    if (!!selectedItem) {
+                        selectedTextContent_1 =
+                            selectedItem.dataset['label'] ||
+                                ((selectedItem.textContent && selectedItem.textContent.trim()) ||
+                                    '');
+                    }
                     _this.setState({
                         selectedIndex: selectedIndex,
                         selectedTextContent: selectedTextContent_1
@@ -14346,8 +14394,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -14566,7 +14616,12 @@ var TextField = /** @class */ (function (_super) {
         }
         var tagProps = __assign({}, this.input.props(rest), { disabled: disabled, ref: function (ref) {
                 _this.input.setRef(ref);
-                inputRef && inputRef(ref);
+                if (typeof inputRef === 'function') {
+                    inputRef && inputRef(ref);
+                }
+                else if (typeof inputRef === 'object') {
+                    inputRef.current = ref;
+                }
             }, id: rest.id || this.generatedId });
         var renderedTag = textarea ? (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](TextFieldTextarea, __assign({}, tagProps))) : (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](TextFieldInput, __assign({}, tagProps)));
         var renderedLabel = label ? (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_rmwc_floating_label__WEBPACK_IMPORTED_MODULE_5__["FloatingLabel"], __assign({}, this.label.props({}), { ref: this.label.setRef, htmlFor: tagProps.id }), label)) : null;

@@ -24,7 +24,7 @@ initialState = {
   value={state.value}
   onChange={(e) => setState({ value: e.target.value })}
   icon={"search"}
-  withTrailingIcon={
+  trailingIcon={
     <TextFieldIcon
       icon="close"
       onClick={() => console.log("click trailing icon")}/>
@@ -77,7 +77,7 @@ initialState = {
 ```js
 import { TextField } from "@rmwc/textfield"
 initialState = {
-  label: "Textarea",
+  label: "Textarea full width",
   value: ""
 };
 <TextField
@@ -86,6 +86,22 @@ initialState = {
   label={state.label}
   value={state.value}
   onChange={(e) => setState({ value: e.target.value })}
-  rows={2}
+  fullwidth
+/>
+```
+
+```js
+import { TextField } from "@rmwc/textfield"
+initialState = {
+  label: "Textarea resizable",
+  value: ""
+};
+<TextField
+  outlined
+  textarea
+  label={state.label}
+  value={state.value}
+  onChange={(e) => setState({ value: e.target.value })}
+  rows={8}
 />
 ```

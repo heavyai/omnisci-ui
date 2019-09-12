@@ -14,10 +14,12 @@ export interface ISimpleDialogProps {
     primaryLabel?: React.ReactNode | string;
     secondaryLabel?: React.ReactNode | string;
     type?: string;
+    hideCloseIcon?: boolean;
+    onCloseFromHeader?: any;
 }
 export interface IDialogProps {
     /** Whether or not the Dialog is showing. */
-    open: boolean;
+    open?: boolean;
     /** Callback for when the Dialog opens. */
     onOpen?: any;
     /** Callback for when the Dialog closes. */
@@ -33,10 +35,17 @@ export declare const SimpleWarningDialog: (props: IDialogProps) => JSX.Element;
 export declare const SimpleSuccessDialog: (props: IDialogProps) => JSX.Element;
 export declare const SimpleInfoDialog: (props: IDialogProps) => JSX.Element;
 export declare const DangerDialog: (props: IDialogProps) => JSX.Element;
+export declare const WarningDialog: (props: IDialogProps) => JSX.Element;
+export declare const SuccessDialog: (props: IDialogProps) => JSX.Element;
+export declare const InfoDialog: (props: IDialogProps) => JSX.Element;
 declare const _default: {
     DangerDialog: (props: IDialogProps) => JSX.Element;
+    WarningDialog: (props: IDialogProps) => JSX.Element;
+    SuccessDialog: (props: IDialogProps) => JSX.Element;
+    InfoDialog: (props: IDialogProps) => JSX.Element;
     SimpleDangerDialog: (props: IDialogProps) => JSX.Element;
     SimpleWarningDialog: (props: IDialogProps) => JSX.Element;
     SimpleSuccessDialog: (props: IDialogProps) => JSX.Element;
+    SimpleInfoDialog: (props: IDialogProps) => JSX.Element;
 };
 export default _default;

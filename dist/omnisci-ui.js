@@ -969,11 +969,11 @@ var MDCComponent = /** @class */ (function () {
         // attached. An example of this might be deregistering a resize event from the window object.
         this.foundation_.destroy();
     };
-    MDCComponent.prototype.listen = function (evtType, handler) {
-        this.root_.addEventListener(evtType, handler);
+    MDCComponent.prototype.listen = function (evtType, handler, options) {
+        this.root_.addEventListener(evtType, handler, options);
     };
-    MDCComponent.prototype.unlisten = function (evtType, handler) {
-        this.root_.removeEventListener(evtType, handler);
+    MDCComponent.prototype.unlisten = function (evtType, handler, options) {
+        this.root_.removeEventListener(evtType, handler, options);
     };
     /**
      * Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
@@ -1104,7 +1104,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
 /* harmony import */ var _material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/dom/ponyfill */ "./node_modules/@material/dom/ponyfill.js");
-/* harmony import */ var _material_ripple_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material/ripple/component */ "./node_modules/@material/dialog/node_modules/@material/ripple/component.js");
+/* harmony import */ var _material_ripple_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material/ripple/component */ "./node_modules/@material/ripple/component.js");
 /* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/dialog/foundation.js");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./util */ "./node_modules/@material/dialog/util.js");
 /**
@@ -1181,7 +1181,7 @@ var MDCDialog = /** @class */ (function (_super) {
     MDCDialog.attachTo = function (root) {
         return new MDCDialog(root);
     };
-    MDCDialog.prototype.initialize = function (focusTrapFactory, initialFocusEl) {
+    MDCDialog.prototype.initialize = function (focusTrapFactory) {
         var e_1, _a;
         var container = this.root_.querySelector(strings.CONTAINER_SELECTOR);
         if (!container) {
@@ -1190,9 +1190,8 @@ var MDCDialog = /** @class */ (function (_super) {
         this.container_ = container;
         this.content_ = this.root_.querySelector(strings.CONTENT_SELECTOR);
         this.buttons_ = [].slice.call(this.root_.querySelectorAll(strings.BUTTON_SELECTOR));
-        this.defaultButton_ = this.root_.querySelector(strings.DEFAULT_BUTTON_SELECTOR);
+        this.defaultButton_ = this.root_.querySelector("[" + strings.BUTTON_DEFAULT_ATTRIBUTE + "]");
         this.focusTrapFactory_ = focusTrapFactory;
-        this.initialFocusEl_ = initialFocusEl;
         this.buttonRipples_ = [];
         try {
             for (var _b = tslib__WEBPACK_IMPORTED_MODULE_0__["__values"](this.buttons_), _c = _b.next(); !_c.done; _c = _b.next()) {
@@ -1210,8 +1209,9 @@ var MDCDialog = /** @class */ (function (_super) {
     };
     MDCDialog.prototype.initialSyncWithDOM = function () {
         var _this = this;
-        this.focusTrap_ = _util__WEBPACK_IMPORTED_MODULE_5__["createFocusTrapInstance"](this.container_, this.focusTrapFactory_, this.initialFocusEl_);
-        this.handleInteraction_ = this.foundation_.handleInteraction.bind(this.foundation_);
+        this.focusTrap_ = _util__WEBPACK_IMPORTED_MODULE_5__["createFocusTrapInstance"](this.container_, this.focusTrapFactory_, this.getInitialFocusEl_() || undefined);
+        this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
+        this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
         this.handleDocumentKeydown_ = this.foundation_.handleDocumentKeydown.bind(this.foundation_);
         this.handleLayout_ = this.layout.bind(this);
         var LAYOUT_EVENTS = ['resize', 'orientationchange'];
@@ -1223,14 +1223,14 @@ var MDCDialog = /** @class */ (function (_super) {
             LAYOUT_EVENTS.forEach(function (evtType) { return window.removeEventListener(evtType, _this.handleLayout_); });
             document.removeEventListener('keydown', _this.handleDocumentKeydown_);
         };
-        this.listen('click', this.handleInteraction_);
-        this.listen('keydown', this.handleInteraction_);
+        this.listen('click', this.handleClick_);
+        this.listen('keydown', this.handleKeydown_);
         this.listen(strings.OPENING_EVENT, this.handleOpening_);
         this.listen(strings.CLOSING_EVENT, this.handleClosing_);
     };
     MDCDialog.prototype.destroy = function () {
-        this.unlisten('click', this.handleInteraction_);
-        this.unlisten('keydown', this.handleInteraction_);
+        this.unlisten('click', this.handleClick_);
+        this.unlisten('keydown', this.handleKeydown_);
         this.unlisten(strings.OPENING_EVENT, this.handleOpening_);
         this.unlisten(strings.CLOSING_EVENT, this.handleClosing_);
         this.handleClosing_();
@@ -1264,6 +1264,7 @@ var MDCDialog = /** @class */ (function (_super) {
                 var element = Object(_material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__["closest"])(evt.target, "[" + strings.ACTION_ATTRIBUTE + "]");
                 return element && element.getAttribute(strings.ACTION_ATTRIBUTE);
             },
+            getInitialFocusEl: function () { return _this.getInitialFocusEl_(); },
             hasClass: function (className) { return _this.root_.classList.contains(className); },
             isContentScrollable: function () { return _util__WEBPACK_IMPORTED_MODULE_5__["isScrollable"](_this.content_); },
             notifyClosed: function (action) { return _this.emit(strings.CLOSED_EVENT, action ? { action: action } : {}); },
@@ -1282,6 +1283,9 @@ var MDCDialog = /** @class */ (function (_super) {
             trapFocus: function () { return _this.focusTrap_.activate(); },
         };
         return new _foundation__WEBPACK_IMPORTED_MODULE_4__["MDCDialogFoundation"](adapter);
+    };
+    MDCDialog.prototype.getInitialFocusEl_ = function () {
+        return document.querySelector("[" + strings.INITIAL_FOCUS_ATTRIBUTE + "]");
     };
     return MDCDialog;
 }(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
@@ -1334,14 +1338,15 @@ var cssClasses = {
 };
 var strings = {
     ACTION_ATTRIBUTE: 'data-mdc-dialog-action',
+    BUTTON_DEFAULT_ATTRIBUTE: 'data-mdc-dialog-button-default',
     BUTTON_SELECTOR: '.mdc-dialog__button',
     CLOSED_EVENT: 'MDCDialog:closed',
     CLOSE_ACTION: 'close',
     CLOSING_EVENT: 'MDCDialog:closing',
     CONTAINER_SELECTOR: '.mdc-dialog__container',
     CONTENT_SELECTOR: '.mdc-dialog__content',
-    DEFAULT_BUTTON_SELECTOR: '.mdc-dialog__button--default',
     DESTROY_ACTION: 'destroy',
+    INITIAL_FOCUS_ATTRIBUTE: 'data-mdc-dialog-initial-focus',
     OPENED_EVENT: 'MDCDialog:opened',
     OPENING_EVENT: 'MDCDialog:opening',
     SCRIM_SELECTOR: '.mdc-dialog__scrim',
@@ -1441,6 +1446,7 @@ var MDCDialogFoundation = /** @class */ (function (_super) {
                 clickDefaultButton: function () { return undefined; },
                 eventTargetMatches: function () { return false; },
                 getActionFromEvent: function () { return ''; },
+                getInitialFocusEl: function () { return null; },
                 hasClass: function () { return false; },
                 isContentScrollable: function () { return false; },
                 notifyClosed: function () { return undefined; },
@@ -1487,7 +1493,7 @@ var MDCDialogFoundation = /** @class */ (function (_super) {
             _this.layout();
             _this.animationTimer_ = setTimeout(function () {
                 _this.handleAnimationTimerEnd_();
-                _this.adapter_.trapFocus();
+                _this.adapter_.trapFocus(_this.adapter_.getInitialFocusEl());
                 _this.adapter_.notifyOpened();
             }, _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"].DIALOG_ANIMATION_OPEN_TIME_MS);
         });
@@ -1544,26 +1550,38 @@ var MDCDialogFoundation = /** @class */ (function (_super) {
             _this.layoutFrame_ = 0;
         });
     };
-    MDCDialogFoundation.prototype.handleInteraction = function (evt) {
-        var isClick = evt.type === 'click';
-        var isEnter = evt.key === 'Enter' || evt.keyCode === 13;
-        var isSpace = evt.key === 'Space' || evt.keyCode === 32;
+    /** Handles click on the dialog root element. */
+    MDCDialogFoundation.prototype.handleClick = function (evt) {
         var isScrim = this.adapter_.eventTargetMatches(evt.target, _constants__WEBPACK_IMPORTED_MODULE_2__["strings"].SCRIM_SELECTOR);
-        var isDefault = !this.adapter_.eventTargetMatches(evt.target, _constants__WEBPACK_IMPORTED_MODULE_2__["strings"].SUPPRESS_DEFAULT_PRESS_SELECTOR);
-        // Check for scrim click first since it doesn't require querying ancestors
-        if (isClick && isScrim && this.scrimClickAction_ !== '') {
+        // Check for scrim click first since it doesn't require querying ancestors.
+        if (isScrim && this.scrimClickAction_ !== '') {
             this.close(this.scrimClickAction_);
         }
-        else if (isClick || isSpace || isEnter) {
+        else {
             var action = this.adapter_.getActionFromEvent(evt);
             if (action) {
                 this.close(action);
             }
-            else if (isEnter && isDefault) {
-                this.adapter_.clickDefaultButton();
-            }
         }
     };
+    /** Handles keydown on the dialog root element. */
+    MDCDialogFoundation.prototype.handleKeydown = function (evt) {
+        var isEnter = evt.key === 'Enter' || evt.keyCode === 13;
+        if (!isEnter) {
+            return;
+        }
+        var action = this.adapter_.getActionFromEvent(evt);
+        if (action) {
+            // Action button callback is handled in `handleClick`,
+            // since space/enter keydowns on buttons trigger click events.
+            return;
+        }
+        var isDefault = !this.adapter_.eventTargetMatches(evt.target, _constants__WEBPACK_IMPORTED_MODULE_2__["strings"].SUPPRESS_DEFAULT_PRESS_SELECTOR);
+        if (isEnter && isDefault) {
+            this.adapter_.clickDefaultButton();
+        }
+    };
+    /** Handles keydown on the document. */
     MDCDialogFoundation.prototype.handleDocumentKeydown = function (evt) {
         var isEscape = evt.key === 'Escape' || evt.keyCode === 27;
         if (isEscape && this.escapeKeyAction_ !== '') {
@@ -1676,792 +1694,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/@material/dialog/node_modules/@material/ripple/component.js":
-/*!**********************************************************************************!*\
-  !*** ./node_modules/@material/dialog/node_modules/@material/ripple/component.js ***!
-  \**********************************************************************************/
-/*! exports provided: MDCRipple */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCRipple", function() { return MDCRipple; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
-/* harmony import */ var _material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/dom/ponyfill */ "./node_modules/@material/dom/ponyfill.js");
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/dialog/node_modules/@material/ripple/foundation.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./util */ "./node_modules/@material/dialog/node_modules/@material/ripple/util.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-
-
-var MDCRipple = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCRipple, _super);
-    function MDCRipple() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.disabled = false;
-        return _this;
-    }
-    MDCRipple.attachTo = function (root, opts) {
-        if (opts === void 0) { opts = { isUnbounded: undefined }; }
-        var ripple = new MDCRipple(root);
-        // Only override unbounded behavior if option is explicitly specified
-        if (opts.isUnbounded !== undefined) {
-            ripple.unbounded = opts.isUnbounded;
-        }
-        return ripple;
-    };
-    MDCRipple.createAdapter = function (instance) {
-        return {
-            addClass: function (className) { return instance.root_.classList.add(className); },
-            browserSupportsCssVars: function () { return _util__WEBPACK_IMPORTED_MODULE_4__["supportsCssVariables"](window); },
-            computeBoundingRect: function () { return instance.root_.getBoundingClientRect(); },
-            containsEventTarget: function (target) { return instance.root_.contains(target); },
-            deregisterDocumentInteractionHandler: function (evtType, handler) {
-                return document.documentElement.removeEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            deregisterInteractionHandler: function (evtType, handler) {
-                return instance.root_.removeEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            deregisterResizeHandler: function (handler) { return window.removeEventListener('resize', handler); },
-            getWindowPageOffset: function () { return ({ x: window.pageXOffset, y: window.pageYOffset }); },
-            isSurfaceActive: function () { return Object(_material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__["matches"])(instance.root_, ':active'); },
-            isSurfaceDisabled: function () { return Boolean(instance.disabled); },
-            isUnbounded: function () { return Boolean(instance.unbounded); },
-            registerDocumentInteractionHandler: function (evtType, handler) {
-                return document.documentElement.addEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            registerInteractionHandler: function (evtType, handler) {
-                return instance.root_.addEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            registerResizeHandler: function (handler) { return window.addEventListener('resize', handler); },
-            removeClass: function (className) { return instance.root_.classList.remove(className); },
-            updateCssVariable: function (varName, value) { return instance.root_.style.setProperty(varName, value); },
-        };
-    };
-    Object.defineProperty(MDCRipple.prototype, "unbounded", {
-        get: function () {
-            return Boolean(this.unbounded_);
-        },
-        set: function (unbounded) {
-            this.unbounded_ = Boolean(unbounded);
-            this.setUnbounded_();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MDCRipple.prototype.activate = function () {
-        this.foundation_.activate();
-    };
-    MDCRipple.prototype.deactivate = function () {
-        this.foundation_.deactivate();
-    };
-    MDCRipple.prototype.layout = function () {
-        this.foundation_.layout();
-    };
-    MDCRipple.prototype.getDefaultFoundation = function () {
-        return new _foundation__WEBPACK_IMPORTED_MODULE_3__["MDCRippleFoundation"](MDCRipple.createAdapter(this));
-    };
-    MDCRipple.prototype.initialSyncWithDOM = function () {
-        var root = this.root_;
-        this.unbounded = 'mdcRippleIsUnbounded' in root.dataset;
-    };
-    /**
-     * Closure Compiler throws an access control error when directly accessing a
-     * protected or private property inside a getter/setter, like unbounded above.
-     * By accessing the protected property inside a method, we solve that problem.
-     * That's why this function exists.
-     */
-    MDCRipple.prototype.setUnbounded_ = function () {
-        this.foundation_.setUnbounded(Boolean(this.unbounded_));
-    };
-    return MDCRipple;
-}(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
-
-//# sourceMappingURL=component.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/dialog/node_modules/@material/ripple/constants.js":
-/*!**********************************************************************************!*\
-  !*** ./node_modules/@material/dialog/node_modules/@material/ripple/constants.js ***!
-  \**********************************************************************************/
-/*! exports provided: cssClasses, strings, numbers */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return cssClasses; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "strings", function() { return strings; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "numbers", function() { return numbers; });
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-var cssClasses = {
-    // Ripple is a special case where the "root" component is really a "mixin" of sorts,
-    // given that it's an 'upgrade' to an existing component. That being said it is the root
-    // CSS class that all other CSS classes derive from.
-    BG_FOCUSED: 'mdc-ripple-upgraded--background-focused',
-    FG_ACTIVATION: 'mdc-ripple-upgraded--foreground-activation',
-    FG_DEACTIVATION: 'mdc-ripple-upgraded--foreground-deactivation',
-    ROOT: 'mdc-ripple-upgraded',
-    UNBOUNDED: 'mdc-ripple-upgraded--unbounded',
-};
-var strings = {
-    VAR_FG_SCALE: '--mdc-ripple-fg-scale',
-    VAR_FG_SIZE: '--mdc-ripple-fg-size',
-    VAR_FG_TRANSLATE_END: '--mdc-ripple-fg-translate-end',
-    VAR_FG_TRANSLATE_START: '--mdc-ripple-fg-translate-start',
-    VAR_LEFT: '--mdc-ripple-left',
-    VAR_TOP: '--mdc-ripple-top',
-};
-var numbers = {
-    DEACTIVATION_TIMEOUT_MS: 225,
-    FG_DEACTIVATION_MS: 150,
-    INITIAL_ORIGIN_SCALE: 0.6,
-    PADDING: 10,
-    TAP_DELAY_MS: 300,
-};
-//# sourceMappingURL=constants.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/dialog/node_modules/@material/ripple/foundation.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/@material/dialog/node_modules/@material/ripple/foundation.js ***!
-  \***********************************************************************************/
-/*! exports provided: MDCRippleFoundation, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCRippleFoundation", function() { return MDCRippleFoundation; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/foundation */ "./node_modules/@material/base/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/dialog/node_modules/@material/ripple/constants.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./util */ "./node_modules/@material/dialog/node_modules/@material/ripple/util.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-
-// Activation events registered on the root element of each instance for activation
-var ACTIVATION_EVENT_TYPES = [
-    'touchstart', 'pointerdown', 'mousedown', 'keydown',
-];
-// Deactivation events registered on documentElement when a pointer-related down event occurs
-var POINTER_DEACTIVATION_EVENT_TYPES = [
-    'touchend', 'pointerup', 'mouseup', 'contextmenu',
-];
-// simultaneous nested activations
-var activatedTargets = [];
-var MDCRippleFoundation = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCRippleFoundation, _super);
-    function MDCRippleFoundation(adapter) {
-        var _this = _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCRippleFoundation.defaultAdapter, adapter)) || this;
-        _this.activationAnimationHasEnded_ = false;
-        _this.activationTimer_ = 0;
-        _this.fgDeactivationRemovalTimer_ = 0;
-        _this.fgScale_ = '0';
-        _this.frame_ = { width: 0, height: 0 };
-        _this.initialSize_ = 0;
-        _this.layoutFrame_ = 0;
-        _this.maxRadius_ = 0;
-        _this.unboundedCoords_ = { left: 0, top: 0 };
-        _this.activationState_ = _this.defaultActivationState_();
-        _this.activationTimerCallback_ = function () {
-            _this.activationAnimationHasEnded_ = true;
-            _this.runDeactivationUXLogicIfReady_();
-        };
-        _this.activateHandler_ = function (e) { return _this.activate_(e); };
-        _this.deactivateHandler_ = function () { return _this.deactivate_(); };
-        _this.focusHandler_ = function () { return _this.handleFocus(); };
-        _this.blurHandler_ = function () { return _this.handleBlur(); };
-        _this.resizeHandler_ = function () { return _this.layout(); };
-        return _this;
-    }
-    Object.defineProperty(MDCRippleFoundation, "cssClasses", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCRippleFoundation, "strings", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["strings"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCRippleFoundation, "numbers", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCRippleFoundation, "defaultAdapter", {
-        get: function () {
-            return {
-                addClass: function () { return undefined; },
-                browserSupportsCssVars: function () { return true; },
-                computeBoundingRect: function () { return ({ top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0 }); },
-                containsEventTarget: function () { return true; },
-                deregisterDocumentInteractionHandler: function () { return undefined; },
-                deregisterInteractionHandler: function () { return undefined; },
-                deregisterResizeHandler: function () { return undefined; },
-                getWindowPageOffset: function () { return ({ x: 0, y: 0 }); },
-                isSurfaceActive: function () { return true; },
-                isSurfaceDisabled: function () { return true; },
-                isUnbounded: function () { return true; },
-                registerDocumentInteractionHandler: function () { return undefined; },
-                registerInteractionHandler: function () { return undefined; },
-                registerResizeHandler: function () { return undefined; },
-                removeClass: function () { return undefined; },
-                updateCssVariable: function () { return undefined; },
-            };
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MDCRippleFoundation.prototype.init = function () {
-        var _this = this;
-        var supportsPressRipple = this.supportsPressRipple_();
-        this.registerRootHandlers_(supportsPressRipple);
-        if (supportsPressRipple) {
-            var _a = MDCRippleFoundation.cssClasses, ROOT_1 = _a.ROOT, UNBOUNDED_1 = _a.UNBOUNDED;
-            requestAnimationFrame(function () {
-                _this.adapter_.addClass(ROOT_1);
-                if (_this.adapter_.isUnbounded()) {
-                    _this.adapter_.addClass(UNBOUNDED_1);
-                    // Unbounded ripples need layout logic applied immediately to set coordinates for both shade and ripple
-                    _this.layoutInternal_();
-                }
-            });
-        }
-    };
-    MDCRippleFoundation.prototype.destroy = function () {
-        var _this = this;
-        if (this.supportsPressRipple_()) {
-            if (this.activationTimer_) {
-                clearTimeout(this.activationTimer_);
-                this.activationTimer_ = 0;
-                this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_ACTIVATION);
-            }
-            if (this.fgDeactivationRemovalTimer_) {
-                clearTimeout(this.fgDeactivationRemovalTimer_);
-                this.fgDeactivationRemovalTimer_ = 0;
-                this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_DEACTIVATION);
-            }
-            var _a = MDCRippleFoundation.cssClasses, ROOT_2 = _a.ROOT, UNBOUNDED_2 = _a.UNBOUNDED;
-            requestAnimationFrame(function () {
-                _this.adapter_.removeClass(ROOT_2);
-                _this.adapter_.removeClass(UNBOUNDED_2);
-                _this.removeCssVars_();
-            });
-        }
-        this.deregisterRootHandlers_();
-        this.deregisterDeactivationHandlers_();
-    };
-    /**
-     * @param evt Optional event containing position information.
-     */
-    MDCRippleFoundation.prototype.activate = function (evt) {
-        this.activate_(evt);
-    };
-    MDCRippleFoundation.prototype.deactivate = function () {
-        this.deactivate_();
-    };
-    MDCRippleFoundation.prototype.layout = function () {
-        var _this = this;
-        if (this.layoutFrame_) {
-            cancelAnimationFrame(this.layoutFrame_);
-        }
-        this.layoutFrame_ = requestAnimationFrame(function () {
-            _this.layoutInternal_();
-            _this.layoutFrame_ = 0;
-        });
-    };
-    MDCRippleFoundation.prototype.setUnbounded = function (unbounded) {
-        var UNBOUNDED = MDCRippleFoundation.cssClasses.UNBOUNDED;
-        if (unbounded) {
-            this.adapter_.addClass(UNBOUNDED);
-        }
-        else {
-            this.adapter_.removeClass(UNBOUNDED);
-        }
-    };
-    MDCRippleFoundation.prototype.handleFocus = function () {
-        var _this = this;
-        requestAnimationFrame(function () {
-            return _this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
-        });
-    };
-    MDCRippleFoundation.prototype.handleBlur = function () {
-        var _this = this;
-        requestAnimationFrame(function () {
-            return _this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
-        });
-    };
-    /**
-     * We compute this property so that we are not querying information about the client
-     * until the point in time where the foundation requests it. This prevents scenarios where
-     * client-side feature-detection may happen too early, such as when components are rendered on the server
-     * and then initialized at mount time on the client.
-     */
-    MDCRippleFoundation.prototype.supportsPressRipple_ = function () {
-        return this.adapter_.browserSupportsCssVars();
-    };
-    MDCRippleFoundation.prototype.defaultActivationState_ = function () {
-        return {
-            activationEvent: undefined,
-            hasDeactivationUXRun: false,
-            isActivated: false,
-            isProgrammatic: false,
-            wasActivatedByPointer: false,
-            wasElementMadeActive: false,
-        };
-    };
-    /**
-     * supportsPressRipple Passed from init to save a redundant function call
-     */
-    MDCRippleFoundation.prototype.registerRootHandlers_ = function (supportsPressRipple) {
-        var _this = this;
-        if (supportsPressRipple) {
-            ACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-                _this.adapter_.registerInteractionHandler(evtType, _this.activateHandler_);
-            });
-            if (this.adapter_.isUnbounded()) {
-                this.adapter_.registerResizeHandler(this.resizeHandler_);
-            }
-        }
-        this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
-        this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
-    };
-    MDCRippleFoundation.prototype.registerDeactivationHandlers_ = function (evt) {
-        var _this = this;
-        if (evt.type === 'keydown') {
-            this.adapter_.registerInteractionHandler('keyup', this.deactivateHandler_);
-        }
-        else {
-            POINTER_DEACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-                _this.adapter_.registerDocumentInteractionHandler(evtType, _this.deactivateHandler_);
-            });
-        }
-    };
-    MDCRippleFoundation.prototype.deregisterRootHandlers_ = function () {
-        var _this = this;
-        ACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-            _this.adapter_.deregisterInteractionHandler(evtType, _this.activateHandler_);
-        });
-        this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
-        this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
-        if (this.adapter_.isUnbounded()) {
-            this.adapter_.deregisterResizeHandler(this.resizeHandler_);
-        }
-    };
-    MDCRippleFoundation.prototype.deregisterDeactivationHandlers_ = function () {
-        var _this = this;
-        this.adapter_.deregisterInteractionHandler('keyup', this.deactivateHandler_);
-        POINTER_DEACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-            _this.adapter_.deregisterDocumentInteractionHandler(evtType, _this.deactivateHandler_);
-        });
-    };
-    MDCRippleFoundation.prototype.removeCssVars_ = function () {
-        var _this = this;
-        var rippleStrings = MDCRippleFoundation.strings;
-        var keys = Object.keys(rippleStrings);
-        keys.forEach(function (key) {
-            if (key.indexOf('VAR_') === 0) {
-                _this.adapter_.updateCssVariable(rippleStrings[key], null);
-            }
-        });
-    };
-    MDCRippleFoundation.prototype.activate_ = function (evt) {
-        var _this = this;
-        if (this.adapter_.isSurfaceDisabled()) {
-            return;
-        }
-        var activationState = this.activationState_;
-        if (activationState.isActivated) {
-            return;
-        }
-        // Avoid reacting to follow-on events fired by touch device after an already-processed user interaction
-        var previousActivationEvent = this.previousActivationEvent_;
-        var isSameInteraction = previousActivationEvent && evt !== undefined && previousActivationEvent.type !== evt.type;
-        if (isSameInteraction) {
-            return;
-        }
-        activationState.isActivated = true;
-        activationState.isProgrammatic = evt === undefined;
-        activationState.activationEvent = evt;
-        activationState.wasActivatedByPointer = activationState.isProgrammatic ? false : evt !== undefined && (evt.type === 'mousedown' || evt.type === 'touchstart' || evt.type === 'pointerdown');
-        var hasActivatedChild = evt !== undefined && activatedTargets.length > 0 && activatedTargets.some(function (target) { return _this.adapter_.containsEventTarget(target); });
-        if (hasActivatedChild) {
-            // Immediately reset activation state, while preserving logic that prevents touch follow-on events
-            this.resetActivationState_();
-            return;
-        }
-        if (evt !== undefined) {
-            activatedTargets.push(evt.target);
-            this.registerDeactivationHandlers_(evt);
-        }
-        activationState.wasElementMadeActive = this.checkElementMadeActive_(evt);
-        if (activationState.wasElementMadeActive) {
-            this.animateActivation_();
-        }
-        requestAnimationFrame(function () {
-            // Reset array on next frame after the current event has had a chance to bubble to prevent ancestor ripples
-            activatedTargets = [];
-            if (!activationState.wasElementMadeActive
-                && evt !== undefined
-                && (evt.key === ' ' || evt.keyCode === 32)) {
-                // If space was pressed, try again within an rAF call to detect :active, because different UAs report
-                // active states inconsistently when they're called within event handling code:
-                // - https://bugs.chromium.org/p/chromium/issues/detail?id=635971
-                // - https://bugzilla.mozilla.org/show_bug.cgi?id=1293741
-                // We try first outside rAF to support Edge, which does not exhibit this problem, but will crash if a CSS
-                // variable is set within a rAF callback for a submit button interaction (#2241).
-                activationState.wasElementMadeActive = _this.checkElementMadeActive_(evt);
-                if (activationState.wasElementMadeActive) {
-                    _this.animateActivation_();
-                }
-            }
-            if (!activationState.wasElementMadeActive) {
-                // Reset activation state immediately if element was not made active.
-                _this.activationState_ = _this.defaultActivationState_();
-            }
-        });
-    };
-    MDCRippleFoundation.prototype.checkElementMadeActive_ = function (evt) {
-        return (evt !== undefined && evt.type === 'keydown') ? this.adapter_.isSurfaceActive() : true;
-    };
-    MDCRippleFoundation.prototype.animateActivation_ = function () {
-        var _this = this;
-        var _a = MDCRippleFoundation.strings, VAR_FG_TRANSLATE_START = _a.VAR_FG_TRANSLATE_START, VAR_FG_TRANSLATE_END = _a.VAR_FG_TRANSLATE_END;
-        var _b = MDCRippleFoundation.cssClasses, FG_DEACTIVATION = _b.FG_DEACTIVATION, FG_ACTIVATION = _b.FG_ACTIVATION;
-        var DEACTIVATION_TIMEOUT_MS = MDCRippleFoundation.numbers.DEACTIVATION_TIMEOUT_MS;
-        this.layoutInternal_();
-        var translateStart = '';
-        var translateEnd = '';
-        if (!this.adapter_.isUnbounded()) {
-            var _c = this.getFgTranslationCoordinates_(), startPoint = _c.startPoint, endPoint = _c.endPoint;
-            translateStart = startPoint.x + "px, " + startPoint.y + "px";
-            translateEnd = endPoint.x + "px, " + endPoint.y + "px";
-        }
-        this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_START, translateStart);
-        this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_END, translateEnd);
-        // Cancel any ongoing activation/deactivation animations
-        clearTimeout(this.activationTimer_);
-        clearTimeout(this.fgDeactivationRemovalTimer_);
-        this.rmBoundedActivationClasses_();
-        this.adapter_.removeClass(FG_DEACTIVATION);
-        // Force layout in order to re-trigger the animation.
-        this.adapter_.computeBoundingRect();
-        this.adapter_.addClass(FG_ACTIVATION);
-        this.activationTimer_ = setTimeout(function () { return _this.activationTimerCallback_(); }, DEACTIVATION_TIMEOUT_MS);
-    };
-    MDCRippleFoundation.prototype.getFgTranslationCoordinates_ = function () {
-        var _a = this.activationState_, activationEvent = _a.activationEvent, wasActivatedByPointer = _a.wasActivatedByPointer;
-        var startPoint;
-        if (wasActivatedByPointer) {
-            startPoint = Object(_util__WEBPACK_IMPORTED_MODULE_3__["getNormalizedEventCoords"])(activationEvent, this.adapter_.getWindowPageOffset(), this.adapter_.computeBoundingRect());
-        }
-        else {
-            startPoint = {
-                x: this.frame_.width / 2,
-                y: this.frame_.height / 2,
-            };
-        }
-        // Center the element around the start point.
-        startPoint = {
-            x: startPoint.x - (this.initialSize_ / 2),
-            y: startPoint.y - (this.initialSize_ / 2),
-        };
-        var endPoint = {
-            x: (this.frame_.width / 2) - (this.initialSize_ / 2),
-            y: (this.frame_.height / 2) - (this.initialSize_ / 2),
-        };
-        return { startPoint: startPoint, endPoint: endPoint };
-    };
-    MDCRippleFoundation.prototype.runDeactivationUXLogicIfReady_ = function () {
-        var _this = this;
-        // This method is called both when a pointing device is released, and when the activation animation ends.
-        // The deactivation animation should only run after both of those occur.
-        var FG_DEACTIVATION = MDCRippleFoundation.cssClasses.FG_DEACTIVATION;
-        var _a = this.activationState_, hasDeactivationUXRun = _a.hasDeactivationUXRun, isActivated = _a.isActivated;
-        var activationHasEnded = hasDeactivationUXRun || !isActivated;
-        if (activationHasEnded && this.activationAnimationHasEnded_) {
-            this.rmBoundedActivationClasses_();
-            this.adapter_.addClass(FG_DEACTIVATION);
-            this.fgDeactivationRemovalTimer_ = setTimeout(function () {
-                _this.adapter_.removeClass(FG_DEACTIVATION);
-            }, _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"].FG_DEACTIVATION_MS);
-        }
-    };
-    MDCRippleFoundation.prototype.rmBoundedActivationClasses_ = function () {
-        var FG_ACTIVATION = MDCRippleFoundation.cssClasses.FG_ACTIVATION;
-        this.adapter_.removeClass(FG_ACTIVATION);
-        this.activationAnimationHasEnded_ = false;
-        this.adapter_.computeBoundingRect();
-    };
-    MDCRippleFoundation.prototype.resetActivationState_ = function () {
-        var _this = this;
-        this.previousActivationEvent_ = this.activationState_.activationEvent;
-        this.activationState_ = this.defaultActivationState_();
-        // Touch devices may fire additional events for the same interaction within a short time.
-        // Store the previous event until it's safe to assume that subsequent events are for new interactions.
-        setTimeout(function () { return _this.previousActivationEvent_ = undefined; }, MDCRippleFoundation.numbers.TAP_DELAY_MS);
-    };
-    MDCRippleFoundation.prototype.deactivate_ = function () {
-        var _this = this;
-        var activationState = this.activationState_;
-        // This can happen in scenarios such as when you have a keyup event that blurs the element.
-        if (!activationState.isActivated) {
-            return;
-        }
-        var state = tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, activationState);
-        if (activationState.isProgrammatic) {
-            requestAnimationFrame(function () { return _this.animateDeactivation_(state); });
-            this.resetActivationState_();
-        }
-        else {
-            this.deregisterDeactivationHandlers_();
-            requestAnimationFrame(function () {
-                _this.activationState_.hasDeactivationUXRun = true;
-                _this.animateDeactivation_(state);
-                _this.resetActivationState_();
-            });
-        }
-    };
-    MDCRippleFoundation.prototype.animateDeactivation_ = function (_a) {
-        var wasActivatedByPointer = _a.wasActivatedByPointer, wasElementMadeActive = _a.wasElementMadeActive;
-        if (wasActivatedByPointer || wasElementMadeActive) {
-            this.runDeactivationUXLogicIfReady_();
-        }
-    };
-    MDCRippleFoundation.prototype.layoutInternal_ = function () {
-        var _this = this;
-        this.frame_ = this.adapter_.computeBoundingRect();
-        var maxDim = Math.max(this.frame_.height, this.frame_.width);
-        // Surface diameter is treated differently for unbounded vs. bounded ripples.
-        // Unbounded ripple diameter is calculated smaller since the surface is expected to already be padded appropriately
-        // to extend the hitbox, and the ripple is expected to meet the edges of the padded hitbox (which is typically
-        // square). Bounded ripples, on the other hand, are fully expected to expand beyond the surface's longest diameter
-        // (calculated based on the diagonal plus a constant padding), and are clipped at the surface's border via
-        // `overflow: hidden`.
-        var getBoundedRadius = function () {
-            var hypotenuse = Math.sqrt(Math.pow(_this.frame_.width, 2) + Math.pow(_this.frame_.height, 2));
-            return hypotenuse + MDCRippleFoundation.numbers.PADDING;
-        };
-        this.maxRadius_ = this.adapter_.isUnbounded() ? maxDim : getBoundedRadius();
-        // Ripple is sized as a fraction of the largest dimension of the surface, then scales up using a CSS scale transform
-        this.initialSize_ = Math.floor(maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE);
-        this.fgScale_ = "" + this.maxRadius_ / this.initialSize_;
-        this.updateLayoutCssVars_();
-    };
-    MDCRippleFoundation.prototype.updateLayoutCssVars_ = function () {
-        var _a = MDCRippleFoundation.strings, VAR_FG_SIZE = _a.VAR_FG_SIZE, VAR_LEFT = _a.VAR_LEFT, VAR_TOP = _a.VAR_TOP, VAR_FG_SCALE = _a.VAR_FG_SCALE;
-        this.adapter_.updateCssVariable(VAR_FG_SIZE, this.initialSize_ + "px");
-        this.adapter_.updateCssVariable(VAR_FG_SCALE, this.fgScale_);
-        if (this.adapter_.isUnbounded()) {
-            this.unboundedCoords_ = {
-                left: Math.round((this.frame_.width / 2) - (this.initialSize_ / 2)),
-                top: Math.round((this.frame_.height / 2) - (this.initialSize_ / 2)),
-            };
-            this.adapter_.updateCssVariable(VAR_LEFT, this.unboundedCoords_.left + "px");
-            this.adapter_.updateCssVariable(VAR_TOP, this.unboundedCoords_.top + "px");
-        }
-    };
-    return MDCRippleFoundation;
-}(_material_base_foundation__WEBPACK_IMPORTED_MODULE_1__["MDCFoundation"]));
-
-// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
-/* harmony default export */ __webpack_exports__["default"] = (MDCRippleFoundation);
-//# sourceMappingURL=foundation.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/dialog/node_modules/@material/ripple/util.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/@material/dialog/node_modules/@material/ripple/util.js ***!
-  \*****************************************************************************/
-/*! exports provided: supportsCssVariables, applyPassive, getNormalizedEventCoords */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "supportsCssVariables", function() { return supportsCssVariables; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyPassive", function() { return applyPassive; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNormalizedEventCoords", function() { return getNormalizedEventCoords; });
-/**
- * Stores result from supportsCssVariables to avoid redundant processing to
- * detect CSS custom variable support.
- */
-var supportsCssVariables_;
-/**
- * Stores result from applyPassive to avoid redundant processing to detect
- * passive event listener support.
- */
-var supportsPassive_;
-function detectEdgePseudoVarBug(windowObj) {
-    // Detect versions of Edge with buggy var() support
-    // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
-    var document = windowObj.document;
-    var node = document.createElement('div');
-    node.className = 'mdc-ripple-surface--test-edge-var-bug';
-    document.body.appendChild(node);
-    // The bug exists if ::before style ends up propagating to the parent element.
-    // Additionally, getComputedStyle returns null in iframes with display: "none" in Firefox,
-    // but Firefox is known to support CSS custom properties correctly.
-    // See: https://bugzilla.mozilla.org/show_bug.cgi?id=548397
-    var computedStyle = windowObj.getComputedStyle(node);
-    var hasPseudoVarBug = computedStyle !== null && computedStyle.borderTopStyle === 'solid';
-    if (node.parentNode) {
-        node.parentNode.removeChild(node);
-    }
-    return hasPseudoVarBug;
-}
-function supportsCssVariables(windowObj, forceRefresh) {
-    if (forceRefresh === void 0) { forceRefresh = false; }
-    var CSS = windowObj.CSS;
-    var supportsCssVars = supportsCssVariables_;
-    if (typeof supportsCssVariables_ === 'boolean' && !forceRefresh) {
-        return supportsCssVariables_;
-    }
-    var supportsFunctionPresent = CSS && typeof CSS.supports === 'function';
-    if (!supportsFunctionPresent) {
-        return false;
-    }
-    var explicitlySupportsCssVars = CSS.supports('--css-vars', 'yes');
-    // See: https://bugs.webkit.org/show_bug.cgi?id=154669
-    // See: README section on Safari
-    var weAreFeatureDetectingSafari10plus = (CSS.supports('(--css-vars: yes)') &&
-        CSS.supports('color', '#00000000'));
-    if (explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus) {
-        supportsCssVars = !detectEdgePseudoVarBug(windowObj);
-    }
-    else {
-        supportsCssVars = false;
-    }
-    if (!forceRefresh) {
-        supportsCssVariables_ = supportsCssVars;
-    }
-    return supportsCssVars;
-}
-/**
- * Determine whether the current browser supports passive event listeners, and
- * if so, use them.
- */
-function applyPassive(globalObj, forceRefresh) {
-    if (globalObj === void 0) { globalObj = window; }
-    if (forceRefresh === void 0) { forceRefresh = false; }
-    if (supportsPassive_ === undefined || forceRefresh) {
-        var isSupported_1 = false;
-        try {
-            globalObj.document.addEventListener('test', function () { return undefined; }, {
-                get passive() {
-                    isSupported_1 = true;
-                    return isSupported_1;
-                },
-            });
-        }
-        catch (e) {
-        } // tslint:disable-line:no-empty cannot throw error due to tests. tslint also disables console.log.
-        supportsPassive_ = isSupported_1;
-    }
-    return supportsPassive_ ? { passive: true } : false;
-}
-function getNormalizedEventCoords(evt, pageOffset, clientRect) {
-    if (!evt) {
-        return { x: 0, y: 0 };
-    }
-    var x = pageOffset.x, y = pageOffset.y;
-    var documentX = x + clientRect.left;
-    var documentY = y + clientRect.top;
-    var normalizedX;
-    var normalizedY;
-    // Determine touch point relative to the ripple container.
-    if (evt.type === 'touchstart') {
-        var touchEvent = evt;
-        normalizedX = touchEvent.changedTouches[0].pageX - documentX;
-        normalizedY = touchEvent.changedTouches[0].pageY - documentY;
-    }
-    else {
-        var mouseEvent = evt;
-        normalizedX = mouseEvent.pageX - documentX;
-        normalizedY = mouseEvent.pageY - documentY;
-    }
-    return { x: normalizedX, y: normalizedY };
-}
-//# sourceMappingURL=util.js.map
-
-/***/ }),
-
 /***/ "./node_modules/@material/dialog/util.js":
 /*!***********************************************!*\
   !*** ./node_modules/@material/dialog/util.js ***!
@@ -2516,6 +1748,70 @@ function areTopsMisaligned(els) {
     return tops.size > 1;
 }
 //# sourceMappingURL=util.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@material/dom/events.js":
+/*!**********************************************!*\
+  !*** ./node_modules/@material/dom/events.js ***!
+  \**********************************************/
+/*! exports provided: applyPassive */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyPassive", function() { return applyPassive; });
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+/**
+ * Stores result from applyPassive to avoid redundant processing to detect
+ * passive event listener support.
+ */
+var supportsPassive_;
+/**
+ * Determine whether the current browser supports passive event listeners, and
+ * if so, use them.
+ */
+function applyPassive(globalObj, forceRefresh) {
+    if (globalObj === void 0) { globalObj = window; }
+    if (forceRefresh === void 0) { forceRefresh = false; }
+    if (supportsPassive_ === undefined || forceRefresh) {
+        var isSupported_1 = false;
+        try {
+            globalObj.document.addEventListener('test', function () { return undefined; }, {
+                get passive() {
+                    isSupported_1 = true;
+                    return isSupported_1;
+                },
+            });
+        }
+        catch (e) {
+        } // tslint:disable-line:no-empty cannot throw error due to tests. tslint also disables console.log.
+        supportsPassive_ = isSupported_1;
+    }
+    return supportsPassive_ ? { passive: true } : false;
+}
+//# sourceMappingURL=events.js.map
 
 /***/ }),
 
@@ -2579,500 +1875,19 @@ function matches(element, selector) {
 
 /***/ }),
 
-/***/ "./node_modules/@material/floating-label/dist/mdc.floatingLabel.js":
-/*!*************************************************************************!*\
-  !*** ./node_modules/@material/floating-label/dist/mdc.floatingLabel.js ***!
-  \*************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*!
- Material Components for the Web
- Copyright (c) 2018 Google Inc.
- License: MIT
-*/
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(true)
-		module.exports = factory();
-	else {}
-})(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 28);
-/******/ })
-/************************************************************************/
-/******/ ({
-
-/***/ 0:
+/***/ "./node_modules/@material/floating-label/component.js":
+/*!************************************************************!*\
+  !*** ./node_modules/@material/floating-label/component.js ***!
+  \************************************************************/
+/*! exports provided: MDCFloatingLabel */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-/**
- * @template A
- */
-var MDCFoundation = function () {
-  _createClass(MDCFoundation, null, [{
-    key: "cssClasses",
-
-    /** @return enum{cssClasses} */
-    get: function get() {
-      // Classes extending MDCFoundation should implement this method to return an object which exports every
-      // CSS class the foundation class needs as a property. e.g. {ACTIVE: 'mdc-component--active'}
-      return {};
-    }
-
-    /** @return enum{strings} */
-
-  }, {
-    key: "strings",
-    get: function get() {
-      // Classes extending MDCFoundation should implement this method to return an object which exports all
-      // semantic strings as constants. e.g. {ARIA_ROLE: 'tablist'}
-      return {};
-    }
-
-    /** @return enum{numbers} */
-
-  }, {
-    key: "numbers",
-    get: function get() {
-      // Classes extending MDCFoundation should implement this method to return an object which exports all
-      // of its semantic numbers as constants. e.g. {ANIMATION_DELAY_MS: 350}
-      return {};
-    }
-
-    /** @return {!Object} */
-
-  }, {
-    key: "defaultAdapter",
-    get: function get() {
-      // Classes extending MDCFoundation may choose to implement this getter in order to provide a convenient
-      // way of viewing the necessary methods of an adapter. In the future, this could also be used for adapter
-      // validation.
-      return {};
-    }
-
-    /**
-     * @param {A=} adapter
-     */
-
-  }]);
-
-  function MDCFoundation() {
-    var adapter = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    _classCallCheck(this, MDCFoundation);
-
-    /** @protected {!A} */
-    this.adapter_ = adapter;
-  }
-
-  _createClass(MDCFoundation, [{
-    key: "init",
-    value: function init() {
-      // Subclasses should override this method to perform initialization routines (registering events, etc.)
-    }
-  }, {
-    key: "destroy",
-    value: function destroy() {
-      // Subclasses should override this method to perform de-initialization routines (de-registering events, etc.)
-    }
-  }]);
-
-  return MDCFoundation;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (MDCFoundation);
-
-/***/ }),
-
-/***/ 1:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__foundation__ = __webpack_require__(0);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-/**
- * @template F
- */
-
-var MDCComponent = function () {
-  _createClass(MDCComponent, null, [{
-    key: 'attachTo',
-
-    /**
-     * @param {!Element} root
-     * @return {!MDCComponent}
-     */
-    value: function attachTo(root) {
-      // Subclasses which extend MDCBase should provide an attachTo() method that takes a root element and
-      // returns an instantiated component with its root set to that element. Also note that in the cases of
-      // subclasses, an explicit foundation class will not have to be passed in; it will simply be initialized
-      // from getDefaultFoundation().
-      return new MDCComponent(root, new __WEBPACK_IMPORTED_MODULE_0__foundation__["a" /* default */]());
-    }
-
-    /**
-     * @param {!Element} root
-     * @param {F=} foundation
-     * @param {...?} args
-     */
-
-  }]);
-
-  function MDCComponent(root) {
-    var foundation = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
-
-    _classCallCheck(this, MDCComponent);
-
-    /** @protected {!Element} */
-    this.root_ = root;
-
-    for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-      args[_key - 2] = arguments[_key];
-    }
-
-    this.initialize.apply(this, args);
-    // Note that we initialize foundation here and not within the constructor's default param so that
-    // this.root_ is defined and can be used within the foundation class.
-    /** @protected {!F} */
-    this.foundation_ = foundation === undefined ? this.getDefaultFoundation() : foundation;
-    this.foundation_.init();
-    this.initialSyncWithDOM();
-  }
-
-  _createClass(MDCComponent, [{
-    key: 'initialize',
-    value: function initialize() /* ...args */{}
-    // Subclasses can override this to do any additional setup work that would be considered part of a
-    // "constructor". Essentially, it is a hook into the parent constructor before the foundation is
-    // initialized. Any additional arguments besides root and foundation will be passed in here.
-
-
-    /**
-     * @return {!F} foundation
-     */
-
-  }, {
-    key: 'getDefaultFoundation',
-    value: function getDefaultFoundation() {
-      // Subclasses must override this method to return a properly configured foundation class for the
-      // component.
-      throw new Error('Subclasses must override getDefaultFoundation to return a properly configured ' + 'foundation class');
-    }
-  }, {
-    key: 'initialSyncWithDOM',
-    value: function initialSyncWithDOM() {
-      // Subclasses should override this method if they need to perform work to synchronize with a host DOM
-      // object. An example of this would be a form control wrapper that needs to synchronize its internal state
-      // to some property or attribute of the host DOM. Please note: this is *not* the place to perform DOM
-      // reads/writes that would cause layout / paint, as this is called synchronously from within the constructor.
-    }
-  }, {
-    key: 'destroy',
-    value: function destroy() {
-      // Subclasses may implement this method to release any resources / deregister any listeners they have
-      // attached. An example of this might be deregistering a resize event from the window object.
-      this.foundation_.destroy();
-    }
-
-    /**
-     * Wrapper method to add an event listener to the component's root element. This is most useful when
-     * listening for custom events.
-     * @param {string} evtType
-     * @param {!Function} handler
-     */
-
-  }, {
-    key: 'listen',
-    value: function listen(evtType, handler) {
-      this.root_.addEventListener(evtType, handler);
-    }
-
-    /**
-     * Wrapper method to remove an event listener to the component's root element. This is most useful when
-     * unlistening for custom events.
-     * @param {string} evtType
-     * @param {!Function} handler
-     */
-
-  }, {
-    key: 'unlisten',
-    value: function unlisten(evtType, handler) {
-      this.root_.removeEventListener(evtType, handler);
-    }
-
-    /**
-     * Fires a cross-browser-compatible custom event from the component root of the given type,
-     * with the given data.
-     * @param {string} evtType
-     * @param {!Object} evtData
-     * @param {boolean=} shouldBubble
-     */
-
-  }, {
-    key: 'emit',
-    value: function emit(evtType, evtData) {
-      var shouldBubble = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-      var evt = void 0;
-      if (typeof CustomEvent === 'function') {
-        evt = new CustomEvent(evtType, {
-          detail: evtData,
-          bubbles: shouldBubble
-        });
-      } else {
-        evt = document.createEvent('CustomEvent');
-        evt.initCustomEvent(evtType, shouldBubble, false, evtData);
-      }
-
-      this.root_.dispatchEvent(evt);
-    }
-  }]);
-
-  return MDCComponent;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (MDCComponent);
-
-/***/ }),
-
-/***/ 19:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @license
- * Copyright 2017 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
-/**
- * Adapter for MDC Floating Label.
- *
- * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the floating label into your framework. See
- * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
- * for more information.
- *
- * @record
- */
-var MDCFloatingLabelAdapter = function () {
-  function MDCFloatingLabelAdapter() {
-    _classCallCheck(this, MDCFloatingLabelAdapter);
-  }
-
-  _createClass(MDCFloatingLabelAdapter, [{
-    key: "addClass",
-
-    /**
-     * Adds a class to the label element.
-     * @param {string} className
-     */
-    value: function addClass(className) {}
-
-    /**
-     * Removes a class from the label element.
-     * @param {string} className
-     */
-
-  }, {
-    key: "removeClass",
-    value: function removeClass(className) {}
-
-    /**
-     * Returns the width of the label element.
-     * @return {number}
-     */
-
-  }, {
-    key: "getWidth",
-    value: function getWidth() {}
-
-    /**
-     * Registers an event listener on the root element for a given event.
-     * @param {string} evtType
-     * @param {function(!Event): undefined} handler
-     */
-
-  }, {
-    key: "registerInteractionHandler",
-    value: function registerInteractionHandler(evtType, handler) {}
-
-    /**
-     * Deregisters an event listener on the root element for a given event.
-     * @param {string} evtType
-     * @param {function(!Event): undefined} handler
-     */
-
-  }, {
-    key: "deregisterInteractionHandler",
-    value: function deregisterInteractionHandler(evtType, handler) {}
-  }]);
-
-  return MDCFloatingLabelAdapter;
-}();
-
-/* unused harmony default export */ var _unused_webpack_default_export = (MDCFloatingLabelAdapter);
-
-/***/ }),
-
-/***/ 28:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+__webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCFloatingLabel", function() { return MDCFloatingLabel; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__material_base_component__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__adapter__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__foundation__ = __webpack_require__(29);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "MDCFloatingLabelFoundation", function() { return __WEBPACK_IMPORTED_MODULE_2__foundation__["a"]; });
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
+/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/floating-label/foundation.js");
 /**
  * @license
  * Copyright 2016 Google Inc.
@@ -3098,120 +1913,107 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-
-
-/**
- * @extends {MDCComponent<!MDCFloatingLabelFoundation>}
- * @final
- */
-
-var MDCFloatingLabel = function (_MDCComponent) {
-  _inherits(MDCFloatingLabel, _MDCComponent);
-
-  function MDCFloatingLabel() {
-    _classCallCheck(this, MDCFloatingLabel);
-
-    return _possibleConstructorReturn(this, (MDCFloatingLabel.__proto__ || Object.getPrototypeOf(MDCFloatingLabel)).apply(this, arguments));
-  }
-
-  _createClass(MDCFloatingLabel, [{
-    key: 'shake',
-
-
+var MDCFloatingLabel = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCFloatingLabel, _super);
+    function MDCFloatingLabel() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    MDCFloatingLabel.attachTo = function (root) {
+        return new MDCFloatingLabel(root);
+    };
     /**
      * Styles the label to produce the label shake for errors.
-     * @param {boolean} shouldShake styles the label to shake by adding shake class
-     * if true, otherwise will stop shaking by removing shake class.
+     * @param shouldShake If true, shakes the label by adding a CSS class; otherwise, stops shaking by removing the class.
      */
-    value: function shake(shouldShake) {
-      this.foundation_.shake(shouldShake);
-    }
-
+    MDCFloatingLabel.prototype.shake = function (shouldShake) {
+        this.foundation_.shake(shouldShake);
+    };
     /**
-     * Styles label to float/dock.
-     * @param {boolean} shouldFloat styles the label to float by adding float class
-     * if true, otherwise docks the label by removing the float class.
+     * Styles the label to float/dock.
+     * @param shouldFloat If true, floats the label by adding a CSS class; otherwise, docks it by removing the class.
      */
+    MDCFloatingLabel.prototype.float = function (shouldFloat) {
+        this.foundation_.float(shouldFloat);
+    };
+    MDCFloatingLabel.prototype.getWidth = function () {
+        return this.foundation_.getWidth();
+    };
+    MDCFloatingLabel.prototype.getDefaultFoundation = function () {
+        var _this = this;
+        // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+        // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+        // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
+        var adapter = {
+            addClass: function (className) { return _this.root_.classList.add(className); },
+            removeClass: function (className) { return _this.root_.classList.remove(className); },
+            getWidth: function () { return _this.root_.scrollWidth; },
+            registerInteractionHandler: function (evtType, handler) { return _this.listen(evtType, handler); },
+            deregisterInteractionHandler: function (evtType, handler) { return _this.unlisten(evtType, handler); },
+        };
+        // tslint:enable:object-literal-sort-keys
+        return new _foundation__WEBPACK_IMPORTED_MODULE_2__["MDCFloatingLabelFoundation"](adapter);
+    };
+    return MDCFloatingLabel;
+}(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
 
-  }, {
-    key: 'float',
-    value: function float(shouldFloat) {
-      this.foundation_.float(shouldFloat);
-    }
-
-    /**
-     * @return {number}
-     */
-
-  }, {
-    key: 'getWidth',
-    value: function getWidth() {
-      return this.foundation_.getWidth();
-    }
-
-    /**
-     * @return {!MDCFloatingLabelFoundation}
-     */
-
-  }, {
-    key: 'getDefaultFoundation',
-    value: function getDefaultFoundation() {
-      var _this2 = this;
-
-      return new __WEBPACK_IMPORTED_MODULE_2__foundation__["a" /* default */]({
-        addClass: function addClass(className) {
-          return _this2.root_.classList.add(className);
-        },
-        removeClass: function removeClass(className) {
-          return _this2.root_.classList.remove(className);
-        },
-        getWidth: function getWidth() {
-          return _this2.root_.offsetWidth;
-        },
-        registerInteractionHandler: function registerInteractionHandler(evtType, handler) {
-          return _this2.root_.addEventListener(evtType, handler);
-        },
-        deregisterInteractionHandler: function deregisterInteractionHandler(evtType, handler) {
-          return _this2.root_.removeEventListener(evtType, handler);
-        }
-      });
-    }
-  }], [{
-    key: 'attachTo',
-
-    /**
-     * @param {!Element} root
-     * @return {!MDCFloatingLabel}
-     */
-    value: function attachTo(root) {
-      return new MDCFloatingLabel(root);
-    }
-  }]);
-
-  return MDCFloatingLabel;
-}(__WEBPACK_IMPORTED_MODULE_0__material_base_component__["a" /* default */]);
-
-
+//# sourceMappingURL=component.js.map
 
 /***/ }),
 
-/***/ 29:
+/***/ "./node_modules/@material/floating-label/constants.js":
+/*!************************************************************!*\
+  !*** ./node_modules/@material/floating-label/constants.js ***!
+  \************************************************************/
+/*! exports provided: cssClasses */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__material_base_foundation__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__adapter__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants__ = __webpack_require__(30);
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return cssClasses; });
+/**
+ * @license
+ * Copyright 2016 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+var cssClasses = {
+    LABEL_FLOAT_ABOVE: 'mdc-floating-label--float-above',
+    LABEL_SHAKE: 'mdc-floating-label--shake',
+    ROOT: 'mdc-floating-label',
+};
+//# sourceMappingURL=constants.js.map
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+/***/ }),
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+/***/ "./node_modules/@material/floating-label/foundation.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/@material/floating-label/foundation.js ***!
+  \*************************************************************/
+/*! exports provided: MDCFloatingLabelFoundation, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCFloatingLabelFoundation", function() { return MDCFloatingLabelFoundation; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _material_base_foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/foundation */ "./node_modules/@material/base/foundation.js");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/floating-label/constants.js");
 /**
  * @license
  * Copyright 2016 Google Inc.
@@ -3237,150 +2039,111 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-
-
-/**
- * @extends {MDCFoundation<!MDCFloatingLabelAdapter>}
- * @final
- */
-
-var MDCFloatingLabelFoundation = function (_MDCFoundation) {
-  _inherits(MDCFloatingLabelFoundation, _MDCFoundation);
-
-  _createClass(MDCFloatingLabelFoundation, null, [{
-    key: 'cssClasses',
-
-    /** @return enum {string} */
-    get: function get() {
-      return __WEBPACK_IMPORTED_MODULE_2__constants__["a" /* cssClasses */];
+var MDCFloatingLabelFoundation = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCFloatingLabelFoundation, _super);
+    function MDCFloatingLabelFoundation(adapter) {
+        var _this = _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCFloatingLabelFoundation.defaultAdapter, adapter)) || this;
+        _this.shakeAnimationEndHandler_ = function () { return _this.handleShakeAnimationEnd_(); };
+        return _this;
     }
-
-    /**
-     * {@see MDCFloatingLabelAdapter} for typing information on parameters and return
-     * types.
-     * @return {!MDCFloatingLabelAdapter}
-     */
-
-  }, {
-    key: 'defaultAdapter',
-    get: function get() {
-      return (/** @type {!MDCFloatingLabelAdapter} */{
-          addClass: function addClass() {},
-          removeClass: function removeClass() {},
-          getWidth: function getWidth() {},
-          registerInteractionHandler: function registerInteractionHandler() {},
-          deregisterInteractionHandler: function deregisterInteractionHandler() {}
-        }
-      );
-    }
-
-    /**
-     * @param {!MDCFloatingLabelAdapter} adapter
-     */
-
-  }]);
-
-  function MDCFloatingLabelFoundation(adapter) {
-    _classCallCheck(this, MDCFloatingLabelFoundation);
-
-    /** @private {function(!Event): undefined} */
-    var _this = _possibleConstructorReturn(this, (MDCFloatingLabelFoundation.__proto__ || Object.getPrototypeOf(MDCFloatingLabelFoundation)).call(this, _extends(MDCFloatingLabelFoundation.defaultAdapter, adapter)));
-
-    _this.shakeAnimationEndHandler_ = function () {
-      return _this.handleShakeAnimationEnd_();
+    Object.defineProperty(MDCFloatingLabelFoundation, "cssClasses", {
+        get: function () {
+            return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCFloatingLabelFoundation, "defaultAdapter", {
+        /**
+         * See {@link MDCFloatingLabelAdapter} for typing information on parameters and return types.
+         */
+        get: function () {
+            // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
+            return {
+                addClass: function () { return undefined; },
+                removeClass: function () { return undefined; },
+                getWidth: function () { return 0; },
+                registerInteractionHandler: function () { return undefined; },
+                deregisterInteractionHandler: function () { return undefined; },
+            };
+            // tslint:enable:object-literal-sort-keys
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MDCFloatingLabelFoundation.prototype.init = function () {
+        this.adapter_.registerInteractionHandler('animationend', this.shakeAnimationEndHandler_);
     };
-    return _this;
-  }
-
-  _createClass(MDCFloatingLabelFoundation, [{
-    key: 'init',
-    value: function init() {
-      this.adapter_.registerInteractionHandler('animationend', this.shakeAnimationEndHandler_);
-    }
-  }, {
-    key: 'destroy',
-    value: function destroy() {
-      this.adapter_.deregisterInteractionHandler('animationend', this.shakeAnimationEndHandler_);
-    }
-
+    MDCFloatingLabelFoundation.prototype.destroy = function () {
+        this.adapter_.deregisterInteractionHandler('animationend', this.shakeAnimationEndHandler_);
+    };
     /**
      * Returns the width of the label element.
-     * @return {number}
      */
-
-  }, {
-    key: 'getWidth',
-    value: function getWidth() {
-      return this.adapter_.getWidth();
-    }
-
+    MDCFloatingLabelFoundation.prototype.getWidth = function () {
+        return this.adapter_.getWidth();
+    };
     /**
-     * Styles the label to produce the label shake for errors.
-     * @param {boolean} shouldShake adds shake class if true,
-     * otherwise removes shake class.
+     * Styles the label to produce a shake animation to indicate an error.
+     * @param shouldShake If true, adds the shake CSS class; otherwise, removes shake class.
      */
-
-  }, {
-    key: 'shake',
-    value: function shake(shouldShake) {
-      var LABEL_SHAKE = MDCFloatingLabelFoundation.cssClasses.LABEL_SHAKE;
-
-      if (shouldShake) {
-        this.adapter_.addClass(LABEL_SHAKE);
-      } else {
-        this.adapter_.removeClass(LABEL_SHAKE);
-      }
-    }
-
+    MDCFloatingLabelFoundation.prototype.shake = function (shouldShake) {
+        var LABEL_SHAKE = MDCFloatingLabelFoundation.cssClasses.LABEL_SHAKE;
+        if (shouldShake) {
+            this.adapter_.addClass(LABEL_SHAKE);
+        }
+        else {
+            this.adapter_.removeClass(LABEL_SHAKE);
+        }
+    };
     /**
      * Styles the label to float or dock.
-     * @param {boolean} shouldFloat adds float class if true, otherwise remove
-     * float and shake class to dock label.
+     * @param shouldFloat If true, adds the float CSS class; otherwise, removes float and shake classes to dock the label.
      */
-
-  }, {
-    key: 'float',
-    value: function float(shouldFloat) {
-      var _MDCFloatingLabelFoun = MDCFloatingLabelFoundation.cssClasses,
-          LABEL_FLOAT_ABOVE = _MDCFloatingLabelFoun.LABEL_FLOAT_ABOVE,
-          LABEL_SHAKE = _MDCFloatingLabelFoun.LABEL_SHAKE;
-
-      if (shouldFloat) {
-        this.adapter_.addClass(LABEL_FLOAT_ABOVE);
-      } else {
-        this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
+    MDCFloatingLabelFoundation.prototype.float = function (shouldFloat) {
+        var _a = MDCFloatingLabelFoundation.cssClasses, LABEL_FLOAT_ABOVE = _a.LABEL_FLOAT_ABOVE, LABEL_SHAKE = _a.LABEL_SHAKE;
+        if (shouldFloat) {
+            this.adapter_.addClass(LABEL_FLOAT_ABOVE);
+        }
+        else {
+            this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
+            this.adapter_.removeClass(LABEL_SHAKE);
+        }
+    };
+    MDCFloatingLabelFoundation.prototype.handleShakeAnimationEnd_ = function () {
+        var LABEL_SHAKE = MDCFloatingLabelFoundation.cssClasses.LABEL_SHAKE;
         this.adapter_.removeClass(LABEL_SHAKE);
-      }
-    }
+    };
+    return MDCFloatingLabelFoundation;
+}(_material_base_foundation__WEBPACK_IMPORTED_MODULE_1__["MDCFoundation"]));
 
-    /**
-     * Handles an interaction event on the root element.
-     */
-
-  }, {
-    key: 'handleShakeAnimationEnd_',
-    value: function handleShakeAnimationEnd_() {
-      var LABEL_SHAKE = MDCFloatingLabelFoundation.cssClasses.LABEL_SHAKE;
-
-      this.adapter_.removeClass(LABEL_SHAKE);
-    }
-  }]);
-
-  return MDCFloatingLabelFoundation;
-}(__WEBPACK_IMPORTED_MODULE_0__material_base_foundation__["a" /* default */]);
-
-/* harmony default export */ __webpack_exports__["a"] = (MDCFloatingLabelFoundation);
+// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
+/* harmony default export */ __webpack_exports__["default"] = (MDCFloatingLabelFoundation);
+//# sourceMappingURL=foundation.js.map
 
 /***/ }),
 
-/***/ 30:
+/***/ "./node_modules/@material/floating-label/index.js":
+/*!********************************************************!*\
+  !*** ./node_modules/@material/floating-label/index.js ***!
+  \********************************************************/
+/*! exports provided: MDCFloatingLabel, cssClasses, MDCFloatingLabelFoundation */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return cssClasses; });
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./component */ "./node_modules/@material/floating-label/component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCFloatingLabel", function() { return _component__WEBPACK_IMPORTED_MODULE_0__["MDCFloatingLabel"]; });
+
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/floating-label/constants.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return _constants__WEBPACK_IMPORTED_MODULE_1__["cssClasses"]; });
+
+/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/floating-label/foundation.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCFloatingLabelFoundation", function() { return _foundation__WEBPACK_IMPORTED_MODULE_2__["MDCFloatingLabelFoundation"]; });
+
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -3401,19 +2164,9 @@ var MDCFloatingLabelFoundation = function (_MDCFoundation) {
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-var cssClasses = {
-  LABEL_FLOAT_ABOVE: 'mdc-floating-label--float-above',
-  LABEL_SHAKE: 'mdc-floating-label--shake'
-};
 
 
-
-/***/ })
-
-/******/ });
-});
-//# sourceMappingURL=mdc.floatingLabel.js.map
+//# sourceMappingURL=index.js.map
 
 /***/ }),
 
@@ -3429,7 +2182,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCIconButtonToggle", function() { return MDCIconButtonToggle; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
-/* harmony import */ var _material_ripple_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/ripple/component */ "./node_modules/@material/icon-button/node_modules/@material/ripple/component.js");
+/* harmony import */ var _material_ripple_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/ripple/component */ "./node_modules/@material/ripple/component.js");
 /* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/icon-button/foundation.js");
 /**
  * @license
@@ -3713,792 +2466,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/@material/icon-button/node_modules/@material/ripple/component.js":
-/*!***************************************************************************************!*\
-  !*** ./node_modules/@material/icon-button/node_modules/@material/ripple/component.js ***!
-  \***************************************************************************************/
-/*! exports provided: MDCRipple */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCRipple", function() { return MDCRipple; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
-/* harmony import */ var _material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/dom/ponyfill */ "./node_modules/@material/dom/ponyfill.js");
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/icon-button/node_modules/@material/ripple/foundation.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./util */ "./node_modules/@material/icon-button/node_modules/@material/ripple/util.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-
-
-var MDCRipple = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCRipple, _super);
-    function MDCRipple() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.disabled = false;
-        return _this;
-    }
-    MDCRipple.attachTo = function (root, opts) {
-        if (opts === void 0) { opts = { isUnbounded: undefined }; }
-        var ripple = new MDCRipple(root);
-        // Only override unbounded behavior if option is explicitly specified
-        if (opts.isUnbounded !== undefined) {
-            ripple.unbounded = opts.isUnbounded;
-        }
-        return ripple;
-    };
-    MDCRipple.createAdapter = function (instance) {
-        return {
-            addClass: function (className) { return instance.root_.classList.add(className); },
-            browserSupportsCssVars: function () { return _util__WEBPACK_IMPORTED_MODULE_4__["supportsCssVariables"](window); },
-            computeBoundingRect: function () { return instance.root_.getBoundingClientRect(); },
-            containsEventTarget: function (target) { return instance.root_.contains(target); },
-            deregisterDocumentInteractionHandler: function (evtType, handler) {
-                return document.documentElement.removeEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            deregisterInteractionHandler: function (evtType, handler) {
-                return instance.root_.removeEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            deregisterResizeHandler: function (handler) { return window.removeEventListener('resize', handler); },
-            getWindowPageOffset: function () { return ({ x: window.pageXOffset, y: window.pageYOffset }); },
-            isSurfaceActive: function () { return Object(_material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__["matches"])(instance.root_, ':active'); },
-            isSurfaceDisabled: function () { return Boolean(instance.disabled); },
-            isUnbounded: function () { return Boolean(instance.unbounded); },
-            registerDocumentInteractionHandler: function (evtType, handler) {
-                return document.documentElement.addEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            registerInteractionHandler: function (evtType, handler) {
-                return instance.root_.addEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            registerResizeHandler: function (handler) { return window.addEventListener('resize', handler); },
-            removeClass: function (className) { return instance.root_.classList.remove(className); },
-            updateCssVariable: function (varName, value) { return instance.root_.style.setProperty(varName, value); },
-        };
-    };
-    Object.defineProperty(MDCRipple.prototype, "unbounded", {
-        get: function () {
-            return Boolean(this.unbounded_);
-        },
-        set: function (unbounded) {
-            this.unbounded_ = Boolean(unbounded);
-            this.setUnbounded_();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MDCRipple.prototype.activate = function () {
-        this.foundation_.activate();
-    };
-    MDCRipple.prototype.deactivate = function () {
-        this.foundation_.deactivate();
-    };
-    MDCRipple.prototype.layout = function () {
-        this.foundation_.layout();
-    };
-    MDCRipple.prototype.getDefaultFoundation = function () {
-        return new _foundation__WEBPACK_IMPORTED_MODULE_3__["MDCRippleFoundation"](MDCRipple.createAdapter(this));
-    };
-    MDCRipple.prototype.initialSyncWithDOM = function () {
-        var root = this.root_;
-        this.unbounded = 'mdcRippleIsUnbounded' in root.dataset;
-    };
-    /**
-     * Closure Compiler throws an access control error when directly accessing a
-     * protected or private property inside a getter/setter, like unbounded above.
-     * By accessing the protected property inside a method, we solve that problem.
-     * That's why this function exists.
-     */
-    MDCRipple.prototype.setUnbounded_ = function () {
-        this.foundation_.setUnbounded(Boolean(this.unbounded_));
-    };
-    return MDCRipple;
-}(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
-
-//# sourceMappingURL=component.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/icon-button/node_modules/@material/ripple/constants.js":
-/*!***************************************************************************************!*\
-  !*** ./node_modules/@material/icon-button/node_modules/@material/ripple/constants.js ***!
-  \***************************************************************************************/
-/*! exports provided: cssClasses, strings, numbers */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return cssClasses; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "strings", function() { return strings; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "numbers", function() { return numbers; });
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-var cssClasses = {
-    // Ripple is a special case where the "root" component is really a "mixin" of sorts,
-    // given that it's an 'upgrade' to an existing component. That being said it is the root
-    // CSS class that all other CSS classes derive from.
-    BG_FOCUSED: 'mdc-ripple-upgraded--background-focused',
-    FG_ACTIVATION: 'mdc-ripple-upgraded--foreground-activation',
-    FG_DEACTIVATION: 'mdc-ripple-upgraded--foreground-deactivation',
-    ROOT: 'mdc-ripple-upgraded',
-    UNBOUNDED: 'mdc-ripple-upgraded--unbounded',
-};
-var strings = {
-    VAR_FG_SCALE: '--mdc-ripple-fg-scale',
-    VAR_FG_SIZE: '--mdc-ripple-fg-size',
-    VAR_FG_TRANSLATE_END: '--mdc-ripple-fg-translate-end',
-    VAR_FG_TRANSLATE_START: '--mdc-ripple-fg-translate-start',
-    VAR_LEFT: '--mdc-ripple-left',
-    VAR_TOP: '--mdc-ripple-top',
-};
-var numbers = {
-    DEACTIVATION_TIMEOUT_MS: 225,
-    FG_DEACTIVATION_MS: 150,
-    INITIAL_ORIGIN_SCALE: 0.6,
-    PADDING: 10,
-    TAP_DELAY_MS: 300,
-};
-//# sourceMappingURL=constants.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/icon-button/node_modules/@material/ripple/foundation.js":
-/*!****************************************************************************************!*\
-  !*** ./node_modules/@material/icon-button/node_modules/@material/ripple/foundation.js ***!
-  \****************************************************************************************/
-/*! exports provided: MDCRippleFoundation, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCRippleFoundation", function() { return MDCRippleFoundation; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/foundation */ "./node_modules/@material/base/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/icon-button/node_modules/@material/ripple/constants.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./util */ "./node_modules/@material/icon-button/node_modules/@material/ripple/util.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-
-// Activation events registered on the root element of each instance for activation
-var ACTIVATION_EVENT_TYPES = [
-    'touchstart', 'pointerdown', 'mousedown', 'keydown',
-];
-// Deactivation events registered on documentElement when a pointer-related down event occurs
-var POINTER_DEACTIVATION_EVENT_TYPES = [
-    'touchend', 'pointerup', 'mouseup', 'contextmenu',
-];
-// simultaneous nested activations
-var activatedTargets = [];
-var MDCRippleFoundation = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCRippleFoundation, _super);
-    function MDCRippleFoundation(adapter) {
-        var _this = _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCRippleFoundation.defaultAdapter, adapter)) || this;
-        _this.activationAnimationHasEnded_ = false;
-        _this.activationTimer_ = 0;
-        _this.fgDeactivationRemovalTimer_ = 0;
-        _this.fgScale_ = '0';
-        _this.frame_ = { width: 0, height: 0 };
-        _this.initialSize_ = 0;
-        _this.layoutFrame_ = 0;
-        _this.maxRadius_ = 0;
-        _this.unboundedCoords_ = { left: 0, top: 0 };
-        _this.activationState_ = _this.defaultActivationState_();
-        _this.activationTimerCallback_ = function () {
-            _this.activationAnimationHasEnded_ = true;
-            _this.runDeactivationUXLogicIfReady_();
-        };
-        _this.activateHandler_ = function (e) { return _this.activate_(e); };
-        _this.deactivateHandler_ = function () { return _this.deactivate_(); };
-        _this.focusHandler_ = function () { return _this.handleFocus(); };
-        _this.blurHandler_ = function () { return _this.handleBlur(); };
-        _this.resizeHandler_ = function () { return _this.layout(); };
-        return _this;
-    }
-    Object.defineProperty(MDCRippleFoundation, "cssClasses", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCRippleFoundation, "strings", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["strings"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCRippleFoundation, "numbers", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCRippleFoundation, "defaultAdapter", {
-        get: function () {
-            return {
-                addClass: function () { return undefined; },
-                browserSupportsCssVars: function () { return true; },
-                computeBoundingRect: function () { return ({ top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0 }); },
-                containsEventTarget: function () { return true; },
-                deregisterDocumentInteractionHandler: function () { return undefined; },
-                deregisterInteractionHandler: function () { return undefined; },
-                deregisterResizeHandler: function () { return undefined; },
-                getWindowPageOffset: function () { return ({ x: 0, y: 0 }); },
-                isSurfaceActive: function () { return true; },
-                isSurfaceDisabled: function () { return true; },
-                isUnbounded: function () { return true; },
-                registerDocumentInteractionHandler: function () { return undefined; },
-                registerInteractionHandler: function () { return undefined; },
-                registerResizeHandler: function () { return undefined; },
-                removeClass: function () { return undefined; },
-                updateCssVariable: function () { return undefined; },
-            };
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MDCRippleFoundation.prototype.init = function () {
-        var _this = this;
-        var supportsPressRipple = this.supportsPressRipple_();
-        this.registerRootHandlers_(supportsPressRipple);
-        if (supportsPressRipple) {
-            var _a = MDCRippleFoundation.cssClasses, ROOT_1 = _a.ROOT, UNBOUNDED_1 = _a.UNBOUNDED;
-            requestAnimationFrame(function () {
-                _this.adapter_.addClass(ROOT_1);
-                if (_this.adapter_.isUnbounded()) {
-                    _this.adapter_.addClass(UNBOUNDED_1);
-                    // Unbounded ripples need layout logic applied immediately to set coordinates for both shade and ripple
-                    _this.layoutInternal_();
-                }
-            });
-        }
-    };
-    MDCRippleFoundation.prototype.destroy = function () {
-        var _this = this;
-        if (this.supportsPressRipple_()) {
-            if (this.activationTimer_) {
-                clearTimeout(this.activationTimer_);
-                this.activationTimer_ = 0;
-                this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_ACTIVATION);
-            }
-            if (this.fgDeactivationRemovalTimer_) {
-                clearTimeout(this.fgDeactivationRemovalTimer_);
-                this.fgDeactivationRemovalTimer_ = 0;
-                this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_DEACTIVATION);
-            }
-            var _a = MDCRippleFoundation.cssClasses, ROOT_2 = _a.ROOT, UNBOUNDED_2 = _a.UNBOUNDED;
-            requestAnimationFrame(function () {
-                _this.adapter_.removeClass(ROOT_2);
-                _this.adapter_.removeClass(UNBOUNDED_2);
-                _this.removeCssVars_();
-            });
-        }
-        this.deregisterRootHandlers_();
-        this.deregisterDeactivationHandlers_();
-    };
-    /**
-     * @param evt Optional event containing position information.
-     */
-    MDCRippleFoundation.prototype.activate = function (evt) {
-        this.activate_(evt);
-    };
-    MDCRippleFoundation.prototype.deactivate = function () {
-        this.deactivate_();
-    };
-    MDCRippleFoundation.prototype.layout = function () {
-        var _this = this;
-        if (this.layoutFrame_) {
-            cancelAnimationFrame(this.layoutFrame_);
-        }
-        this.layoutFrame_ = requestAnimationFrame(function () {
-            _this.layoutInternal_();
-            _this.layoutFrame_ = 0;
-        });
-    };
-    MDCRippleFoundation.prototype.setUnbounded = function (unbounded) {
-        var UNBOUNDED = MDCRippleFoundation.cssClasses.UNBOUNDED;
-        if (unbounded) {
-            this.adapter_.addClass(UNBOUNDED);
-        }
-        else {
-            this.adapter_.removeClass(UNBOUNDED);
-        }
-    };
-    MDCRippleFoundation.prototype.handleFocus = function () {
-        var _this = this;
-        requestAnimationFrame(function () {
-            return _this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
-        });
-    };
-    MDCRippleFoundation.prototype.handleBlur = function () {
-        var _this = this;
-        requestAnimationFrame(function () {
-            return _this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
-        });
-    };
-    /**
-     * We compute this property so that we are not querying information about the client
-     * until the point in time where the foundation requests it. This prevents scenarios where
-     * client-side feature-detection may happen too early, such as when components are rendered on the server
-     * and then initialized at mount time on the client.
-     */
-    MDCRippleFoundation.prototype.supportsPressRipple_ = function () {
-        return this.adapter_.browserSupportsCssVars();
-    };
-    MDCRippleFoundation.prototype.defaultActivationState_ = function () {
-        return {
-            activationEvent: undefined,
-            hasDeactivationUXRun: false,
-            isActivated: false,
-            isProgrammatic: false,
-            wasActivatedByPointer: false,
-            wasElementMadeActive: false,
-        };
-    };
-    /**
-     * supportsPressRipple Passed from init to save a redundant function call
-     */
-    MDCRippleFoundation.prototype.registerRootHandlers_ = function (supportsPressRipple) {
-        var _this = this;
-        if (supportsPressRipple) {
-            ACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-                _this.adapter_.registerInteractionHandler(evtType, _this.activateHandler_);
-            });
-            if (this.adapter_.isUnbounded()) {
-                this.adapter_.registerResizeHandler(this.resizeHandler_);
-            }
-        }
-        this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
-        this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
-    };
-    MDCRippleFoundation.prototype.registerDeactivationHandlers_ = function (evt) {
-        var _this = this;
-        if (evt.type === 'keydown') {
-            this.adapter_.registerInteractionHandler('keyup', this.deactivateHandler_);
-        }
-        else {
-            POINTER_DEACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-                _this.adapter_.registerDocumentInteractionHandler(evtType, _this.deactivateHandler_);
-            });
-        }
-    };
-    MDCRippleFoundation.prototype.deregisterRootHandlers_ = function () {
-        var _this = this;
-        ACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-            _this.adapter_.deregisterInteractionHandler(evtType, _this.activateHandler_);
-        });
-        this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
-        this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
-        if (this.adapter_.isUnbounded()) {
-            this.adapter_.deregisterResizeHandler(this.resizeHandler_);
-        }
-    };
-    MDCRippleFoundation.prototype.deregisterDeactivationHandlers_ = function () {
-        var _this = this;
-        this.adapter_.deregisterInteractionHandler('keyup', this.deactivateHandler_);
-        POINTER_DEACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-            _this.adapter_.deregisterDocumentInteractionHandler(evtType, _this.deactivateHandler_);
-        });
-    };
-    MDCRippleFoundation.prototype.removeCssVars_ = function () {
-        var _this = this;
-        var rippleStrings = MDCRippleFoundation.strings;
-        var keys = Object.keys(rippleStrings);
-        keys.forEach(function (key) {
-            if (key.indexOf('VAR_') === 0) {
-                _this.adapter_.updateCssVariable(rippleStrings[key], null);
-            }
-        });
-    };
-    MDCRippleFoundation.prototype.activate_ = function (evt) {
-        var _this = this;
-        if (this.adapter_.isSurfaceDisabled()) {
-            return;
-        }
-        var activationState = this.activationState_;
-        if (activationState.isActivated) {
-            return;
-        }
-        // Avoid reacting to follow-on events fired by touch device after an already-processed user interaction
-        var previousActivationEvent = this.previousActivationEvent_;
-        var isSameInteraction = previousActivationEvent && evt !== undefined && previousActivationEvent.type !== evt.type;
-        if (isSameInteraction) {
-            return;
-        }
-        activationState.isActivated = true;
-        activationState.isProgrammatic = evt === undefined;
-        activationState.activationEvent = evt;
-        activationState.wasActivatedByPointer = activationState.isProgrammatic ? false : evt !== undefined && (evt.type === 'mousedown' || evt.type === 'touchstart' || evt.type === 'pointerdown');
-        var hasActivatedChild = evt !== undefined && activatedTargets.length > 0 && activatedTargets.some(function (target) { return _this.adapter_.containsEventTarget(target); });
-        if (hasActivatedChild) {
-            // Immediately reset activation state, while preserving logic that prevents touch follow-on events
-            this.resetActivationState_();
-            return;
-        }
-        if (evt !== undefined) {
-            activatedTargets.push(evt.target);
-            this.registerDeactivationHandlers_(evt);
-        }
-        activationState.wasElementMadeActive = this.checkElementMadeActive_(evt);
-        if (activationState.wasElementMadeActive) {
-            this.animateActivation_();
-        }
-        requestAnimationFrame(function () {
-            // Reset array on next frame after the current event has had a chance to bubble to prevent ancestor ripples
-            activatedTargets = [];
-            if (!activationState.wasElementMadeActive
-                && evt !== undefined
-                && (evt.key === ' ' || evt.keyCode === 32)) {
-                // If space was pressed, try again within an rAF call to detect :active, because different UAs report
-                // active states inconsistently when they're called within event handling code:
-                // - https://bugs.chromium.org/p/chromium/issues/detail?id=635971
-                // - https://bugzilla.mozilla.org/show_bug.cgi?id=1293741
-                // We try first outside rAF to support Edge, which does not exhibit this problem, but will crash if a CSS
-                // variable is set within a rAF callback for a submit button interaction (#2241).
-                activationState.wasElementMadeActive = _this.checkElementMadeActive_(evt);
-                if (activationState.wasElementMadeActive) {
-                    _this.animateActivation_();
-                }
-            }
-            if (!activationState.wasElementMadeActive) {
-                // Reset activation state immediately if element was not made active.
-                _this.activationState_ = _this.defaultActivationState_();
-            }
-        });
-    };
-    MDCRippleFoundation.prototype.checkElementMadeActive_ = function (evt) {
-        return (evt !== undefined && evt.type === 'keydown') ? this.adapter_.isSurfaceActive() : true;
-    };
-    MDCRippleFoundation.prototype.animateActivation_ = function () {
-        var _this = this;
-        var _a = MDCRippleFoundation.strings, VAR_FG_TRANSLATE_START = _a.VAR_FG_TRANSLATE_START, VAR_FG_TRANSLATE_END = _a.VAR_FG_TRANSLATE_END;
-        var _b = MDCRippleFoundation.cssClasses, FG_DEACTIVATION = _b.FG_DEACTIVATION, FG_ACTIVATION = _b.FG_ACTIVATION;
-        var DEACTIVATION_TIMEOUT_MS = MDCRippleFoundation.numbers.DEACTIVATION_TIMEOUT_MS;
-        this.layoutInternal_();
-        var translateStart = '';
-        var translateEnd = '';
-        if (!this.adapter_.isUnbounded()) {
-            var _c = this.getFgTranslationCoordinates_(), startPoint = _c.startPoint, endPoint = _c.endPoint;
-            translateStart = startPoint.x + "px, " + startPoint.y + "px";
-            translateEnd = endPoint.x + "px, " + endPoint.y + "px";
-        }
-        this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_START, translateStart);
-        this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_END, translateEnd);
-        // Cancel any ongoing activation/deactivation animations
-        clearTimeout(this.activationTimer_);
-        clearTimeout(this.fgDeactivationRemovalTimer_);
-        this.rmBoundedActivationClasses_();
-        this.adapter_.removeClass(FG_DEACTIVATION);
-        // Force layout in order to re-trigger the animation.
-        this.adapter_.computeBoundingRect();
-        this.adapter_.addClass(FG_ACTIVATION);
-        this.activationTimer_ = setTimeout(function () { return _this.activationTimerCallback_(); }, DEACTIVATION_TIMEOUT_MS);
-    };
-    MDCRippleFoundation.prototype.getFgTranslationCoordinates_ = function () {
-        var _a = this.activationState_, activationEvent = _a.activationEvent, wasActivatedByPointer = _a.wasActivatedByPointer;
-        var startPoint;
-        if (wasActivatedByPointer) {
-            startPoint = Object(_util__WEBPACK_IMPORTED_MODULE_3__["getNormalizedEventCoords"])(activationEvent, this.adapter_.getWindowPageOffset(), this.adapter_.computeBoundingRect());
-        }
-        else {
-            startPoint = {
-                x: this.frame_.width / 2,
-                y: this.frame_.height / 2,
-            };
-        }
-        // Center the element around the start point.
-        startPoint = {
-            x: startPoint.x - (this.initialSize_ / 2),
-            y: startPoint.y - (this.initialSize_ / 2),
-        };
-        var endPoint = {
-            x: (this.frame_.width / 2) - (this.initialSize_ / 2),
-            y: (this.frame_.height / 2) - (this.initialSize_ / 2),
-        };
-        return { startPoint: startPoint, endPoint: endPoint };
-    };
-    MDCRippleFoundation.prototype.runDeactivationUXLogicIfReady_ = function () {
-        var _this = this;
-        // This method is called both when a pointing device is released, and when the activation animation ends.
-        // The deactivation animation should only run after both of those occur.
-        var FG_DEACTIVATION = MDCRippleFoundation.cssClasses.FG_DEACTIVATION;
-        var _a = this.activationState_, hasDeactivationUXRun = _a.hasDeactivationUXRun, isActivated = _a.isActivated;
-        var activationHasEnded = hasDeactivationUXRun || !isActivated;
-        if (activationHasEnded && this.activationAnimationHasEnded_) {
-            this.rmBoundedActivationClasses_();
-            this.adapter_.addClass(FG_DEACTIVATION);
-            this.fgDeactivationRemovalTimer_ = setTimeout(function () {
-                _this.adapter_.removeClass(FG_DEACTIVATION);
-            }, _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"].FG_DEACTIVATION_MS);
-        }
-    };
-    MDCRippleFoundation.prototype.rmBoundedActivationClasses_ = function () {
-        var FG_ACTIVATION = MDCRippleFoundation.cssClasses.FG_ACTIVATION;
-        this.adapter_.removeClass(FG_ACTIVATION);
-        this.activationAnimationHasEnded_ = false;
-        this.adapter_.computeBoundingRect();
-    };
-    MDCRippleFoundation.prototype.resetActivationState_ = function () {
-        var _this = this;
-        this.previousActivationEvent_ = this.activationState_.activationEvent;
-        this.activationState_ = this.defaultActivationState_();
-        // Touch devices may fire additional events for the same interaction within a short time.
-        // Store the previous event until it's safe to assume that subsequent events are for new interactions.
-        setTimeout(function () { return _this.previousActivationEvent_ = undefined; }, MDCRippleFoundation.numbers.TAP_DELAY_MS);
-    };
-    MDCRippleFoundation.prototype.deactivate_ = function () {
-        var _this = this;
-        var activationState = this.activationState_;
-        // This can happen in scenarios such as when you have a keyup event that blurs the element.
-        if (!activationState.isActivated) {
-            return;
-        }
-        var state = tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, activationState);
-        if (activationState.isProgrammatic) {
-            requestAnimationFrame(function () { return _this.animateDeactivation_(state); });
-            this.resetActivationState_();
-        }
-        else {
-            this.deregisterDeactivationHandlers_();
-            requestAnimationFrame(function () {
-                _this.activationState_.hasDeactivationUXRun = true;
-                _this.animateDeactivation_(state);
-                _this.resetActivationState_();
-            });
-        }
-    };
-    MDCRippleFoundation.prototype.animateDeactivation_ = function (_a) {
-        var wasActivatedByPointer = _a.wasActivatedByPointer, wasElementMadeActive = _a.wasElementMadeActive;
-        if (wasActivatedByPointer || wasElementMadeActive) {
-            this.runDeactivationUXLogicIfReady_();
-        }
-    };
-    MDCRippleFoundation.prototype.layoutInternal_ = function () {
-        var _this = this;
-        this.frame_ = this.adapter_.computeBoundingRect();
-        var maxDim = Math.max(this.frame_.height, this.frame_.width);
-        // Surface diameter is treated differently for unbounded vs. bounded ripples.
-        // Unbounded ripple diameter is calculated smaller since the surface is expected to already be padded appropriately
-        // to extend the hitbox, and the ripple is expected to meet the edges of the padded hitbox (which is typically
-        // square). Bounded ripples, on the other hand, are fully expected to expand beyond the surface's longest diameter
-        // (calculated based on the diagonal plus a constant padding), and are clipped at the surface's border via
-        // `overflow: hidden`.
-        var getBoundedRadius = function () {
-            var hypotenuse = Math.sqrt(Math.pow(_this.frame_.width, 2) + Math.pow(_this.frame_.height, 2));
-            return hypotenuse + MDCRippleFoundation.numbers.PADDING;
-        };
-        this.maxRadius_ = this.adapter_.isUnbounded() ? maxDim : getBoundedRadius();
-        // Ripple is sized as a fraction of the largest dimension of the surface, then scales up using a CSS scale transform
-        this.initialSize_ = Math.floor(maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE);
-        this.fgScale_ = "" + this.maxRadius_ / this.initialSize_;
-        this.updateLayoutCssVars_();
-    };
-    MDCRippleFoundation.prototype.updateLayoutCssVars_ = function () {
-        var _a = MDCRippleFoundation.strings, VAR_FG_SIZE = _a.VAR_FG_SIZE, VAR_LEFT = _a.VAR_LEFT, VAR_TOP = _a.VAR_TOP, VAR_FG_SCALE = _a.VAR_FG_SCALE;
-        this.adapter_.updateCssVariable(VAR_FG_SIZE, this.initialSize_ + "px");
-        this.adapter_.updateCssVariable(VAR_FG_SCALE, this.fgScale_);
-        if (this.adapter_.isUnbounded()) {
-            this.unboundedCoords_ = {
-                left: Math.round((this.frame_.width / 2) - (this.initialSize_ / 2)),
-                top: Math.round((this.frame_.height / 2) - (this.initialSize_ / 2)),
-            };
-            this.adapter_.updateCssVariable(VAR_LEFT, this.unboundedCoords_.left + "px");
-            this.adapter_.updateCssVariable(VAR_TOP, this.unboundedCoords_.top + "px");
-        }
-    };
-    return MDCRippleFoundation;
-}(_material_base_foundation__WEBPACK_IMPORTED_MODULE_1__["MDCFoundation"]));
-
-// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
-/* harmony default export */ __webpack_exports__["default"] = (MDCRippleFoundation);
-//# sourceMappingURL=foundation.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/icon-button/node_modules/@material/ripple/util.js":
-/*!**********************************************************************************!*\
-  !*** ./node_modules/@material/icon-button/node_modules/@material/ripple/util.js ***!
-  \**********************************************************************************/
-/*! exports provided: supportsCssVariables, applyPassive, getNormalizedEventCoords */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "supportsCssVariables", function() { return supportsCssVariables; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyPassive", function() { return applyPassive; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNormalizedEventCoords", function() { return getNormalizedEventCoords; });
-/**
- * Stores result from supportsCssVariables to avoid redundant processing to
- * detect CSS custom variable support.
- */
-var supportsCssVariables_;
-/**
- * Stores result from applyPassive to avoid redundant processing to detect
- * passive event listener support.
- */
-var supportsPassive_;
-function detectEdgePseudoVarBug(windowObj) {
-    // Detect versions of Edge with buggy var() support
-    // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
-    var document = windowObj.document;
-    var node = document.createElement('div');
-    node.className = 'mdc-ripple-surface--test-edge-var-bug';
-    document.body.appendChild(node);
-    // The bug exists if ::before style ends up propagating to the parent element.
-    // Additionally, getComputedStyle returns null in iframes with display: "none" in Firefox,
-    // but Firefox is known to support CSS custom properties correctly.
-    // See: https://bugzilla.mozilla.org/show_bug.cgi?id=548397
-    var computedStyle = windowObj.getComputedStyle(node);
-    var hasPseudoVarBug = computedStyle !== null && computedStyle.borderTopStyle === 'solid';
-    if (node.parentNode) {
-        node.parentNode.removeChild(node);
-    }
-    return hasPseudoVarBug;
-}
-function supportsCssVariables(windowObj, forceRefresh) {
-    if (forceRefresh === void 0) { forceRefresh = false; }
-    var CSS = windowObj.CSS;
-    var supportsCssVars = supportsCssVariables_;
-    if (typeof supportsCssVariables_ === 'boolean' && !forceRefresh) {
-        return supportsCssVariables_;
-    }
-    var supportsFunctionPresent = CSS && typeof CSS.supports === 'function';
-    if (!supportsFunctionPresent) {
-        return false;
-    }
-    var explicitlySupportsCssVars = CSS.supports('--css-vars', 'yes');
-    // See: https://bugs.webkit.org/show_bug.cgi?id=154669
-    // See: README section on Safari
-    var weAreFeatureDetectingSafari10plus = (CSS.supports('(--css-vars: yes)') &&
-        CSS.supports('color', '#00000000'));
-    if (explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus) {
-        supportsCssVars = !detectEdgePseudoVarBug(windowObj);
-    }
-    else {
-        supportsCssVars = false;
-    }
-    if (!forceRefresh) {
-        supportsCssVariables_ = supportsCssVars;
-    }
-    return supportsCssVars;
-}
-/**
- * Determine whether the current browser supports passive event listeners, and
- * if so, use them.
- */
-function applyPassive(globalObj, forceRefresh) {
-    if (globalObj === void 0) { globalObj = window; }
-    if (forceRefresh === void 0) { forceRefresh = false; }
-    if (supportsPassive_ === undefined || forceRefresh) {
-        var isSupported_1 = false;
-        try {
-            globalObj.document.addEventListener('test', function () { return undefined; }, {
-                get passive() {
-                    isSupported_1 = true;
-                    return isSupported_1;
-                },
-            });
-        }
-        catch (e) {
-        } // tslint:disable-line:no-empty cannot throw error due to tests. tslint also disables console.log.
-        supportsPassive_ = isSupported_1;
-    }
-    return supportsPassive_ ? { passive: true } : false;
-}
-function getNormalizedEventCoords(evt, pageOffset, clientRect) {
-    if (!evt) {
-        return { x: 0, y: 0 };
-    }
-    var x = pageOffset.x, y = pageOffset.y;
-    var documentX = x + clientRect.left;
-    var documentY = y + clientRect.top;
-    var normalizedX;
-    var normalizedY;
-    // Determine touch point relative to the ripple container.
-    if (evt.type === 'touchstart') {
-        var touchEvent = evt;
-        normalizedX = touchEvent.changedTouches[0].pageX - documentX;
-        normalizedY = touchEvent.changedTouches[0].pageY - documentY;
-    }
-    else {
-        var mouseEvent = evt;
-        normalizedX = mouseEvent.pageX - documentX;
-        normalizedY = mouseEvent.pageY - documentY;
-    }
-    return { x: normalizedX, y: normalizedY };
-}
-//# sourceMappingURL=util.js.map
-
-/***/ }),
-
 /***/ "./node_modules/@material/line-ripple/component.js":
 /*!*********************************************************!*\
   !*** ./node_modules/@material/line-ripple/component.js ***!
@@ -4732,6 +2699,53 @@ var MDCLineRippleFoundation = /** @class */ (function (_super) {
 // tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
 /* harmony default export */ __webpack_exports__["default"] = (MDCLineRippleFoundation);
 //# sourceMappingURL=foundation.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@material/line-ripple/index.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/@material/line-ripple/index.js ***!
+  \*****************************************************/
+/*! exports provided: MDCLineRipple, cssClasses, MDCLineRippleFoundation */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./component */ "./node_modules/@material/line-ripple/component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCLineRipple", function() { return _component__WEBPACK_IMPORTED_MODULE_0__["MDCLineRipple"]; });
+
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/line-ripple/constants.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return _constants__WEBPACK_IMPORTED_MODULE_1__["cssClasses"]; });
+
+/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/line-ripple/foundation.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCLineRippleFoundation", function() { return _foundation__WEBPACK_IMPORTED_MODULE_2__["MDCLineRippleFoundation"]; });
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+
+
+//# sourceMappingURL=index.js.map
 
 /***/ }),
 
@@ -5648,24 +3662,16 @@ var MDCMenuSurface = /** @class */ (function (_super) {
         this.unlisten(_constants__WEBPACK_IMPORTED_MODULE_2__["strings"].CLOSED_EVENT, this.deregisterBodyClickListener_);
         _super.prototype.destroy.call(this);
     };
-    Object.defineProperty(MDCMenuSurface.prototype, "open", {
-        get: function () {
-            return this.foundation_.isOpen();
-        },
-        set: function (value) {
-            if (value) {
-                var focusableElements = this.root_.querySelectorAll(_constants__WEBPACK_IMPORTED_MODULE_2__["strings"].FOCUSABLE_ELEMENTS);
-                this.firstFocusableElement_ = focusableElements[0];
-                this.lastFocusableElement_ = focusableElements[focusableElements.length - 1];
-                this.foundation_.open();
-            }
-            else {
-                this.foundation_.close();
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
+    MDCMenuSurface.prototype.isOpen = function () {
+        return this.foundation_.isOpen();
+    };
+    MDCMenuSurface.prototype.open = function () {
+        this.foundation_.open();
+    };
+    MDCMenuSurface.prototype.close = function (skipRestoreFocus) {
+        if (skipRestoreFocus === void 0) { skipRestoreFocus = false; }
+        this.foundation_.close(skipRestoreFocus);
+    };
     Object.defineProperty(MDCMenuSurface.prototype, "quickOpen", {
         set: function (quickOpen) {
             this.foundation_.setQuickOpen(quickOpen);
@@ -5741,18 +3747,6 @@ var MDCMenuSurface = /** @class */ (function (_super) {
                         _this.previousFocus_.focus();
                     }
                 }
-            },
-            isFirstElementFocused: function () {
-                return _this.firstFocusableElement_ ? _this.firstFocusableElement_ === document.activeElement : false;
-            },
-            isLastElementFocused: function () {
-                return _this.lastFocusableElement_ ? _this.lastFocusableElement_ === document.activeElement : false;
-            },
-            focusFirstElement: function () {
-                return _this.firstFocusableElement_ && _this.firstFocusableElement_.focus && _this.firstFocusableElement_.focus();
-            },
-            focusLastElement: function () {
-                return _this.lastFocusableElement_ && _this.lastFocusableElement_.focus && _this.lastFocusableElement_.focus();
             },
             getInnerDimensions: function () {
                 return { width: _this.root_.offsetWidth, height: _this.root_.offsetHeight };
@@ -5979,8 +3973,6 @@ var MDCMenuSurfaceFoundation = /** @class */ (function (_super) {
                 hasAnchor: function () { return false; },
                 isElementInContainer: function () { return false; },
                 isFocused: function () { return false; },
-                isFirstElementFocused: function () { return false; },
-                isLastElementFocused: function () { return false; },
                 isRtl: function () { return false; },
                 getInnerDimensions: function () { return ({ height: 0, width: 0 }); },
                 getAnchorDimensions: function () { return null; },
@@ -5992,8 +3984,6 @@ var MDCMenuSurfaceFoundation = /** @class */ (function (_super) {
                 setTransformOrigin: function () { return undefined; },
                 saveFocus: function () { return undefined; },
                 restoreFocus: function () { return undefined; },
-                focusFirstElement: function () { return undefined; },
-                focusLastElement: function () { return undefined; },
                 notifyClose: function () { return undefined; },
                 notifyOpen: function () { return undefined; },
             };
@@ -6080,8 +4070,9 @@ var MDCMenuSurfaceFoundation = /** @class */ (function (_super) {
     /**
      * Closes the menu surface.
      */
-    MDCMenuSurfaceFoundation.prototype.close = function () {
+    MDCMenuSurfaceFoundation.prototype.close = function (skipRestoreFocus) {
         var _this = this;
+        if (skipRestoreFocus === void 0) { skipRestoreFocus = false; }
         if (!this.isQuickOpen_) {
             this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
         }
@@ -6099,7 +4090,9 @@ var MDCMenuSurfaceFoundation = /** @class */ (function (_super) {
             }
         });
         this.isOpen_ = false;
-        this.maybeRestoreFocus_();
+        if (!skipRestoreFocus) {
+            this.maybeRestoreFocus_();
+        }
     };
     /** Handle clicks and close if not within menu-surface element. */
     MDCMenuSurfaceFoundation.prototype.handleBodyClick = function (evt) {
@@ -6111,21 +4104,10 @@ var MDCMenuSurfaceFoundation = /** @class */ (function (_super) {
     };
     /** Handle keys that close the surface. */
     MDCMenuSurfaceFoundation.prototype.handleKeydown = function (evt) {
-        var keyCode = evt.keyCode, key = evt.key, shiftKey = evt.shiftKey;
+        var keyCode = evt.keyCode, key = evt.key;
         var isEscape = key === 'Escape' || keyCode === 27;
-        var isTab = key === 'Tab' || keyCode === 9;
         if (isEscape) {
             this.close();
-        }
-        else if (isTab) {
-            if (this.adapter_.isLastElementFocused() && !shiftKey) {
-                this.adapter_.focusFirstElement();
-                evt.preventDefault();
-            }
-            else if (this.adapter_.isFirstElementFocused() && shiftKey) {
-                this.adapter_.focusLastElement();
-                evt.preventDefault();
-            }
         }
     };
     MDCMenuSurfaceFoundation.prototype.autoPosition_ = function () {
@@ -6365,7 +4347,7 @@ var MDCMenuSurfaceFoundation = /** @class */ (function (_super) {
 /*!******************************************************!*\
   !*** ./node_modules/@material/menu-surface/index.js ***!
   \******************************************************/
-/*! exports provided: Corner, CornerBit, util, MDCMenuSurface, MDCMenuSurfaceFoundation */
+/*! exports provided: Corner, CornerBit, util, MDCMenuSurface, cssClasses, strings, numbers, MDCMenuSurfaceFoundation */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6379,6 +4361,12 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./component */ "./node_modules/@material/menu-surface/component.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCMenuSurface", function() { return _component__WEBPACK_IMPORTED_MODULE_2__["MDCMenuSurface"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return _constants__WEBPACK_IMPORTED_MODULE_1__["cssClasses"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "strings", function() { return _constants__WEBPACK_IMPORTED_MODULE_1__["strings"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "numbers", function() { return _constants__WEBPACK_IMPORTED_MODULE_1__["numbers"]; });
 
 /* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/menu-surface/foundation.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCMenuSurfaceFoundation", function() { return _foundation__WEBPACK_IMPORTED_MODULE_3__["MDCMenuSurfaceFoundation"]; });
@@ -6405,6 +4393,7 @@ __webpack_require__.r(__webpack_exports__);
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 
 
 
@@ -6475,12 +4464,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCMenu", function() { return MDCMenu; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
-/* harmony import */ var _material_list_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/list/component */ "./node_modules/@material/list/component.js");
-/* harmony import */ var _material_list_foundation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material/list/foundation */ "./node_modules/@material/list/foundation.js");
-/* harmony import */ var _material_menu_surface_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material/menu-surface/component */ "./node_modules/@material/menu/node_modules/@material/menu-surface/component.js");
-/* harmony import */ var _material_menu_surface_foundation__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material/menu-surface/foundation */ "./node_modules/@material/menu/node_modules/@material/menu-surface/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/menu/constants.js");
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/menu/foundation.js");
+/* harmony import */ var _material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/dom/ponyfill */ "./node_modules/@material/dom/ponyfill.js");
+/* harmony import */ var _material_list_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material/list/component */ "./node_modules/@material/list/component.js");
+/* harmony import */ var _material_list_foundation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material/list/foundation */ "./node_modules/@material/list/foundation.js");
+/* harmony import */ var _material_menu_surface_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material/menu-surface/component */ "./node_modules/@material/menu-surface/component.js");
+/* harmony import */ var _material_menu_surface_foundation__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material/menu-surface/foundation */ "./node_modules/@material/menu-surface/foundation.js");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/menu/constants.js");
+/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/menu/foundation.js");
 /**
  * @license
  * Copyright 2018 Google Inc.
@@ -6511,6 +4501,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var MDCMenu = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCMenu, _super);
     function MDCMenu() {
@@ -6520,15 +4511,15 @@ var MDCMenu = /** @class */ (function (_super) {
         return new MDCMenu(root);
     };
     MDCMenu.prototype.initialize = function (menuSurfaceFactory, listFactory) {
-        if (menuSurfaceFactory === void 0) { menuSurfaceFactory = function (el) { return new _material_menu_surface_component__WEBPACK_IMPORTED_MODULE_4__["MDCMenuSurface"](el); }; }
-        if (listFactory === void 0) { listFactory = function (el) { return new _material_list_component__WEBPACK_IMPORTED_MODULE_2__["MDCList"](el); }; }
+        if (menuSurfaceFactory === void 0) { menuSurfaceFactory = function (el) { return new _material_menu_surface_component__WEBPACK_IMPORTED_MODULE_5__["MDCMenuSurface"](el); }; }
+        if (listFactory === void 0) { listFactory = function (el) { return new _material_list_component__WEBPACK_IMPORTED_MODULE_3__["MDCList"](el); }; }
         this.menuSurfaceFactory_ = menuSurfaceFactory;
         this.listFactory_ = listFactory;
     };
     MDCMenu.prototype.initialSyncWithDOM = function () {
         var _this = this;
         this.menuSurface_ = this.menuSurfaceFactory_(this.root_);
-        var list = this.root_.querySelector(_constants__WEBPACK_IMPORTED_MODULE_6__["strings"].LIST_SELECTOR);
+        var list = this.root_.querySelector(_constants__WEBPACK_IMPORTED_MODULE_7__["strings"].LIST_SELECTOR);
         if (list) {
             this.list_ = this.listFactory_(list);
             this.list_.wrapFocus = true;
@@ -6539,26 +4530,31 @@ var MDCMenu = /** @class */ (function (_super) {
         this.handleKeydown_ = function (evt) { return _this.foundation_.handleKeydown(evt); };
         this.handleItemAction_ = function (evt) { return _this.foundation_.handleItemAction(_this.items[evt.detail.index]); };
         this.handleMenuSurfaceOpened_ = function () { return _this.foundation_.handleMenuSurfaceOpened(); };
-        this.menuSurface_.listen(_material_menu_surface_foundation__WEBPACK_IMPORTED_MODULE_5__["MDCMenuSurfaceFoundation"].strings.OPENED_EVENT, this.handleMenuSurfaceOpened_);
+        this.menuSurface_.listen(_material_menu_surface_foundation__WEBPACK_IMPORTED_MODULE_6__["MDCMenuSurfaceFoundation"].strings.OPENED_EVENT, this.handleMenuSurfaceOpened_);
         this.listen('keydown', this.handleKeydown_);
-        this.listen(_material_list_foundation__WEBPACK_IMPORTED_MODULE_3__["MDCListFoundation"].strings.ACTION_EVENT, this.handleItemAction_);
+        this.listen(_material_list_foundation__WEBPACK_IMPORTED_MODULE_4__["MDCListFoundation"].strings.ACTION_EVENT, this.handleItemAction_);
     };
     MDCMenu.prototype.destroy = function () {
         if (this.list_) {
             this.list_.destroy();
         }
         this.menuSurface_.destroy();
-        this.menuSurface_.unlisten(_material_menu_surface_foundation__WEBPACK_IMPORTED_MODULE_5__["MDCMenuSurfaceFoundation"].strings.OPENED_EVENT, this.handleMenuSurfaceOpened_);
+        this.menuSurface_.unlisten(_material_menu_surface_foundation__WEBPACK_IMPORTED_MODULE_6__["MDCMenuSurfaceFoundation"].strings.OPENED_EVENT, this.handleMenuSurfaceOpened_);
         this.unlisten('keydown', this.handleKeydown_);
-        this.unlisten(_material_list_foundation__WEBPACK_IMPORTED_MODULE_3__["MDCListFoundation"].strings.ACTION_EVENT, this.handleItemAction_);
+        this.unlisten(_material_list_foundation__WEBPACK_IMPORTED_MODULE_4__["MDCListFoundation"].strings.ACTION_EVENT, this.handleItemAction_);
         _super.prototype.destroy.call(this);
     };
     Object.defineProperty(MDCMenu.prototype, "open", {
         get: function () {
-            return this.menuSurface_.open;
+            return this.menuSurface_.isOpen();
         },
         set: function (value) {
-            this.menuSurface_.open = value;
+            if (value) {
+                this.menuSurface_.open();
+            }
+            else {
+                this.menuSurface_.close();
+            }
         },
         enumerable: true,
         configurable: true
@@ -6613,6 +4609,13 @@ var MDCMenu = /** @class */ (function (_super) {
         this.menuSurface_.setAnchorMargin(margin);
     };
     /**
+     * Sets the list item as the selected row at the specified index.
+     * @param index Index of list item within menu.
+     */
+    MDCMenu.prototype.setSelectedIndex = function (index) {
+        this.foundation_.setSelectedIndex(index);
+    };
+    /**
      * @return The item within the menu at the index specified.
      */
     MDCMenu.prototype.getOptionByIndex = function (index) {
@@ -6665,23 +4668,24 @@ var MDCMenu = /** @class */ (function (_super) {
                 list[index].removeAttribute(attr);
             },
             elementContainsClass: function (element, className) { return element.classList.contains(className); },
-            closeSurface: function () { return _this.open = false; },
+            closeSurface: function (skipRestoreFocus) { return _this.menuSurface_.close(skipRestoreFocus); },
             getElementIndex: function (element) { return _this.items.indexOf(element); },
-            getParentElement: function (element) { return element.parentElement; },
-            getSelectedElementIndex: function (selectionGroup) {
-                var selectedListItem = selectionGroup.querySelector("." + _constants__WEBPACK_IMPORTED_MODULE_6__["cssClasses"].MENU_SELECTED_LIST_ITEM);
-                return selectedListItem ? _this.items.indexOf(selectedListItem) : -1;
-            },
-            notifySelected: function (evtData) { return _this.emit(_constants__WEBPACK_IMPORTED_MODULE_6__["strings"].SELECTED_EVENT, {
+            notifySelected: function (evtData) { return _this.emit(_constants__WEBPACK_IMPORTED_MODULE_7__["strings"].SELECTED_EVENT, {
                 index: evtData.index,
                 item: _this.items[evtData.index],
             }); },
             getMenuItemCount: function () { return _this.items.length; },
             focusItemAtIndex: function (index) { return _this.items[index].focus(); },
-            focusListRoot: function () { return _this.root_.querySelector(_constants__WEBPACK_IMPORTED_MODULE_6__["strings"].LIST_SELECTOR).focus(); },
+            focusListRoot: function () { return _this.root_.querySelector(_constants__WEBPACK_IMPORTED_MODULE_7__["strings"].LIST_SELECTOR).focus(); },
+            isSelectableItemAtIndex: function (index) { return !!Object(_material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__["closest"])(_this.items[index], "." + _constants__WEBPACK_IMPORTED_MODULE_7__["cssClasses"].MENU_SELECTION_GROUP); },
+            getSelectedSiblingOfItemAtIndex: function (index) {
+                var selectionGroupEl = Object(_material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__["closest"])(_this.items[index], "." + _constants__WEBPACK_IMPORTED_MODULE_7__["cssClasses"].MENU_SELECTION_GROUP);
+                var selectedItemEl = selectionGroupEl.querySelector("." + _constants__WEBPACK_IMPORTED_MODULE_7__["cssClasses"].MENU_SELECTED_LIST_ITEM);
+                return selectedItemEl ? _this.items.indexOf(selectedItemEl) : -1;
+            },
         };
         // tslint:enable:object-literal-sort-keys
-        return new _foundation__WEBPACK_IMPORTED_MODULE_7__["MDCMenuFoundation"](adapter);
+        return new _foundation__WEBPACK_IMPORTED_MODULE_8__["MDCMenuFoundation"](adapter);
     };
     return MDCMenu;
 }(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
@@ -6731,7 +4735,7 @@ var cssClasses = {
     ROOT: 'mdc-menu',
 };
 var strings = {
-    ARIA_SELECTED_ATTR: 'aria-selected',
+    ARIA_CHECKED_ATTR: 'aria-checked',
     CHECKBOX_SELECTOR: 'input[type="checkbox"]',
     LIST_SELECTOR: '.mdc-list',
     SELECTED_EVENT: 'MDCMenu:selected',
@@ -6763,9 +4767,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCMenuFoundation", function() { return MDCMenuFoundation; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _material_base_foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/foundation */ "./node_modules/@material/base/foundation.js");
-/* harmony import */ var _material_list_foundation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/list/foundation */ "./node_modules/@material/list/foundation.js");
-/* harmony import */ var _material_menu_surface_foundation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material/menu-surface/foundation */ "./node_modules/@material/menu/node_modules/@material/menu-surface/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/menu/constants.js");
+/* harmony import */ var _material_menu_surface_foundation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/menu-surface/foundation */ "./node_modules/@material/menu-surface/foundation.js");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/menu/constants.js");
 /**
  * @license
  * Copyright 2018 Google Inc.
@@ -6792,32 +4795,31 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 var MDCMenuFoundation = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCMenuFoundation, _super);
     function MDCMenuFoundation(adapter) {
         var _this = _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCMenuFoundation.defaultAdapter, adapter)) || this;
         _this.closeAnimationEndTimerId_ = 0;
-        _this.defaultFocusState_ = _constants__WEBPACK_IMPORTED_MODULE_4__["DefaultFocusState"].LIST_ROOT;
+        _this.defaultFocusState_ = _constants__WEBPACK_IMPORTED_MODULE_3__["DefaultFocusState"].LIST_ROOT;
         return _this;
     }
     Object.defineProperty(MDCMenuFoundation, "cssClasses", {
         get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_4__["cssClasses"];
+            return _constants__WEBPACK_IMPORTED_MODULE_3__["cssClasses"];
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(MDCMenuFoundation, "strings", {
         get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_4__["strings"];
+            return _constants__WEBPACK_IMPORTED_MODULE_3__["strings"];
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(MDCMenuFoundation, "numbers", {
         get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_4__["numbers"];
+            return _constants__WEBPACK_IMPORTED_MODULE_3__["numbers"];
         },
         enumerable: true,
         configurable: true
@@ -6836,12 +4838,12 @@ var MDCMenuFoundation = /** @class */ (function (_super) {
                 elementContainsClass: function () { return false; },
                 closeSurface: function () { return undefined; },
                 getElementIndex: function () { return -1; },
-                getParentElement: function () { return null; },
-                getSelectedElementIndex: function () { return -1; },
                 notifySelected: function () { return undefined; },
                 getMenuItemCount: function () { return 0; },
                 focusItemAtIndex: function () { return undefined; },
                 focusListRoot: function () { return undefined; },
+                getSelectedSiblingOfItemAtIndex: function () { return -1; },
+                isSelectableItemAtIndex: function () { return false; },
             };
             // tslint:enable:object-literal-sort-keys
         },
@@ -6858,7 +4860,7 @@ var MDCMenuFoundation = /** @class */ (function (_super) {
         var key = evt.key, keyCode = evt.keyCode;
         var isTab = key === 'Tab' || keyCode === 9;
         if (isTab) {
-            this.adapter_.closeSurface();
+            this.adapter_.closeSurface(/** skipRestoreFocus */ true);
         }
     };
     MDCMenuFoundation.prototype.handleItemAction = function (listItem) {
@@ -6871,21 +4873,20 @@ var MDCMenuFoundation = /** @class */ (function (_super) {
         this.adapter_.closeSurface();
         // Wait for the menu to close before adding/removing classes that affect styles.
         this.closeAnimationEndTimerId_ = setTimeout(function () {
-            var selectionGroup = _this.getSelectionGroup_(listItem);
-            if (selectionGroup) {
-                _this.handleSelectionGroup_(selectionGroup, index);
+            if (_this.adapter_.isSelectableItemAtIndex(index)) {
+                _this.setSelectedIndex(index);
             }
-        }, _material_menu_surface_foundation__WEBPACK_IMPORTED_MODULE_3__["MDCMenuSurfaceFoundation"].numbers.TRANSITION_CLOSE_DURATION);
+        }, _material_menu_surface_foundation__WEBPACK_IMPORTED_MODULE_2__["MDCMenuSurfaceFoundation"].numbers.TRANSITION_CLOSE_DURATION);
     };
     MDCMenuFoundation.prototype.handleMenuSurfaceOpened = function () {
         switch (this.defaultFocusState_) {
-            case _constants__WEBPACK_IMPORTED_MODULE_4__["DefaultFocusState"].FIRST_ITEM:
+            case _constants__WEBPACK_IMPORTED_MODULE_3__["DefaultFocusState"].FIRST_ITEM:
                 this.adapter_.focusItemAtIndex(0);
                 break;
-            case _constants__WEBPACK_IMPORTED_MODULE_4__["DefaultFocusState"].LAST_ITEM:
+            case _constants__WEBPACK_IMPORTED_MODULE_3__["DefaultFocusState"].LAST_ITEM:
                 this.adapter_.focusItemAtIndex(this.adapter_.getMenuItemCount() - 1);
                 break;
-            case _constants__WEBPACK_IMPORTED_MODULE_4__["DefaultFocusState"].NONE:
+            case _constants__WEBPACK_IMPORTED_MODULE_3__["DefaultFocusState"].NONE:
                 // Do nothing.
                 break;
             default:
@@ -6902,38 +4903,27 @@ var MDCMenuFoundation = /** @class */ (function (_super) {
         this.defaultFocusState_ = focusState;
     };
     /**
-     * Handles toggling the selected classes in a selection group when a selection is made.
+     * Selects the list item at `index` within the menu.
+     * @param index Index of list item within the menu.
      */
-    MDCMenuFoundation.prototype.handleSelectionGroup_ = function (selectionGroup, index) {
-        // De-select the previous selection in this group.
-        var selectedIndex = this.adapter_.getSelectedElementIndex(selectionGroup);
-        if (selectedIndex >= 0) {
-            this.adapter_.removeAttributeFromElementAtIndex(selectedIndex, _constants__WEBPACK_IMPORTED_MODULE_4__["strings"].ARIA_SELECTED_ATTR);
-            this.adapter_.removeClassFromElementAtIndex(selectedIndex, _constants__WEBPACK_IMPORTED_MODULE_4__["cssClasses"].MENU_SELECTED_LIST_ITEM);
+    MDCMenuFoundation.prototype.setSelectedIndex = function (index) {
+        this.validatedIndex_(index);
+        if (!this.adapter_.isSelectableItemAtIndex(index)) {
+            throw new Error('MDCMenuFoundation: No selection group at specified index.');
         }
-        // Select the new list item in this group.
-        this.adapter_.addClassToElementAtIndex(index, _constants__WEBPACK_IMPORTED_MODULE_4__["cssClasses"].MENU_SELECTED_LIST_ITEM);
-        this.adapter_.addAttributeToElementAtIndex(index, _constants__WEBPACK_IMPORTED_MODULE_4__["strings"].ARIA_SELECTED_ATTR, 'true');
+        var prevSelectedIndex = this.adapter_.getSelectedSiblingOfItemAtIndex(index);
+        if (prevSelectedIndex >= 0) {
+            this.adapter_.removeAttributeFromElementAtIndex(prevSelectedIndex, _constants__WEBPACK_IMPORTED_MODULE_3__["strings"].ARIA_CHECKED_ATTR);
+            this.adapter_.removeClassFromElementAtIndex(prevSelectedIndex, _constants__WEBPACK_IMPORTED_MODULE_3__["cssClasses"].MENU_SELECTED_LIST_ITEM);
+        }
+        this.adapter_.addClassToElementAtIndex(index, _constants__WEBPACK_IMPORTED_MODULE_3__["cssClasses"].MENU_SELECTED_LIST_ITEM);
+        this.adapter_.addAttributeToElementAtIndex(index, _constants__WEBPACK_IMPORTED_MODULE_3__["strings"].ARIA_CHECKED_ATTR, 'true');
     };
-    /**
-     * Returns the parent selection group of an element if one exists.
-     */
-    MDCMenuFoundation.prototype.getSelectionGroup_ = function (listItem) {
-        var parent = this.adapter_.getParentElement(listItem);
-        if (!parent) {
-            return null;
-        }
-        var isGroup = this.adapter_.elementContainsClass(parent, _constants__WEBPACK_IMPORTED_MODULE_4__["cssClasses"].MENU_SELECTION_GROUP);
-        // Iterate through ancestors until we find the group or get to the list.
-        while (!isGroup && parent && !this.adapter_.elementContainsClass(parent, _material_list_foundation__WEBPACK_IMPORTED_MODULE_2__["MDCListFoundation"].cssClasses.ROOT)) {
-            parent = this.adapter_.getParentElement(parent);
-            isGroup = parent ? this.adapter_.elementContainsClass(parent, _constants__WEBPACK_IMPORTED_MODULE_4__["cssClasses"].MENU_SELECTION_GROUP) : false;
-        }
-        if (isGroup) {
-            return parent;
-        }
-        else {
-            return null;
+    MDCMenuFoundation.prototype.validatedIndex_ = function (index) {
+        var menuSize = this.adapter_.getMenuItemCount();
+        var isIndexInRange = index >= 0 && index < menuSize;
+        if (!isIndexInRange) {
+            throw new Error('MDCMenuFoundation: No list item at specified index.');
         }
     };
     return MDCMenuFoundation;
@@ -6954,7 +4944,7 @@ var MDCMenuFoundation = /** @class */ (function (_super) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _material_menu_surface_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @material/menu-surface/constants */ "./node_modules/@material/menu/node_modules/@material/menu-surface/constants.js");
+/* harmony import */ var _material_menu_surface_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @material/menu-surface/constants */ "./node_modules/@material/menu-surface/constants.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Corner", function() { return _material_menu_surface_constants__WEBPACK_IMPORTED_MODULE_0__["Corner"]; });
 
 /* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./component */ "./node_modules/@material/menu/component.js");
@@ -7002,839 +4992,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/@material/menu/node_modules/@material/menu-surface/component.js":
-/*!**************************************************************************************!*\
-  !*** ./node_modules/@material/menu/node_modules/@material/menu-surface/component.js ***!
-  \**************************************************************************************/
-/*! exports provided: MDCMenuSurface */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCMenuSurface", function() { return MDCMenuSurface; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/menu/node_modules/@material/menu-surface/constants.js");
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/menu/node_modules/@material/menu-surface/foundation.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./util */ "./node_modules/@material/menu/node_modules/@material/menu-surface/util.js");
-/**
- * @license
- * Copyright 2018 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-
-
-var MDCMenuSurface = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCMenuSurface, _super);
-    function MDCMenuSurface() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    MDCMenuSurface.attachTo = function (root) {
-        return new MDCMenuSurface(root);
-    };
-    MDCMenuSurface.prototype.initialSyncWithDOM = function () {
-        var _this = this;
-        var parentEl = this.root_.parentElement;
-        this.anchorElement = parentEl && parentEl.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].ANCHOR) ? parentEl : null;
-        if (this.root_.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].FIXED)) {
-            this.setFixedPosition(true);
-        }
-        this.handleKeydown_ = function (evt) { return _this.foundation_.handleKeydown(evt); };
-        this.handleBodyClick_ = function (evt) { return _this.foundation_.handleBodyClick(evt); };
-        this.registerBodyClickListener_ = function () { return document.body.addEventListener('click', _this.handleBodyClick_); };
-        this.deregisterBodyClickListener_ = function () { return document.body.removeEventListener('click', _this.handleBodyClick_); };
-        this.listen('keydown', this.handleKeydown_);
-        this.listen(_constants__WEBPACK_IMPORTED_MODULE_2__["strings"].OPENED_EVENT, this.registerBodyClickListener_);
-        this.listen(_constants__WEBPACK_IMPORTED_MODULE_2__["strings"].CLOSED_EVENT, this.deregisterBodyClickListener_);
-    };
-    MDCMenuSurface.prototype.destroy = function () {
-        this.unlisten('keydown', this.handleKeydown_);
-        this.unlisten(_constants__WEBPACK_IMPORTED_MODULE_2__["strings"].OPENED_EVENT, this.registerBodyClickListener_);
-        this.unlisten(_constants__WEBPACK_IMPORTED_MODULE_2__["strings"].CLOSED_EVENT, this.deregisterBodyClickListener_);
-        _super.prototype.destroy.call(this);
-    };
-    Object.defineProperty(MDCMenuSurface.prototype, "open", {
-        get: function () {
-            return this.foundation_.isOpen();
-        },
-        set: function (value) {
-            if (value) {
-                var focusableElements = this.root_.querySelectorAll(_constants__WEBPACK_IMPORTED_MODULE_2__["strings"].FOCUSABLE_ELEMENTS);
-                this.firstFocusableElement_ = focusableElements[0];
-                this.lastFocusableElement_ = focusableElements[focusableElements.length - 1];
-                this.foundation_.open();
-            }
-            else {
-                this.foundation_.close();
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCMenuSurface.prototype, "quickOpen", {
-        set: function (quickOpen) {
-            this.foundation_.setQuickOpen(quickOpen);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Removes the menu-surface from it's current location and appends it to the
-     * body to overcome any overflow:hidden issues.
-     */
-    MDCMenuSurface.prototype.hoistMenuToBody = function () {
-        document.body.appendChild(this.root_);
-        this.setIsHoisted(true);
-    };
-    /** Sets the foundation to use page offsets for an positioning when the menu is hoisted to the body. */
-    MDCMenuSurface.prototype.setIsHoisted = function (isHoisted) {
-        this.foundation_.setIsHoisted(isHoisted);
-    };
-    /** Sets the element that the menu-surface is anchored to. */
-    MDCMenuSurface.prototype.setMenuSurfaceAnchorElement = function (element) {
-        this.anchorElement = element;
-    };
-    /** Sets the menu-surface to position: fixed. */
-    MDCMenuSurface.prototype.setFixedPosition = function (isFixed) {
-        if (isFixed) {
-            this.root_.classList.add(_constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].FIXED);
-        }
-        else {
-            this.root_.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].FIXED);
-        }
-        this.foundation_.setFixedPosition(isFixed);
-    };
-    /** Sets the absolute x/y position to position based on. Requires the menu to be hoisted. */
-    MDCMenuSurface.prototype.setAbsolutePosition = function (x, y) {
-        this.foundation_.setAbsolutePosition(x, y);
-        this.setIsHoisted(true);
-    };
-    /**
-     * @param corner Default anchor corner alignment of top-left surface corner.
-     */
-    MDCMenuSurface.prototype.setAnchorCorner = function (corner) {
-        this.foundation_.setAnchorCorner(corner);
-    };
-    MDCMenuSurface.prototype.setAnchorMargin = function (margin) {
-        this.foundation_.setAnchorMargin(margin);
-    };
-    MDCMenuSurface.prototype.getDefaultFoundation = function () {
-        var _this = this;
-        // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-        // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-        // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-        var adapter = {
-            addClass: function (className) { return _this.root_.classList.add(className); },
-            removeClass: function (className) { return _this.root_.classList.remove(className); },
-            hasClass: function (className) { return _this.root_.classList.contains(className); },
-            hasAnchor: function () { return !!_this.anchorElement; },
-            notifyClose: function () { return _this.emit(_foundation__WEBPACK_IMPORTED_MODULE_3__["MDCMenuSurfaceFoundation"].strings.CLOSED_EVENT, {}); },
-            notifyOpen: function () { return _this.emit(_foundation__WEBPACK_IMPORTED_MODULE_3__["MDCMenuSurfaceFoundation"].strings.OPENED_EVENT, {}); },
-            isElementInContainer: function (el) { return _this.root_.contains(el); },
-            isRtl: function () { return getComputedStyle(_this.root_).getPropertyValue('direction') === 'rtl'; },
-            setTransformOrigin: function (origin) {
-                var propertyName = _util__WEBPACK_IMPORTED_MODULE_4__["getTransformPropertyName"](window) + "-origin";
-                _this.root_.style.setProperty(propertyName, origin);
-            },
-            isFocused: function () { return document.activeElement === _this.root_; },
-            saveFocus: function () {
-                _this.previousFocus_ = document.activeElement;
-            },
-            restoreFocus: function () {
-                if (_this.root_.contains(document.activeElement)) {
-                    if (_this.previousFocus_ && _this.previousFocus_.focus) {
-                        _this.previousFocus_.focus();
-                    }
-                }
-            },
-            isFirstElementFocused: function () {
-                return _this.firstFocusableElement_ ? _this.firstFocusableElement_ === document.activeElement : false;
-            },
-            isLastElementFocused: function () {
-                return _this.lastFocusableElement_ ? _this.lastFocusableElement_ === document.activeElement : false;
-            },
-            focusFirstElement: function () {
-                return _this.firstFocusableElement_ && _this.firstFocusableElement_.focus && _this.firstFocusableElement_.focus();
-            },
-            focusLastElement: function () {
-                return _this.lastFocusableElement_ && _this.lastFocusableElement_.focus && _this.lastFocusableElement_.focus();
-            },
-            getInnerDimensions: function () {
-                return { width: _this.root_.offsetWidth, height: _this.root_.offsetHeight };
-            },
-            getAnchorDimensions: function () { return _this.anchorElement ? _this.anchorElement.getBoundingClientRect() : null; },
-            getWindowDimensions: function () {
-                return { width: window.innerWidth, height: window.innerHeight };
-            },
-            getBodyDimensions: function () {
-                return { width: document.body.clientWidth, height: document.body.clientHeight };
-            },
-            getWindowScroll: function () {
-                return { x: window.pageXOffset, y: window.pageYOffset };
-            },
-            setPosition: function (position) {
-                _this.root_.style.left = 'left' in position ? position.left + "px" : '';
-                _this.root_.style.right = 'right' in position ? position.right + "px" : '';
-                _this.root_.style.top = 'top' in position ? position.top + "px" : '';
-                _this.root_.style.bottom = 'bottom' in position ? position.bottom + "px" : '';
-            },
-            setMaxHeight: function (height) {
-                _this.root_.style.maxHeight = height;
-            },
-        };
-        // tslint:enable:object-literal-sort-keys
-        return new _foundation__WEBPACK_IMPORTED_MODULE_3__["MDCMenuSurfaceFoundation"](adapter);
-    };
-    return MDCMenuSurface;
-}(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
-
-//# sourceMappingURL=component.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/menu/node_modules/@material/menu-surface/constants.js":
-/*!**************************************************************************************!*\
-  !*** ./node_modules/@material/menu/node_modules/@material/menu-surface/constants.js ***!
-  \**************************************************************************************/
-/*! exports provided: cssClasses, strings, numbers, CornerBit, Corner */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return cssClasses; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "strings", function() { return strings; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "numbers", function() { return numbers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CornerBit", function() { return CornerBit; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Corner", function() { return Corner; });
-/**
- * @license
- * Copyright 2018 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-var cssClasses = {
-    ANCHOR: 'mdc-menu-surface--anchor',
-    ANIMATING_CLOSED: 'mdc-menu-surface--animating-closed',
-    ANIMATING_OPEN: 'mdc-menu-surface--animating-open',
-    FIXED: 'mdc-menu-surface--fixed',
-    OPEN: 'mdc-menu-surface--open',
-    ROOT: 'mdc-menu-surface',
-};
-// tslint:disable:object-literal-sort-keys
-var strings = {
-    CLOSED_EVENT: 'MDCMenuSurface:closed',
-    OPENED_EVENT: 'MDCMenuSurface:opened',
-    FOCUSABLE_ELEMENTS: [
-        'button:not(:disabled)', '[href]:not([aria-disabled="true"])', 'input:not(:disabled)',
-        'select:not(:disabled)', 'textarea:not(:disabled)', '[tabindex]:not([tabindex="-1"]):not([aria-disabled="true"])',
-    ].join(', '),
-};
-// tslint:enable:object-literal-sort-keys
-var numbers = {
-    /** Total duration of menu-surface open animation. */
-    TRANSITION_OPEN_DURATION: 120,
-    /** Total duration of menu-surface close animation. */
-    TRANSITION_CLOSE_DURATION: 75,
-    /** Margin left to the edge of the viewport when menu-surface is at maximum possible height. */
-    MARGIN_TO_EDGE: 32,
-    /** Ratio of anchor width to menu-surface width for switching from corner positioning to center positioning. */
-    ANCHOR_TO_MENU_SURFACE_WIDTH_RATIO: 0.67,
-};
-/**
- * Enum for bits in the {@see Corner) bitmap.
- */
-var CornerBit;
-(function (CornerBit) {
-    CornerBit[CornerBit["BOTTOM"] = 1] = "BOTTOM";
-    CornerBit[CornerBit["CENTER"] = 2] = "CENTER";
-    CornerBit[CornerBit["RIGHT"] = 4] = "RIGHT";
-    CornerBit[CornerBit["FLIP_RTL"] = 8] = "FLIP_RTL";
-})(CornerBit || (CornerBit = {}));
-/**
- * Enum for representing an element corner for positioning the menu-surface.
- *
- * The START constants map to LEFT if element directionality is left
- * to right and RIGHT if the directionality is right to left.
- * Likewise END maps to RIGHT or LEFT depending on the directionality.
- */
-var Corner;
-(function (Corner) {
-    Corner[Corner["TOP_LEFT"] = 0] = "TOP_LEFT";
-    Corner[Corner["TOP_RIGHT"] = 4] = "TOP_RIGHT";
-    Corner[Corner["BOTTOM_LEFT"] = 1] = "BOTTOM_LEFT";
-    Corner[Corner["BOTTOM_RIGHT"] = 5] = "BOTTOM_RIGHT";
-    Corner[Corner["TOP_START"] = 8] = "TOP_START";
-    Corner[Corner["TOP_END"] = 12] = "TOP_END";
-    Corner[Corner["BOTTOM_START"] = 9] = "BOTTOM_START";
-    Corner[Corner["BOTTOM_END"] = 13] = "BOTTOM_END";
-})(Corner || (Corner = {}));
-
-//# sourceMappingURL=constants.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/menu/node_modules/@material/menu-surface/foundation.js":
-/*!***************************************************************************************!*\
-  !*** ./node_modules/@material/menu/node_modules/@material/menu-surface/foundation.js ***!
-  \***************************************************************************************/
-/*! exports provided: MDCMenuSurfaceFoundation, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCMenuSurfaceFoundation", function() { return MDCMenuSurfaceFoundation; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/foundation */ "./node_modules/@material/base/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/menu/node_modules/@material/menu-surface/constants.js");
-/**
- * @license
- * Copyright 2018 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-var MDCMenuSurfaceFoundation = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCMenuSurfaceFoundation, _super);
-    function MDCMenuSurfaceFoundation(adapter) {
-        var _this = _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCMenuSurfaceFoundation.defaultAdapter, adapter)) || this;
-        _this.isOpen_ = false;
-        _this.isQuickOpen_ = false;
-        _this.isHoistedElement_ = false;
-        _this.isFixedPosition_ = false;
-        _this.openAnimationEndTimerId_ = 0;
-        _this.closeAnimationEndTimerId_ = 0;
-        _this.animationRequestId_ = 0;
-        _this.anchorCorner_ = _constants__WEBPACK_IMPORTED_MODULE_2__["Corner"].TOP_START;
-        _this.anchorMargin_ = { top: 0, right: 0, bottom: 0, left: 0 };
-        _this.position_ = { x: 0, y: 0 };
-        return _this;
-    }
-    Object.defineProperty(MDCMenuSurfaceFoundation, "cssClasses", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCMenuSurfaceFoundation, "strings", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["strings"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCMenuSurfaceFoundation, "numbers", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCMenuSurfaceFoundation, "Corner", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["Corner"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCMenuSurfaceFoundation, "defaultAdapter", {
-        /**
-         * @see {@link MDCMenuSurfaceAdapter} for typing information on parameters and return types.
-         */
-        get: function () {
-            // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-            return {
-                addClass: function () { return undefined; },
-                removeClass: function () { return undefined; },
-                hasClass: function () { return false; },
-                hasAnchor: function () { return false; },
-                isElementInContainer: function () { return false; },
-                isFocused: function () { return false; },
-                isFirstElementFocused: function () { return false; },
-                isLastElementFocused: function () { return false; },
-                isRtl: function () { return false; },
-                getInnerDimensions: function () { return ({ height: 0, width: 0 }); },
-                getAnchorDimensions: function () { return null; },
-                getWindowDimensions: function () { return ({ height: 0, width: 0 }); },
-                getBodyDimensions: function () { return ({ height: 0, width: 0 }); },
-                getWindowScroll: function () { return ({ x: 0, y: 0 }); },
-                setPosition: function () { return undefined; },
-                setMaxHeight: function () { return undefined; },
-                setTransformOrigin: function () { return undefined; },
-                saveFocus: function () { return undefined; },
-                restoreFocus: function () { return undefined; },
-                focusFirstElement: function () { return undefined; },
-                focusLastElement: function () { return undefined; },
-                notifyClose: function () { return undefined; },
-                notifyOpen: function () { return undefined; },
-            };
-            // tslint:enable:object-literal-sort-keys
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MDCMenuSurfaceFoundation.prototype.init = function () {
-        var _a = MDCMenuSurfaceFoundation.cssClasses, ROOT = _a.ROOT, OPEN = _a.OPEN;
-        if (!this.adapter_.hasClass(ROOT)) {
-            throw new Error(ROOT + " class required in root element.");
-        }
-        if (this.adapter_.hasClass(OPEN)) {
-            this.isOpen_ = true;
-        }
-    };
-    MDCMenuSurfaceFoundation.prototype.destroy = function () {
-        clearTimeout(this.openAnimationEndTimerId_);
-        clearTimeout(this.closeAnimationEndTimerId_);
-        // Cancel any currently running animations.
-        cancelAnimationFrame(this.animationRequestId_);
-    };
-    /**
-     * @param corner Default anchor corner alignment of top-left menu surface corner.
-     */
-    MDCMenuSurfaceFoundation.prototype.setAnchorCorner = function (corner) {
-        this.anchorCorner_ = corner;
-    };
-    /**
-     * @param margin Set of margin values from anchor.
-     */
-    MDCMenuSurfaceFoundation.prototype.setAnchorMargin = function (margin) {
-        this.anchorMargin_.top = margin.top || 0;
-        this.anchorMargin_.right = margin.right || 0;
-        this.anchorMargin_.bottom = margin.bottom || 0;
-        this.anchorMargin_.left = margin.left || 0;
-    };
-    /** Used to indicate if the menu-surface is hoisted to the body. */
-    MDCMenuSurfaceFoundation.prototype.setIsHoisted = function (isHoisted) {
-        this.isHoistedElement_ = isHoisted;
-    };
-    /** Used to set the menu-surface calculations based on a fixed position menu. */
-    MDCMenuSurfaceFoundation.prototype.setFixedPosition = function (isFixedPosition) {
-        this.isFixedPosition_ = isFixedPosition;
-    };
-    /** Sets the menu-surface position on the page. */
-    MDCMenuSurfaceFoundation.prototype.setAbsolutePosition = function (x, y) {
-        this.position_.x = this.isFinite_(x) ? x : 0;
-        this.position_.y = this.isFinite_(y) ? y : 0;
-    };
-    MDCMenuSurfaceFoundation.prototype.setQuickOpen = function (quickOpen) {
-        this.isQuickOpen_ = quickOpen;
-    };
-    MDCMenuSurfaceFoundation.prototype.isOpen = function () {
-        return this.isOpen_;
-    };
-    /**
-     * Open the menu surface.
-     */
-    MDCMenuSurfaceFoundation.prototype.open = function () {
-        var _this = this;
-        this.adapter_.saveFocus();
-        if (!this.isQuickOpen_) {
-            this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_OPEN);
-        }
-        this.animationRequestId_ = requestAnimationFrame(function () {
-            _this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
-            _this.dimensions_ = _this.adapter_.getInnerDimensions();
-            _this.autoPosition_();
-            if (_this.isQuickOpen_) {
-                _this.adapter_.notifyOpen();
-            }
-            else {
-                _this.openAnimationEndTimerId_ = setTimeout(function () {
-                    _this.openAnimationEndTimerId_ = 0;
-                    _this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_OPEN);
-                    _this.adapter_.notifyOpen();
-                }, _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"].TRANSITION_OPEN_DURATION);
-            }
-        });
-        this.isOpen_ = true;
-    };
-    /**
-     * Closes the menu surface.
-     */
-    MDCMenuSurfaceFoundation.prototype.close = function () {
-        var _this = this;
-        if (!this.isQuickOpen_) {
-            this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
-        }
-        requestAnimationFrame(function () {
-            _this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
-            if (_this.isQuickOpen_) {
-                _this.adapter_.notifyClose();
-            }
-            else {
-                _this.closeAnimationEndTimerId_ = setTimeout(function () {
-                    _this.closeAnimationEndTimerId_ = 0;
-                    _this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
-                    _this.adapter_.notifyClose();
-                }, _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"].TRANSITION_CLOSE_DURATION);
-            }
-        });
-        this.isOpen_ = false;
-        this.maybeRestoreFocus_();
-    };
-    /** Handle clicks and close if not within menu-surface element. */
-    MDCMenuSurfaceFoundation.prototype.handleBodyClick = function (evt) {
-        var el = evt.target;
-        if (this.adapter_.isElementInContainer(el)) {
-            return;
-        }
-        this.close();
-    };
-    /** Handle keys that close the surface. */
-    MDCMenuSurfaceFoundation.prototype.handleKeydown = function (evt) {
-        var keyCode = evt.keyCode, key = evt.key, shiftKey = evt.shiftKey;
-        var isEscape = key === 'Escape' || keyCode === 27;
-        var isTab = key === 'Tab' || keyCode === 9;
-        if (isEscape) {
-            this.close();
-        }
-        else if (isTab) {
-            if (this.adapter_.isLastElementFocused() && !shiftKey) {
-                this.adapter_.focusFirstElement();
-                evt.preventDefault();
-            }
-            else if (this.adapter_.isFirstElementFocused() && shiftKey) {
-                this.adapter_.focusLastElement();
-                evt.preventDefault();
-            }
-        }
-    };
-    MDCMenuSurfaceFoundation.prototype.autoPosition_ = function () {
-        var _a;
-        // Compute measurements for autoposition methods reuse.
-        this.measurements_ = this.getAutoLayoutMeasurements_();
-        var corner = this.getOriginCorner_();
-        var maxMenuSurfaceHeight = this.getMenuSurfaceMaxHeight_(corner);
-        var verticalAlignment = this.hasBit_(corner, _constants__WEBPACK_IMPORTED_MODULE_2__["CornerBit"].BOTTOM) ? 'bottom' : 'top';
-        var horizontalAlignment = this.hasBit_(corner, _constants__WEBPACK_IMPORTED_MODULE_2__["CornerBit"].RIGHT) ? 'right' : 'left';
-        var horizontalOffset = this.getHorizontalOriginOffset_(corner);
-        var verticalOffset = this.getVerticalOriginOffset_(corner);
-        var _b = this.measurements_, anchorSize = _b.anchorSize, surfaceSize = _b.surfaceSize;
-        var position = (_a = {},
-            _a[horizontalAlignment] = horizontalOffset,
-            _a[verticalAlignment] = verticalOffset,
-            _a);
-        // Center align when anchor width is comparable or greater than menu surface, otherwise keep corner.
-        if (anchorSize.width / surfaceSize.width > _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"].ANCHOR_TO_MENU_SURFACE_WIDTH_RATIO) {
-            horizontalAlignment = 'center';
-        }
-        // If the menu-surface has been hoisted to the body, it's no longer relative to the anchor element
-        if (this.isHoistedElement_ || this.isFixedPosition_) {
-            this.adjustPositionForHoistedElement_(position);
-        }
-        this.adapter_.setTransformOrigin(horizontalAlignment + " " + verticalAlignment);
-        this.adapter_.setPosition(position);
-        this.adapter_.setMaxHeight(maxMenuSurfaceHeight ? maxMenuSurfaceHeight + 'px' : '');
-    };
-    /**
-     * @return Measurements used to position menu surface popup.
-     */
-    MDCMenuSurfaceFoundation.prototype.getAutoLayoutMeasurements_ = function () {
-        var anchorRect = this.adapter_.getAnchorDimensions();
-        var bodySize = this.adapter_.getBodyDimensions();
-        var viewportSize = this.adapter_.getWindowDimensions();
-        var windowScroll = this.adapter_.getWindowScroll();
-        if (!anchorRect) {
-            // tslint:disable:object-literal-sort-keys Positional properties are more readable when they're grouped together
-            anchorRect = {
-                top: this.position_.y,
-                right: this.position_.x,
-                bottom: this.position_.y,
-                left: this.position_.x,
-                width: 0,
-                height: 0,
-            };
-            // tslint:enable:object-literal-sort-keys
-        }
-        return {
-            anchorSize: anchorRect,
-            bodySize: bodySize,
-            surfaceSize: this.dimensions_,
-            viewportDistance: {
-                // tslint:disable:object-literal-sort-keys Positional properties are more readable when they're grouped together
-                top: anchorRect.top,
-                right: viewportSize.width - anchorRect.right,
-                bottom: viewportSize.height - anchorRect.bottom,
-                left: anchorRect.left,
-            },
-            viewportSize: viewportSize,
-            windowScroll: windowScroll,
-        };
-    };
-    /**
-     * Computes the corner of the anchor from which to animate and position the menu surface.
-     */
-    MDCMenuSurfaceFoundation.prototype.getOriginCorner_ = function () {
-        // Defaults: open from the top left.
-        var corner = _constants__WEBPACK_IMPORTED_MODULE_2__["Corner"].TOP_LEFT;
-        var _a = this.measurements_, viewportDistance = _a.viewportDistance, anchorSize = _a.anchorSize, surfaceSize = _a.surfaceSize;
-        var isBottomAligned = this.hasBit_(this.anchorCorner_, _constants__WEBPACK_IMPORTED_MODULE_2__["CornerBit"].BOTTOM);
-        var availableTop = isBottomAligned ? viewportDistance.top + anchorSize.height + this.anchorMargin_.bottom
-            : viewportDistance.top + this.anchorMargin_.top;
-        var availableBottom = isBottomAligned ? viewportDistance.bottom - this.anchorMargin_.bottom
-            : viewportDistance.bottom + anchorSize.height - this.anchorMargin_.top;
-        var topOverflow = surfaceSize.height - availableTop;
-        var bottomOverflow = surfaceSize.height - availableBottom;
-        if (bottomOverflow > 0 && topOverflow < bottomOverflow) {
-            corner = this.setBit_(corner, _constants__WEBPACK_IMPORTED_MODULE_2__["CornerBit"].BOTTOM);
-        }
-        var isRtl = this.adapter_.isRtl();
-        var isFlipRtl = this.hasBit_(this.anchorCorner_, _constants__WEBPACK_IMPORTED_MODULE_2__["CornerBit"].FLIP_RTL);
-        var avoidHorizontalOverlap = this.hasBit_(this.anchorCorner_, _constants__WEBPACK_IMPORTED_MODULE_2__["CornerBit"].RIGHT);
-        var isAlignedRight = (avoidHorizontalOverlap && !isRtl) ||
-            (!avoidHorizontalOverlap && isFlipRtl && isRtl);
-        var availableLeft = isAlignedRight ? viewportDistance.left + anchorSize.width + this.anchorMargin_.right :
-            viewportDistance.left + this.anchorMargin_.left;
-        var availableRight = isAlignedRight ? viewportDistance.right - this.anchorMargin_.right :
-            viewportDistance.right + anchorSize.width - this.anchorMargin_.left;
-        var leftOverflow = surfaceSize.width - availableLeft;
-        var rightOverflow = surfaceSize.width - availableRight;
-        if ((leftOverflow < 0 && isAlignedRight && isRtl) ||
-            (avoidHorizontalOverlap && !isAlignedRight && leftOverflow < 0) ||
-            (rightOverflow > 0 && leftOverflow < rightOverflow)) {
-            corner = this.setBit_(corner, _constants__WEBPACK_IMPORTED_MODULE_2__["CornerBit"].RIGHT);
-        }
-        return corner;
-    };
-    /**
-     * @param corner Origin corner of the menu surface.
-     * @return Maximum height of the menu surface, based on available space. 0 indicates should not be set.
-     */
-    MDCMenuSurfaceFoundation.prototype.getMenuSurfaceMaxHeight_ = function (corner) {
-        var viewportDistance = this.measurements_.viewportDistance;
-        var maxHeight = 0;
-        var isBottomAligned = this.hasBit_(corner, _constants__WEBPACK_IMPORTED_MODULE_2__["CornerBit"].BOTTOM);
-        var isBottomAnchored = this.hasBit_(this.anchorCorner_, _constants__WEBPACK_IMPORTED_MODULE_2__["CornerBit"].BOTTOM);
-        var MARGIN_TO_EDGE = MDCMenuSurfaceFoundation.numbers.MARGIN_TO_EDGE;
-        // When maximum height is not specified, it is handled from CSS.
-        if (isBottomAligned) {
-            maxHeight = viewportDistance.top + this.anchorMargin_.top - MARGIN_TO_EDGE;
-            if (!isBottomAnchored) {
-                maxHeight += this.measurements_.anchorSize.height;
-            }
-        }
-        else {
-            maxHeight =
-                viewportDistance.bottom - this.anchorMargin_.bottom + this.measurements_.anchorSize.height - MARGIN_TO_EDGE;
-            if (isBottomAnchored) {
-                maxHeight -= this.measurements_.anchorSize.height;
-            }
-        }
-        return maxHeight;
-    };
-    /**
-     * @param corner Origin corner of the menu surface.
-     * @return Horizontal offset of menu surface origin corner from corresponding anchor corner.
-     */
-    MDCMenuSurfaceFoundation.prototype.getHorizontalOriginOffset_ = function (corner) {
-        var anchorSize = this.measurements_.anchorSize;
-        // isRightAligned corresponds to using the 'right' property on the surface.
-        var isRightAligned = this.hasBit_(corner, _constants__WEBPACK_IMPORTED_MODULE_2__["CornerBit"].RIGHT);
-        var avoidHorizontalOverlap = this.hasBit_(this.anchorCorner_, _constants__WEBPACK_IMPORTED_MODULE_2__["CornerBit"].RIGHT);
-        if (isRightAligned) {
-            var rightOffset = avoidHorizontalOverlap ? anchorSize.width - this.anchorMargin_.left : this.anchorMargin_.right;
-            // For hoisted or fixed elements, adjust the offset by the difference between viewport width and body width so
-            // when we calculate the right value (`adjustPositionForHoistedElement_`) based on the element position,
-            // the right property is correct.
-            if (this.isHoistedElement_ || this.isFixedPosition_) {
-                return rightOffset - (this.measurements_.viewportSize.width - this.measurements_.bodySize.width);
-            }
-            return rightOffset;
-        }
-        return avoidHorizontalOverlap ? anchorSize.width - this.anchorMargin_.right : this.anchorMargin_.left;
-    };
-    /**
-     * @param corner Origin corner of the menu surface.
-     * @return Vertical offset of menu surface origin corner from corresponding anchor corner.
-     */
-    MDCMenuSurfaceFoundation.prototype.getVerticalOriginOffset_ = function (corner) {
-        var anchorSize = this.measurements_.anchorSize;
-        var isBottomAligned = this.hasBit_(corner, _constants__WEBPACK_IMPORTED_MODULE_2__["CornerBit"].BOTTOM);
-        var avoidVerticalOverlap = this.hasBit_(this.anchorCorner_, _constants__WEBPACK_IMPORTED_MODULE_2__["CornerBit"].BOTTOM);
-        var y = 0;
-        if (isBottomAligned) {
-            y = avoidVerticalOverlap ? anchorSize.height - this.anchorMargin_.top : -this.anchorMargin_.bottom;
-        }
-        else {
-            y = avoidVerticalOverlap ? (anchorSize.height + this.anchorMargin_.bottom) : this.anchorMargin_.top;
-        }
-        return y;
-    };
-    /** Calculates the offsets for positioning the menu-surface when the menu-surface has been hoisted to the body. */
-    MDCMenuSurfaceFoundation.prototype.adjustPositionForHoistedElement_ = function (position) {
-        var e_1, _a;
-        var _b = this.measurements_, windowScroll = _b.windowScroll, viewportDistance = _b.viewportDistance;
-        var props = Object.keys(position);
-        try {
-            for (var props_1 = tslib__WEBPACK_IMPORTED_MODULE_0__["__values"](props), props_1_1 = props_1.next(); !props_1_1.done; props_1_1 = props_1.next()) {
-                var prop = props_1_1.value;
-                var value = position[prop] || 0;
-                // Hoisted surfaces need to have the anchor elements location on the page added to the
-                // position properties for proper alignment on the body.
-                value += viewportDistance[prop];
-                // Surfaces that are absolutely positioned need to have additional calculations for scroll
-                // and bottom positioning.
-                if (!this.isFixedPosition_) {
-                    if (prop === 'top') {
-                        value += windowScroll.y;
-                    }
-                    else if (prop === 'bottom') {
-                        value -= windowScroll.y;
-                    }
-                    else if (prop === 'left') {
-                        value += windowScroll.x;
-                    }
-                    else { // prop === 'right'
-                        value -= windowScroll.x;
-                    }
-                }
-                position[prop] = value;
-            }
-        }
-        catch (e_1_1) { e_1 = { error: e_1_1 }; }
-        finally {
-            try {
-                if (props_1_1 && !props_1_1.done && (_a = props_1.return)) _a.call(props_1);
-            }
-            finally { if (e_1) throw e_1.error; }
-        }
-    };
-    /**
-     * The last focused element when the menu surface was opened should regain focus, if the user is
-     * focused on or within the menu surface when it is closed.
-     */
-    MDCMenuSurfaceFoundation.prototype.maybeRestoreFocus_ = function () {
-        var isRootFocused = this.adapter_.isFocused();
-        var childHasFocus = document.activeElement && this.adapter_.isElementInContainer(document.activeElement);
-        if (isRootFocused || childHasFocus) {
-            this.adapter_.restoreFocus();
-        }
-    };
-    MDCMenuSurfaceFoundation.prototype.hasBit_ = function (corner, bit) {
-        return Boolean(corner & bit); // tslint:disable-line:no-bitwise
-    };
-    MDCMenuSurfaceFoundation.prototype.setBit_ = function (corner, bit) {
-        return corner | bit; // tslint:disable-line:no-bitwise
-    };
-    /**
-     * isFinite that doesn't force conversion to number type.
-     * Equivalent to Number.isFinite in ES2015, which is not supported in IE.
-     */
-    MDCMenuSurfaceFoundation.prototype.isFinite_ = function (num) {
-        return typeof num === 'number' && isFinite(num);
-    };
-    return MDCMenuSurfaceFoundation;
-}(_material_base_foundation__WEBPACK_IMPORTED_MODULE_1__["MDCFoundation"]));
-
-// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
-/* harmony default export */ __webpack_exports__["default"] = (MDCMenuSurfaceFoundation);
-//# sourceMappingURL=foundation.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/menu/node_modules/@material/menu-surface/util.js":
-/*!*********************************************************************************!*\
-  !*** ./node_modules/@material/menu/node_modules/@material/menu-surface/util.js ***!
-  \*********************************************************************************/
-/*! exports provided: getTransformPropertyName */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTransformPropertyName", function() { return getTransformPropertyName; });
-/**
- * @license
- * Copyright 2018 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-var cachedCssTransformPropertyName_;
-/**
- * Returns the name of the correct transform property to use on the current browser.
- */
-function getTransformPropertyName(globalObj, forceRefresh) {
-    if (forceRefresh === void 0) { forceRefresh = false; }
-    if (cachedCssTransformPropertyName_ === undefined || forceRefresh) {
-        var el = globalObj.document.createElement('div');
-        cachedCssTransformPropertyName_ = 'transform' in el.style ? 'transform' : 'webkitTransform';
-    }
-    return cachedCssTransformPropertyName_;
-}
-
-//# sourceMappingURL=util.js.map
-
-/***/ }),
-
 /***/ "./node_modules/@material/notched-outline/component.js":
 /*!*************************************************************!*\
   !*** ./node_modules/@material/notched-outline/component.js ***!
@@ -7847,7 +5004,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCNotchedOutline", function() { return MDCNotchedOutline; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
-/* harmony import */ var _material_floating_label_foundation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/floating-label/foundation */ "./node_modules/@material/notched-outline/node_modules/@material/floating-label/foundation.js");
+/* harmony import */ var _material_floating_label_foundation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/floating-label/foundation */ "./node_modules/@material/floating-label/foundation.js");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/notched-outline/constants.js");
 /* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/notched-outline/foundation.js");
 /**
@@ -8093,16 +5250,306 @@ var MDCNotchedOutlineFoundation = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./node_modules/@material/notched-outline/node_modules/@material/floating-label/constants.js":
-/*!***************************************************************************************************!*\
-  !*** ./node_modules/@material/notched-outline/node_modules/@material/floating-label/constants.js ***!
-  \***************************************************************************************************/
-/*! exports provided: cssClasses */
+/***/ "./node_modules/@material/notched-outline/index.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/@material/notched-outline/index.js ***!
+  \*********************************************************/
+/*! exports provided: MDCNotchedOutline, cssClasses, numbers, strings, MDCNotchedOutlineFoundation */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./component */ "./node_modules/@material/notched-outline/component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCNotchedOutline", function() { return _component__WEBPACK_IMPORTED_MODULE_0__["MDCNotchedOutline"]; });
+
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/notched-outline/constants.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return _constants__WEBPACK_IMPORTED_MODULE_1__["cssClasses"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "numbers", function() { return _constants__WEBPACK_IMPORTED_MODULE_1__["numbers"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "strings", function() { return _constants__WEBPACK_IMPORTED_MODULE_1__["strings"]; });
+
+/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/notched-outline/foundation.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCNotchedOutlineFoundation", function() { return _foundation__WEBPACK_IMPORTED_MODULE_2__["MDCNotchedOutlineFoundation"]; });
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@material/react-floating-label/dist/index.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@material/react-floating-label/dist/index.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(t,e){if(true)module.exports=e(__webpack_require__(/*! react */ "./node_modules/react/index.js"),__webpack_require__(/*! classnames */ "./node_modules/classnames/index.js"));else { var r, n; }}("undefined"!=typeof self?self:this,function(t,e){return function(t){var e={};function n(r){if(e[r])return e[r].exports;var o=e[r]={i:r,l:!1,exports:{}};return t[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=t,n.c=e,n.d=function(t,e,r){n.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:r})},n.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},n.t=function(t,e){if(1&e&&(t=n(t)),8&e)return t;if(4&e&&"object"==typeof t&&t&&t.__esModule)return t;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:t}),2&e&&"string"!=typeof t)for(var o in t)n.d(r,o,function(e){return t[e]}.bind(null,o));return r},n.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return n.d(e,"a",e),e},n.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},n.p="",n(n.s=79)}({0:function(e,n){e.exports=t},1:function(t,n){t.exports=e},160:function(t,e,n){"use strict";n.r(e);"function"==typeof Symbol&&Symbol.iterator;
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */var r=function(t,e){return(r=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(t,e){t.__proto__=e}||function(t,e){for(var n in e)e.hasOwnProperty(n)&&(t[n]=e[n])})(t,e)};var o=function(){return(o=Object.assign||function(t){for(var e,n=1,r=arguments.length;n<r;n++)for(var o in e=arguments[n])Object.prototype.hasOwnProperty.call(e,o)&&(t[o]=e[o]);return t}).apply(this,arguments)};
+/**
+ * @license
+ * Copyright 2016 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+var a=function(){function t(t){void 0===t&&(t={}),this.adapter_=t}return Object.defineProperty(t,"cssClasses",{get:function(){return{}},enumerable:!0,configurable:!0}),Object.defineProperty(t,"strings",{get:function(){return{}},enumerable:!0,configurable:!0}),Object.defineProperty(t,"numbers",{get:function(){return{}},enumerable:!0,configurable:!0}),Object.defineProperty(t,"defaultAdapter",{get:function(){return{}},enumerable:!0,configurable:!0}),t.prototype.init=function(){},t.prototype.destroy=function(){},t}(),i=n(37);n.d(e,"MDCFloatingLabelFoundation",function(){return s});
+/**
+ * @license
+ * Copyright 2016 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+var s=function(t){function e(n){var r=t.call(this,o({},e.defaultAdapter,n))||this;return r.shakeAnimationEndHandler_=function(){return r.handleShakeAnimationEnd_()},r}return function(t,e){function n(){this.constructor=t}r(t,e),t.prototype=null===e?Object.create(e):(n.prototype=e.prototype,new n)}(e,t),Object.defineProperty(e,"cssClasses",{get:function(){return i.cssClasses},enumerable:!0,configurable:!0}),Object.defineProperty(e,"defaultAdapter",{get:function(){return{addClass:function(){},removeClass:function(){},getWidth:function(){return 0},registerInteractionHandler:function(){},deregisterInteractionHandler:function(){}}},enumerable:!0,configurable:!0}),e.prototype.init=function(){this.adapter_.registerInteractionHandler("animationend",this.shakeAnimationEndHandler_)},e.prototype.destroy=function(){this.adapter_.deregisterInteractionHandler("animationend",this.shakeAnimationEndHandler_)},e.prototype.getWidth=function(){return this.adapter_.getWidth()},e.prototype.shake=function(t){var n=e.cssClasses.LABEL_SHAKE;t?this.adapter_.addClass(n):this.adapter_.removeClass(n)},e.prototype.float=function(t){var n=e.cssClasses,r=n.LABEL_FLOAT_ABOVE,o=n.LABEL_SHAKE;t?this.adapter_.addClass(r):(this.adapter_.removeClass(r),this.adapter_.removeClass(o))},e.prototype.handleShakeAnimationEnd_=function(){var t=e.cssClasses.LABEL_SHAKE;this.adapter_.removeClass(t)},e}(a);e.default=s},37:function(t,e,n){"use strict";n.r(e),n.d(e,"cssClasses",function(){return r});
+/**
+ * @license
+ * Copyright 2016 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+var r={LABEL_FLOAT_ABOVE:"mdc-floating-label--float-above",LABEL_SHAKE:"mdc-floating-label--shake",ROOT:"mdc-floating-label"}},79:function(t,e,n){"use strict";var r,o=this&&this.__extends||(r=function(t,e){return(r=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(t,e){t.__proto__=e}||function(t,e){for(var n in e)e.hasOwnProperty(n)&&(t[n]=e[n])})(t,e)},function(t,e){function n(){this.constructor=t}r(t,e),t.prototype=null===e?Object.create(e):(n.prototype=e.prototype,new n)}),a=this&&this.__assign||function(){return(a=Object.assign||function(t){for(var e,n=1,r=arguments.length;n<r;n++)for(var o in e=arguments[n])Object.prototype.hasOwnProperty.call(e,o)&&(t[o]=e[o]);return t}).apply(this,arguments)},i=this&&this.__rest||function(t,e){var n={};for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&e.indexOf(r)<0&&(n[r]=t[r]);if(null!=t&&"function"==typeof Object.getOwnPropertySymbols){var o=0;for(r=Object.getOwnPropertySymbols(t);o<r.length;o++)e.indexOf(r[o])<0&&Object.prototype.propertyIsEnumerable.call(t,r[o])&&(n[r[o]]=t[r[o]])}return n},s=this&&this.__importDefault||function(t){return t&&t.__esModule?t:{default:t}};Object.defineProperty(e,"__esModule",{value:!0});var l=s(n(0)),u=s(n(1)),c=n(160),f=n(37),p=function(t){function e(){var e=null!==t&&t.apply(this,arguments)||this;return e.labelElement=l.default.createRef(),e.state={classList:new Set},e.initializeFoundation=function(){e.foundation=new c.MDCFloatingLabelFoundation(e.adapter),e.foundation.init()},e.shake=function(){e.foundation.shake(!0)},e.removeClassFromClassList=function(t){var n=e.state.classList;n.delete(t),e.setState({classList:n})},e.handleWidthChange=function(){e.props.handleWidthChange&&e.labelElement.current&&e.props.handleWidthChange(e.labelElement.current.offsetWidth)},e.onShakeEnd=function(){e.removeClassFromClassList(f.cssClasses.LABEL_SHAKE)},e}return o(e,t),e.prototype.componentDidMount=function(){this.initializeFoundation(),this.handleWidthChange(),this.props.float&&this.foundation.float(!0)},e.prototype.componentWillUnmount=function(){this.foundation.destroy()},e.prototype.componentDidUpdate=function(t){this.props.children!==t.children&&this.handleWidthChange(),this.props.float!==t.float&&this.foundation.float(this.props.float)},Object.defineProperty(e.prototype,"classes",{get:function(){var t=this.state.classList,e=this.props.className;return u.default(f.cssClasses.ROOT,Array.from(t),e)},enumerable:!0,configurable:!0}),Object.defineProperty(e.prototype,"adapter",{get:function(){var t=this;return{addClass:function(e){return t.setState({classList:t.state.classList.add(e)})},removeClass:this.removeClassFromClassList,registerInteractionHandler:function(){},deregisterInteractionHandler:function(){},getWidth:function(){return 0}}},enumerable:!0,configurable:!0}),e.prototype.render=function(){var t=this.props,e=(t.className,t.children),n=(t.handleWidthChange,t.float,i(t,["className","children","handleWidthChange","float"]));return l.default.createElement("label",a({className:this.classes,ref:this.labelElement,onAnimationEnd:this.onShakeEnd},n),e)},e.defaultProps={className:"",float:!1},e}(l.default.Component);e.default=p}})});
+//# sourceMappingURL=floating-label.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@material/react-floating-label/index.scss":
+/*!****************************************************************!*\
+  !*** ./node_modules/@material/react-floating-label/index.scss ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./node_modules/@material/ripple/component.js":
+/*!****************************************************!*\
+  !*** ./node_modules/@material/ripple/component.js ***!
+  \****************************************************/
+/*! exports provided: MDCRipple */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCRipple", function() { return MDCRipple; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
+/* harmony import */ var _material_dom_events__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/dom/events */ "./node_modules/@material/dom/events.js");
+/* harmony import */ var _material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material/dom/ponyfill */ "./node_modules/@material/dom/ponyfill.js");
+/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/ripple/foundation.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./util */ "./node_modules/@material/ripple/util.js");
+/**
+ * @license
+ * Copyright 2016 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+
+
+
+
+
+var MDCRipple = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCRipple, _super);
+    function MDCRipple() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.disabled = false;
+        return _this;
+    }
+    MDCRipple.attachTo = function (root, opts) {
+        if (opts === void 0) { opts = { isUnbounded: undefined }; }
+        var ripple = new MDCRipple(root);
+        // Only override unbounded behavior if option is explicitly specified
+        if (opts.isUnbounded !== undefined) {
+            ripple.unbounded = opts.isUnbounded;
+        }
+        return ripple;
+    };
+    MDCRipple.createAdapter = function (instance) {
+        return {
+            addClass: function (className) { return instance.root_.classList.add(className); },
+            browserSupportsCssVars: function () { return _util__WEBPACK_IMPORTED_MODULE_5__["supportsCssVariables"](window); },
+            computeBoundingRect: function () { return instance.root_.getBoundingClientRect(); },
+            containsEventTarget: function (target) { return instance.root_.contains(target); },
+            deregisterDocumentInteractionHandler: function (evtType, handler) {
+                return document.documentElement.removeEventListener(evtType, handler, Object(_material_dom_events__WEBPACK_IMPORTED_MODULE_2__["applyPassive"])());
+            },
+            deregisterInteractionHandler: function (evtType, handler) {
+                return instance.root_.removeEventListener(evtType, handler, Object(_material_dom_events__WEBPACK_IMPORTED_MODULE_2__["applyPassive"])());
+            },
+            deregisterResizeHandler: function (handler) { return window.removeEventListener('resize', handler); },
+            getWindowPageOffset: function () { return ({ x: window.pageXOffset, y: window.pageYOffset }); },
+            isSurfaceActive: function () { return Object(_material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_3__["matches"])(instance.root_, ':active'); },
+            isSurfaceDisabled: function () { return Boolean(instance.disabled); },
+            isUnbounded: function () { return Boolean(instance.unbounded); },
+            registerDocumentInteractionHandler: function (evtType, handler) {
+                return document.documentElement.addEventListener(evtType, handler, Object(_material_dom_events__WEBPACK_IMPORTED_MODULE_2__["applyPassive"])());
+            },
+            registerInteractionHandler: function (evtType, handler) {
+                return instance.root_.addEventListener(evtType, handler, Object(_material_dom_events__WEBPACK_IMPORTED_MODULE_2__["applyPassive"])());
+            },
+            registerResizeHandler: function (handler) { return window.addEventListener('resize', handler); },
+            removeClass: function (className) { return instance.root_.classList.remove(className); },
+            updateCssVariable: function (varName, value) { return instance.root_.style.setProperty(varName, value); },
+        };
+    };
+    Object.defineProperty(MDCRipple.prototype, "unbounded", {
+        get: function () {
+            return Boolean(this.unbounded_);
+        },
+        set: function (unbounded) {
+            this.unbounded_ = Boolean(unbounded);
+            this.setUnbounded_();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MDCRipple.prototype.activate = function () {
+        this.foundation_.activate();
+    };
+    MDCRipple.prototype.deactivate = function () {
+        this.foundation_.deactivate();
+    };
+    MDCRipple.prototype.layout = function () {
+        this.foundation_.layout();
+    };
+    MDCRipple.prototype.getDefaultFoundation = function () {
+        return new _foundation__WEBPACK_IMPORTED_MODULE_4__["MDCRippleFoundation"](MDCRipple.createAdapter(this));
+    };
+    MDCRipple.prototype.initialSyncWithDOM = function () {
+        var root = this.root_;
+        this.unbounded = 'mdcRippleIsUnbounded' in root.dataset;
+    };
+    /**
+     * Closure Compiler throws an access control error when directly accessing a
+     * protected or private property inside a getter/setter, like unbounded above.
+     * By accessing the protected property inside a method, we solve that problem.
+     * That's why this function exists.
+     */
+    MDCRipple.prototype.setUnbounded_ = function () {
+        this.foundation_.setUnbounded(Boolean(this.unbounded_));
+    };
+    return MDCRipple;
+}(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
+
+//# sourceMappingURL=component.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@material/ripple/constants.js":
+/*!****************************************************!*\
+  !*** ./node_modules/@material/ripple/constants.js ***!
+  \****************************************************/
+/*! exports provided: cssClasses, strings, numbers */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return cssClasses; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "strings", function() { return strings; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "numbers", function() { return numbers; });
 /**
  * @license
  * Copyright 2016 Google Inc.
@@ -8126,27 +5573,48 @@ __webpack_require__.r(__webpack_exports__);
  * THE SOFTWARE.
  */
 var cssClasses = {
-    LABEL_FLOAT_ABOVE: 'mdc-floating-label--float-above',
-    LABEL_SHAKE: 'mdc-floating-label--shake',
-    ROOT: 'mdc-floating-label',
+    // Ripple is a special case where the "root" component is really a "mixin" of sorts,
+    // given that it's an 'upgrade' to an existing component. That being said it is the root
+    // CSS class that all other CSS classes derive from.
+    BG_FOCUSED: 'mdc-ripple-upgraded--background-focused',
+    FG_ACTIVATION: 'mdc-ripple-upgraded--foreground-activation',
+    FG_DEACTIVATION: 'mdc-ripple-upgraded--foreground-deactivation',
+    ROOT: 'mdc-ripple-upgraded',
+    UNBOUNDED: 'mdc-ripple-upgraded--unbounded',
+};
+var strings = {
+    VAR_FG_SCALE: '--mdc-ripple-fg-scale',
+    VAR_FG_SIZE: '--mdc-ripple-fg-size',
+    VAR_FG_TRANSLATE_END: '--mdc-ripple-fg-translate-end',
+    VAR_FG_TRANSLATE_START: '--mdc-ripple-fg-translate-start',
+    VAR_LEFT: '--mdc-ripple-left',
+    VAR_TOP: '--mdc-ripple-top',
+};
+var numbers = {
+    DEACTIVATION_TIMEOUT_MS: 225,
+    FG_DEACTIVATION_MS: 150,
+    INITIAL_ORIGIN_SCALE: 0.6,
+    PADDING: 10,
+    TAP_DELAY_MS: 300,
 };
 //# sourceMappingURL=constants.js.map
 
 /***/ }),
 
-/***/ "./node_modules/@material/notched-outline/node_modules/@material/floating-label/foundation.js":
-/*!****************************************************************************************************!*\
-  !*** ./node_modules/@material/notched-outline/node_modules/@material/floating-label/foundation.js ***!
-  \****************************************************************************************************/
-/*! exports provided: MDCFloatingLabelFoundation, default */
+/***/ "./node_modules/@material/ripple/foundation.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/@material/ripple/foundation.js ***!
+  \*****************************************************/
+/*! exports provided: MDCRippleFoundation, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCFloatingLabelFoundation", function() { return MDCFloatingLabelFoundation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCRippleFoundation", function() { return MDCRippleFoundation; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _material_base_foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/foundation */ "./node_modules/@material/base/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/notched-outline/node_modules/@material/floating-label/constants.js");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/ripple/constants.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./util */ "./node_modules/@material/ripple/util.js");
 /**
  * @license
  * Copyright 2016 Google Inc.
@@ -8172,361 +5640,584 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var MDCFloatingLabelFoundation = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCFloatingLabelFoundation, _super);
-    function MDCFloatingLabelFoundation(adapter) {
-        var _this = _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCFloatingLabelFoundation.defaultAdapter, adapter)) || this;
-        _this.shakeAnimationEndHandler_ = function () { return _this.handleShakeAnimationEnd_(); };
+
+// Activation events registered on the root element of each instance for activation
+var ACTIVATION_EVENT_TYPES = [
+    'touchstart', 'pointerdown', 'mousedown', 'keydown',
+];
+// Deactivation events registered on documentElement when a pointer-related down event occurs
+var POINTER_DEACTIVATION_EVENT_TYPES = [
+    'touchend', 'pointerup', 'mouseup', 'contextmenu',
+];
+// simultaneous nested activations
+var activatedTargets = [];
+var MDCRippleFoundation = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCRippleFoundation, _super);
+    function MDCRippleFoundation(adapter) {
+        var _this = _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCRippleFoundation.defaultAdapter, adapter)) || this;
+        _this.activationAnimationHasEnded_ = false;
+        _this.activationTimer_ = 0;
+        _this.fgDeactivationRemovalTimer_ = 0;
+        _this.fgScale_ = '0';
+        _this.frame_ = { width: 0, height: 0 };
+        _this.initialSize_ = 0;
+        _this.layoutFrame_ = 0;
+        _this.maxRadius_ = 0;
+        _this.unboundedCoords_ = { left: 0, top: 0 };
+        _this.activationState_ = _this.defaultActivationState_();
+        _this.activationTimerCallback_ = function () {
+            _this.activationAnimationHasEnded_ = true;
+            _this.runDeactivationUXLogicIfReady_();
+        };
+        _this.activateHandler_ = function (e) { return _this.activate_(e); };
+        _this.deactivateHandler_ = function () { return _this.deactivate_(); };
+        _this.focusHandler_ = function () { return _this.handleFocus(); };
+        _this.blurHandler_ = function () { return _this.handleBlur(); };
+        _this.resizeHandler_ = function () { return _this.layout(); };
         return _this;
     }
-    Object.defineProperty(MDCFloatingLabelFoundation, "cssClasses", {
+    Object.defineProperty(MDCRippleFoundation, "cssClasses", {
         get: function () {
             return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"];
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(MDCFloatingLabelFoundation, "defaultAdapter", {
-        /**
-         * See {@link MDCFloatingLabelAdapter} for typing information on parameters and return types.
-         */
+    Object.defineProperty(MDCRippleFoundation, "strings", {
         get: function () {
-            // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-            return {
-                addClass: function () { return undefined; },
-                removeClass: function () { return undefined; },
-                getWidth: function () { return 0; },
-                registerInteractionHandler: function () { return undefined; },
-                deregisterInteractionHandler: function () { return undefined; },
-            };
-            // tslint:enable:object-literal-sort-keys
+            return _constants__WEBPACK_IMPORTED_MODULE_2__["strings"];
         },
         enumerable: true,
         configurable: true
     });
-    MDCFloatingLabelFoundation.prototype.init = function () {
-        this.adapter_.registerInteractionHandler('animationend', this.shakeAnimationEndHandler_);
+    Object.defineProperty(MDCRippleFoundation, "numbers", {
+        get: function () {
+            return _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCRippleFoundation, "defaultAdapter", {
+        get: function () {
+            return {
+                addClass: function () { return undefined; },
+                browserSupportsCssVars: function () { return true; },
+                computeBoundingRect: function () { return ({ top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0 }); },
+                containsEventTarget: function () { return true; },
+                deregisterDocumentInteractionHandler: function () { return undefined; },
+                deregisterInteractionHandler: function () { return undefined; },
+                deregisterResizeHandler: function () { return undefined; },
+                getWindowPageOffset: function () { return ({ x: 0, y: 0 }); },
+                isSurfaceActive: function () { return true; },
+                isSurfaceDisabled: function () { return true; },
+                isUnbounded: function () { return true; },
+                registerDocumentInteractionHandler: function () { return undefined; },
+                registerInteractionHandler: function () { return undefined; },
+                registerResizeHandler: function () { return undefined; },
+                removeClass: function () { return undefined; },
+                updateCssVariable: function () { return undefined; },
+            };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MDCRippleFoundation.prototype.init = function () {
+        var _this = this;
+        var supportsPressRipple = this.supportsPressRipple_();
+        this.registerRootHandlers_(supportsPressRipple);
+        if (supportsPressRipple) {
+            var _a = MDCRippleFoundation.cssClasses, ROOT_1 = _a.ROOT, UNBOUNDED_1 = _a.UNBOUNDED;
+            requestAnimationFrame(function () {
+                _this.adapter_.addClass(ROOT_1);
+                if (_this.adapter_.isUnbounded()) {
+                    _this.adapter_.addClass(UNBOUNDED_1);
+                    // Unbounded ripples need layout logic applied immediately to set coordinates for both shade and ripple
+                    _this.layoutInternal_();
+                }
+            });
+        }
     };
-    MDCFloatingLabelFoundation.prototype.destroy = function () {
-        this.adapter_.deregisterInteractionHandler('animationend', this.shakeAnimationEndHandler_);
+    MDCRippleFoundation.prototype.destroy = function () {
+        var _this = this;
+        if (this.supportsPressRipple_()) {
+            if (this.activationTimer_) {
+                clearTimeout(this.activationTimer_);
+                this.activationTimer_ = 0;
+                this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_ACTIVATION);
+            }
+            if (this.fgDeactivationRemovalTimer_) {
+                clearTimeout(this.fgDeactivationRemovalTimer_);
+                this.fgDeactivationRemovalTimer_ = 0;
+                this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_DEACTIVATION);
+            }
+            var _a = MDCRippleFoundation.cssClasses, ROOT_2 = _a.ROOT, UNBOUNDED_2 = _a.UNBOUNDED;
+            requestAnimationFrame(function () {
+                _this.adapter_.removeClass(ROOT_2);
+                _this.adapter_.removeClass(UNBOUNDED_2);
+                _this.removeCssVars_();
+            });
+        }
+        this.deregisterRootHandlers_();
+        this.deregisterDeactivationHandlers_();
     };
     /**
-     * Returns the width of the label element.
+     * @param evt Optional event containing position information.
      */
-    MDCFloatingLabelFoundation.prototype.getWidth = function () {
-        return this.adapter_.getWidth();
+    MDCRippleFoundation.prototype.activate = function (evt) {
+        this.activate_(evt);
     };
-    /**
-     * Styles the label to produce a shake animation to indicate an error.
-     * @param shouldShake If true, adds the shake CSS class; otherwise, removes shake class.
-     */
-    MDCFloatingLabelFoundation.prototype.shake = function (shouldShake) {
-        var LABEL_SHAKE = MDCFloatingLabelFoundation.cssClasses.LABEL_SHAKE;
-        if (shouldShake) {
-            this.adapter_.addClass(LABEL_SHAKE);
+    MDCRippleFoundation.prototype.deactivate = function () {
+        this.deactivate_();
+    };
+    MDCRippleFoundation.prototype.layout = function () {
+        var _this = this;
+        if (this.layoutFrame_) {
+            cancelAnimationFrame(this.layoutFrame_);
+        }
+        this.layoutFrame_ = requestAnimationFrame(function () {
+            _this.layoutInternal_();
+            _this.layoutFrame_ = 0;
+        });
+    };
+    MDCRippleFoundation.prototype.setUnbounded = function (unbounded) {
+        var UNBOUNDED = MDCRippleFoundation.cssClasses.UNBOUNDED;
+        if (unbounded) {
+            this.adapter_.addClass(UNBOUNDED);
         }
         else {
-            this.adapter_.removeClass(LABEL_SHAKE);
+            this.adapter_.removeClass(UNBOUNDED);
         }
+    };
+    MDCRippleFoundation.prototype.handleFocus = function () {
+        var _this = this;
+        requestAnimationFrame(function () {
+            return _this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
+        });
+    };
+    MDCRippleFoundation.prototype.handleBlur = function () {
+        var _this = this;
+        requestAnimationFrame(function () {
+            return _this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
+        });
     };
     /**
-     * Styles the label to float or dock.
-     * @param shouldFloat If true, adds the float CSS class; otherwise, removes float and shake classes to dock the label.
+     * We compute this property so that we are not querying information about the client
+     * until the point in time where the foundation requests it. This prevents scenarios where
+     * client-side feature-detection may happen too early, such as when components are rendered on the server
+     * and then initialized at mount time on the client.
      */
-    MDCFloatingLabelFoundation.prototype.float = function (shouldFloat) {
-        var _a = MDCFloatingLabelFoundation.cssClasses, LABEL_FLOAT_ABOVE = _a.LABEL_FLOAT_ABOVE, LABEL_SHAKE = _a.LABEL_SHAKE;
-        if (shouldFloat) {
-            this.adapter_.addClass(LABEL_FLOAT_ABOVE);
+    MDCRippleFoundation.prototype.supportsPressRipple_ = function () {
+        return this.adapter_.browserSupportsCssVars();
+    };
+    MDCRippleFoundation.prototype.defaultActivationState_ = function () {
+        return {
+            activationEvent: undefined,
+            hasDeactivationUXRun: false,
+            isActivated: false,
+            isProgrammatic: false,
+            wasActivatedByPointer: false,
+            wasElementMadeActive: false,
+        };
+    };
+    /**
+     * supportsPressRipple Passed from init to save a redundant function call
+     */
+    MDCRippleFoundation.prototype.registerRootHandlers_ = function (supportsPressRipple) {
+        var _this = this;
+        if (supportsPressRipple) {
+            ACTIVATION_EVENT_TYPES.forEach(function (evtType) {
+                _this.adapter_.registerInteractionHandler(evtType, _this.activateHandler_);
+            });
+            if (this.adapter_.isUnbounded()) {
+                this.adapter_.registerResizeHandler(this.resizeHandler_);
+            }
+        }
+        this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
+        this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
+    };
+    MDCRippleFoundation.prototype.registerDeactivationHandlers_ = function (evt) {
+        var _this = this;
+        if (evt.type === 'keydown') {
+            this.adapter_.registerInteractionHandler('keyup', this.deactivateHandler_);
         }
         else {
-            this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
-            this.adapter_.removeClass(LABEL_SHAKE);
+            POINTER_DEACTIVATION_EVENT_TYPES.forEach(function (evtType) {
+                _this.adapter_.registerDocumentInteractionHandler(evtType, _this.deactivateHandler_);
+            });
         }
     };
-    MDCFloatingLabelFoundation.prototype.handleShakeAnimationEnd_ = function () {
-        var LABEL_SHAKE = MDCFloatingLabelFoundation.cssClasses.LABEL_SHAKE;
-        this.adapter_.removeClass(LABEL_SHAKE);
+    MDCRippleFoundation.prototype.deregisterRootHandlers_ = function () {
+        var _this = this;
+        ACTIVATION_EVENT_TYPES.forEach(function (evtType) {
+            _this.adapter_.deregisterInteractionHandler(evtType, _this.activateHandler_);
+        });
+        this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
+        this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
+        if (this.adapter_.isUnbounded()) {
+            this.adapter_.deregisterResizeHandler(this.resizeHandler_);
+        }
     };
-    return MDCFloatingLabelFoundation;
+    MDCRippleFoundation.prototype.deregisterDeactivationHandlers_ = function () {
+        var _this = this;
+        this.adapter_.deregisterInteractionHandler('keyup', this.deactivateHandler_);
+        POINTER_DEACTIVATION_EVENT_TYPES.forEach(function (evtType) {
+            _this.adapter_.deregisterDocumentInteractionHandler(evtType, _this.deactivateHandler_);
+        });
+    };
+    MDCRippleFoundation.prototype.removeCssVars_ = function () {
+        var _this = this;
+        var rippleStrings = MDCRippleFoundation.strings;
+        var keys = Object.keys(rippleStrings);
+        keys.forEach(function (key) {
+            if (key.indexOf('VAR_') === 0) {
+                _this.adapter_.updateCssVariable(rippleStrings[key], null);
+            }
+        });
+    };
+    MDCRippleFoundation.prototype.activate_ = function (evt) {
+        var _this = this;
+        if (this.adapter_.isSurfaceDisabled()) {
+            return;
+        }
+        var activationState = this.activationState_;
+        if (activationState.isActivated) {
+            return;
+        }
+        // Avoid reacting to follow-on events fired by touch device after an already-processed user interaction
+        var previousActivationEvent = this.previousActivationEvent_;
+        var isSameInteraction = previousActivationEvent && evt !== undefined && previousActivationEvent.type !== evt.type;
+        if (isSameInteraction) {
+            return;
+        }
+        activationState.isActivated = true;
+        activationState.isProgrammatic = evt === undefined;
+        activationState.activationEvent = evt;
+        activationState.wasActivatedByPointer = activationState.isProgrammatic ? false : evt !== undefined && (evt.type === 'mousedown' || evt.type === 'touchstart' || evt.type === 'pointerdown');
+        var hasActivatedChild = evt !== undefined && activatedTargets.length > 0 && activatedTargets.some(function (target) { return _this.adapter_.containsEventTarget(target); });
+        if (hasActivatedChild) {
+            // Immediately reset activation state, while preserving logic that prevents touch follow-on events
+            this.resetActivationState_();
+            return;
+        }
+        if (evt !== undefined) {
+            activatedTargets.push(evt.target);
+            this.registerDeactivationHandlers_(evt);
+        }
+        activationState.wasElementMadeActive = this.checkElementMadeActive_(evt);
+        if (activationState.wasElementMadeActive) {
+            this.animateActivation_();
+        }
+        requestAnimationFrame(function () {
+            // Reset array on next frame after the current event has had a chance to bubble to prevent ancestor ripples
+            activatedTargets = [];
+            if (!activationState.wasElementMadeActive
+                && evt !== undefined
+                && (evt.key === ' ' || evt.keyCode === 32)) {
+                // If space was pressed, try again within an rAF call to detect :active, because different UAs report
+                // active states inconsistently when they're called within event handling code:
+                // - https://bugs.chromium.org/p/chromium/issues/detail?id=635971
+                // - https://bugzilla.mozilla.org/show_bug.cgi?id=1293741
+                // We try first outside rAF to support Edge, which does not exhibit this problem, but will crash if a CSS
+                // variable is set within a rAF callback for a submit button interaction (#2241).
+                activationState.wasElementMadeActive = _this.checkElementMadeActive_(evt);
+                if (activationState.wasElementMadeActive) {
+                    _this.animateActivation_();
+                }
+            }
+            if (!activationState.wasElementMadeActive) {
+                // Reset activation state immediately if element was not made active.
+                _this.activationState_ = _this.defaultActivationState_();
+            }
+        });
+    };
+    MDCRippleFoundation.prototype.checkElementMadeActive_ = function (evt) {
+        return (evt !== undefined && evt.type === 'keydown') ? this.adapter_.isSurfaceActive() : true;
+    };
+    MDCRippleFoundation.prototype.animateActivation_ = function () {
+        var _this = this;
+        var _a = MDCRippleFoundation.strings, VAR_FG_TRANSLATE_START = _a.VAR_FG_TRANSLATE_START, VAR_FG_TRANSLATE_END = _a.VAR_FG_TRANSLATE_END;
+        var _b = MDCRippleFoundation.cssClasses, FG_DEACTIVATION = _b.FG_DEACTIVATION, FG_ACTIVATION = _b.FG_ACTIVATION;
+        var DEACTIVATION_TIMEOUT_MS = MDCRippleFoundation.numbers.DEACTIVATION_TIMEOUT_MS;
+        this.layoutInternal_();
+        var translateStart = '';
+        var translateEnd = '';
+        if (!this.adapter_.isUnbounded()) {
+            var _c = this.getFgTranslationCoordinates_(), startPoint = _c.startPoint, endPoint = _c.endPoint;
+            translateStart = startPoint.x + "px, " + startPoint.y + "px";
+            translateEnd = endPoint.x + "px, " + endPoint.y + "px";
+        }
+        this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_START, translateStart);
+        this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_END, translateEnd);
+        // Cancel any ongoing activation/deactivation animations
+        clearTimeout(this.activationTimer_);
+        clearTimeout(this.fgDeactivationRemovalTimer_);
+        this.rmBoundedActivationClasses_();
+        this.adapter_.removeClass(FG_DEACTIVATION);
+        // Force layout in order to re-trigger the animation.
+        this.adapter_.computeBoundingRect();
+        this.adapter_.addClass(FG_ACTIVATION);
+        this.activationTimer_ = setTimeout(function () { return _this.activationTimerCallback_(); }, DEACTIVATION_TIMEOUT_MS);
+    };
+    MDCRippleFoundation.prototype.getFgTranslationCoordinates_ = function () {
+        var _a = this.activationState_, activationEvent = _a.activationEvent, wasActivatedByPointer = _a.wasActivatedByPointer;
+        var startPoint;
+        if (wasActivatedByPointer) {
+            startPoint = Object(_util__WEBPACK_IMPORTED_MODULE_3__["getNormalizedEventCoords"])(activationEvent, this.adapter_.getWindowPageOffset(), this.adapter_.computeBoundingRect());
+        }
+        else {
+            startPoint = {
+                x: this.frame_.width / 2,
+                y: this.frame_.height / 2,
+            };
+        }
+        // Center the element around the start point.
+        startPoint = {
+            x: startPoint.x - (this.initialSize_ / 2),
+            y: startPoint.y - (this.initialSize_ / 2),
+        };
+        var endPoint = {
+            x: (this.frame_.width / 2) - (this.initialSize_ / 2),
+            y: (this.frame_.height / 2) - (this.initialSize_ / 2),
+        };
+        return { startPoint: startPoint, endPoint: endPoint };
+    };
+    MDCRippleFoundation.prototype.runDeactivationUXLogicIfReady_ = function () {
+        var _this = this;
+        // This method is called both when a pointing device is released, and when the activation animation ends.
+        // The deactivation animation should only run after both of those occur.
+        var FG_DEACTIVATION = MDCRippleFoundation.cssClasses.FG_DEACTIVATION;
+        var _a = this.activationState_, hasDeactivationUXRun = _a.hasDeactivationUXRun, isActivated = _a.isActivated;
+        var activationHasEnded = hasDeactivationUXRun || !isActivated;
+        if (activationHasEnded && this.activationAnimationHasEnded_) {
+            this.rmBoundedActivationClasses_();
+            this.adapter_.addClass(FG_DEACTIVATION);
+            this.fgDeactivationRemovalTimer_ = setTimeout(function () {
+                _this.adapter_.removeClass(FG_DEACTIVATION);
+            }, _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"].FG_DEACTIVATION_MS);
+        }
+    };
+    MDCRippleFoundation.prototype.rmBoundedActivationClasses_ = function () {
+        var FG_ACTIVATION = MDCRippleFoundation.cssClasses.FG_ACTIVATION;
+        this.adapter_.removeClass(FG_ACTIVATION);
+        this.activationAnimationHasEnded_ = false;
+        this.adapter_.computeBoundingRect();
+    };
+    MDCRippleFoundation.prototype.resetActivationState_ = function () {
+        var _this = this;
+        this.previousActivationEvent_ = this.activationState_.activationEvent;
+        this.activationState_ = this.defaultActivationState_();
+        // Touch devices may fire additional events for the same interaction within a short time.
+        // Store the previous event until it's safe to assume that subsequent events are for new interactions.
+        setTimeout(function () { return _this.previousActivationEvent_ = undefined; }, MDCRippleFoundation.numbers.TAP_DELAY_MS);
+    };
+    MDCRippleFoundation.prototype.deactivate_ = function () {
+        var _this = this;
+        var activationState = this.activationState_;
+        // This can happen in scenarios such as when you have a keyup event that blurs the element.
+        if (!activationState.isActivated) {
+            return;
+        }
+        var state = tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, activationState);
+        if (activationState.isProgrammatic) {
+            requestAnimationFrame(function () { return _this.animateDeactivation_(state); });
+            this.resetActivationState_();
+        }
+        else {
+            this.deregisterDeactivationHandlers_();
+            requestAnimationFrame(function () {
+                _this.activationState_.hasDeactivationUXRun = true;
+                _this.animateDeactivation_(state);
+                _this.resetActivationState_();
+            });
+        }
+    };
+    MDCRippleFoundation.prototype.animateDeactivation_ = function (_a) {
+        var wasActivatedByPointer = _a.wasActivatedByPointer, wasElementMadeActive = _a.wasElementMadeActive;
+        if (wasActivatedByPointer || wasElementMadeActive) {
+            this.runDeactivationUXLogicIfReady_();
+        }
+    };
+    MDCRippleFoundation.prototype.layoutInternal_ = function () {
+        var _this = this;
+        this.frame_ = this.adapter_.computeBoundingRect();
+        var maxDim = Math.max(this.frame_.height, this.frame_.width);
+        // Surface diameter is treated differently for unbounded vs. bounded ripples.
+        // Unbounded ripple diameter is calculated smaller since the surface is expected to already be padded appropriately
+        // to extend the hitbox, and the ripple is expected to meet the edges of the padded hitbox (which is typically
+        // square). Bounded ripples, on the other hand, are fully expected to expand beyond the surface's longest diameter
+        // (calculated based on the diagonal plus a constant padding), and are clipped at the surface's border via
+        // `overflow: hidden`.
+        var getBoundedRadius = function () {
+            var hypotenuse = Math.sqrt(Math.pow(_this.frame_.width, 2) + Math.pow(_this.frame_.height, 2));
+            return hypotenuse + MDCRippleFoundation.numbers.PADDING;
+        };
+        this.maxRadius_ = this.adapter_.isUnbounded() ? maxDim : getBoundedRadius();
+        // Ripple is sized as a fraction of the largest dimension of the surface, then scales up using a CSS scale transform
+        this.initialSize_ = Math.floor(maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE);
+        this.fgScale_ = "" + this.maxRadius_ / this.initialSize_;
+        this.updateLayoutCssVars_();
+    };
+    MDCRippleFoundation.prototype.updateLayoutCssVars_ = function () {
+        var _a = MDCRippleFoundation.strings, VAR_FG_SIZE = _a.VAR_FG_SIZE, VAR_LEFT = _a.VAR_LEFT, VAR_TOP = _a.VAR_TOP, VAR_FG_SCALE = _a.VAR_FG_SCALE;
+        this.adapter_.updateCssVariable(VAR_FG_SIZE, this.initialSize_ + "px");
+        this.adapter_.updateCssVariable(VAR_FG_SCALE, this.fgScale_);
+        if (this.adapter_.isUnbounded()) {
+            this.unboundedCoords_ = {
+                left: Math.round((this.frame_.width / 2) - (this.initialSize_ / 2)),
+                top: Math.round((this.frame_.height / 2) - (this.initialSize_ / 2)),
+            };
+            this.adapter_.updateCssVariable(VAR_LEFT, this.unboundedCoords_.left + "px");
+            this.adapter_.updateCssVariable(VAR_TOP, this.unboundedCoords_.top + "px");
+        }
+    };
+    return MDCRippleFoundation;
 }(_material_base_foundation__WEBPACK_IMPORTED_MODULE_1__["MDCFoundation"]));
 
 // tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
-/* harmony default export */ __webpack_exports__["default"] = (MDCFloatingLabelFoundation);
+/* harmony default export */ __webpack_exports__["default"] = (MDCRippleFoundation);
 //# sourceMappingURL=foundation.js.map
 
 /***/ }),
 
-/***/ "./node_modules/@material/react-floating-label/dist/index.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/@material/react-floating-label/dist/index.js ***!
-  \*******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(true)
-		module.exports = factory(__webpack_require__(/*! react */ "./node_modules/react/index.js"), __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js"), __webpack_require__(/*! @material/floating-label/dist/mdc.floatingLabel.js */ "./node_modules/@material/floating-label/dist/mdc.floatingLabel.js"));
-	else { var i, a; }
-})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_44__) {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 43);
-/******/ })
-/************************************************************************/
-/******/ ({
-
-/***/ 0:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
-
-/***/ }),
-
-/***/ 1:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
-
-/***/ }),
-
-/***/ 43:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./node_modules/@material/ripple/index.js":
+/*!************************************************!*\
+  !*** ./node_modules/@material/ripple/index.js ***!
+  \************************************************/
+/*! exports provided: util, MDCRipple, cssClasses, strings, numbers, MDCRippleFoundation */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./node_modules/@material/ripple/util.js");
+/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "util", function() { return _util__WEBPACK_IMPORTED_MODULE_0__; });
+/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./component */ "./node_modules/@material/ripple/component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCRipple", function() { return _component__WEBPACK_IMPORTED_MODULE_1__["MDCRipple"]; });
 
-// The MIT License
-//
-// Copyright (c) 2018 Google, Inc.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
-    return t;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var classnames_1 = __webpack_require__(1);
-// @ts-ignore no mdc .d.ts
-var mdc_floatingLabel_1 = __webpack_require__(44);
-;
-;
-var FloatingLabel = /** @class */ (function (_super) {
-    __extends(FloatingLabel, _super);
-    function FloatingLabel() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.labelElement_ = React.createRef();
-        _this.state = {
-            classList: new Set(),
-        };
-        _this.initializeFoundation = function () {
-            _this.foundation_ = new mdc_floatingLabel_1.MDCFloatingLabelFoundation(_this.adapter);
-            _this.foundation_.init();
-        };
-        // must be called via ref
-        _this.shake = function () {
-            _this.foundation_.shake(true);
-        };
-        _this.removeClassFromClassList = function (className) {
-            var classList = _this.state.classList;
-            classList.delete(className);
-            _this.setState({ classList: classList });
-        };
-        _this.handleWidthChange = function () {
-            var handleWidthChange = _this.props.handleWidthChange;
-            if (handleWidthChange && _this.labelElement_.current) {
-                handleWidthChange(_this.labelElement_.current.offsetWidth);
-            }
-        };
-        _this.onShakeEnd = function () {
-            var LABEL_SHAKE = mdc_floatingLabel_1.MDCFloatingLabelFoundation.cssClasses.LABEL_SHAKE;
-            _this.removeClassFromClassList(LABEL_SHAKE);
-        };
-        return _this;
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/ripple/constants.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "strings", function() { return _constants__WEBPACK_IMPORTED_MODULE_2__["strings"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "numbers", function() { return _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"]; });
+
+/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/ripple/foundation.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCRippleFoundation", function() { return _foundation__WEBPACK_IMPORTED_MODULE_3__["MDCRippleFoundation"]; });
+
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@material/ripple/util.js":
+/*!***********************************************!*\
+  !*** ./node_modules/@material/ripple/util.js ***!
+  \***********************************************/
+/*! exports provided: supportsCssVariables, getNormalizedEventCoords */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "supportsCssVariables", function() { return supportsCssVariables; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNormalizedEventCoords", function() { return getNormalizedEventCoords; });
+/**
+ * Stores result from supportsCssVariables to avoid redundant processing to
+ * detect CSS custom variable support.
+ */
+var supportsCssVariables_;
+function detectEdgePseudoVarBug(windowObj) {
+    // Detect versions of Edge with buggy var() support
+    // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
+    var document = windowObj.document;
+    var node = document.createElement('div');
+    node.className = 'mdc-ripple-surface--test-edge-var-bug';
+    document.body.appendChild(node);
+    // The bug exists if ::before style ends up propagating to the parent element.
+    // Additionally, getComputedStyle returns null in iframes with display: "none" in Firefox,
+    // but Firefox is known to support CSS custom properties correctly.
+    // See: https://bugzilla.mozilla.org/show_bug.cgi?id=548397
+    var computedStyle = windowObj.getComputedStyle(node);
+    var hasPseudoVarBug = computedStyle !== null && computedStyle.borderTopStyle === 'solid';
+    if (node.parentNode) {
+        node.parentNode.removeChild(node);
     }
-    FloatingLabel.prototype.componentDidMount = function () {
-        this.initializeFoundation();
-        this.handleWidthChange();
-        if (this.props.float) {
-            this.foundation_.float(true);
-        }
-    };
-    FloatingLabel.prototype.componentWillUnmount = function () {
-        this.foundation_.destroy();
-    };
-    FloatingLabel.prototype.componentDidUpdate = function (prevProps) {
-        if (this.props.children !== prevProps.children) {
-            this.handleWidthChange();
-        }
-        if (this.props.float !== prevProps.float) {
-            this.foundation_.float(this.props.float);
-        }
-    };
-    Object.defineProperty(FloatingLabel.prototype, "classes", {
-        get: function () {
-            var classList = this.state.classList;
-            var className = this.props.className;
-            return classnames_1.default('mdc-floating-label', Array.from(classList), className);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FloatingLabel.prototype, "adapter", {
-        get: function () {
-            var _this = this;
-            return {
-                addClass: function (className) {
-                    return _this.setState({ classList: _this.state.classList.add(className) });
-                },
-                removeClass: this.removeClassFromClassList,
-            };
-        },
-        enumerable: true,
-        configurable: true
-    });
-    FloatingLabel.prototype.render = function () {
-        var _a = this.props, className = _a.className, // eslint-disable-line no-unused-vars
-        children = _a.children, handleWidthChange = _a.handleWidthChange, // eslint-disable-line no-unused-vars
-        float = _a.float, // eslint-disable-line no-unused-vars
-        otherProps = __rest(_a, ["className", "children", "handleWidthChange", "float"]);
-        return (React.createElement("label", __assign({ className: this.classes, ref: this.labelElement_, onAnimationEnd: this.onShakeEnd }, otherProps), children));
-    };
-    FloatingLabel.defaultProps = {
-        className: '',
-        float: false,
-    };
-    return FloatingLabel;
-}(React.Component));
-exports.default = FloatingLabel;
-
-
-/***/ }),
-
-/***/ 44:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_44__;
-
-/***/ })
-
-/******/ });
-});
-//# sourceMappingURL=floating-label.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/react-floating-label/index.scss":
-/*!****************************************************************!*\
-  !*** ./node_modules/@material/react-floating-label/index.scss ***!
-  \****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
+    return hasPseudoVarBug;
+}
+function supportsCssVariables(windowObj, forceRefresh) {
+    if (forceRefresh === void 0) { forceRefresh = false; }
+    var CSS = windowObj.CSS;
+    var supportsCssVars = supportsCssVariables_;
+    if (typeof supportsCssVariables_ === 'boolean' && !forceRefresh) {
+        return supportsCssVariables_;
+    }
+    var supportsFunctionPresent = CSS && typeof CSS.supports === 'function';
+    if (!supportsFunctionPresent) {
+        return false;
+    }
+    var explicitlySupportsCssVars = CSS.supports('--css-vars', 'yes');
+    // See: https://bugs.webkit.org/show_bug.cgi?id=154669
+    // See: README section on Safari
+    var weAreFeatureDetectingSafari10plus = (CSS.supports('(--css-vars: yes)') &&
+        CSS.supports('color', '#00000000'));
+    if (explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus) {
+        supportsCssVars = !detectEdgePseudoVarBug(windowObj);
+    }
+    else {
+        supportsCssVars = false;
+    }
+    if (!forceRefresh) {
+        supportsCssVariables_ = supportsCssVars;
+    }
+    return supportsCssVars;
+}
+function getNormalizedEventCoords(evt, pageOffset, clientRect) {
+    if (!evt) {
+        return { x: 0, y: 0 };
+    }
+    var x = pageOffset.x, y = pageOffset.y;
+    var documentX = x + clientRect.left;
+    var documentY = y + clientRect.top;
+    var normalizedX;
+    var normalizedY;
+    // Determine touch point relative to the ripple container.
+    if (evt.type === 'touchstart') {
+        var touchEvent = evt;
+        normalizedX = touchEvent.changedTouches[0].pageX - documentX;
+        normalizedY = touchEvent.changedTouches[0].pageY - documentY;
+    }
+    else {
+        var mouseEvent = evt;
+        normalizedX = mouseEvent.pageX - documentX;
+        normalizedY = mouseEvent.pageY - documentY;
+    }
+    return { x: normalizedX, y: normalizedY };
+}
+//# sourceMappingURL=util.js.map
 
 /***/ }),
 
@@ -8542,14 +6233,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCSelect", function() { return MDCSelect; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
-/* harmony import */ var _material_floating_label_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/floating-label/component */ "./node_modules/@material/select/node_modules/@material/floating-label/component.js");
+/* harmony import */ var _material_floating_label_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/floating-label/component */ "./node_modules/@material/floating-label/component.js");
 /* harmony import */ var _material_line_ripple_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material/line-ripple/component */ "./node_modules/@material/line-ripple/component.js");
-/* harmony import */ var _material_menu_surface_constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material/menu-surface/constants */ "./node_modules/@material/select/node_modules/@material/menu-surface/constants.js");
+/* harmony import */ var _material_menu_surface_constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material/menu-surface/constants */ "./node_modules/@material/menu-surface/constants.js");
 /* harmony import */ var _material_menu_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material/menu/component */ "./node_modules/@material/menu/component.js");
 /* harmony import */ var _material_menu_constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material/menu/constants */ "./node_modules/@material/menu/constants.js");
 /* harmony import */ var _material_notched_outline_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material/notched-outline/component */ "./node_modules/@material/notched-outline/component.js");
-/* harmony import */ var _material_ripple_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material/ripple/component */ "./node_modules/@material/select/node_modules/@material/ripple/component.js");
-/* harmony import */ var _material_ripple_foundation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @material/ripple/foundation */ "./node_modules/@material/select/node_modules/@material/ripple/foundation.js");
+/* harmony import */ var _material_ripple_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material/ripple/component */ "./node_modules/@material/ripple/component.js");
+/* harmony import */ var _material_ripple_foundation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @material/ripple/foundation */ "./node_modules/@material/ripple/foundation.js");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/select/constants.js");
 /* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/select/foundation.js");
 /* harmony import */ var _helper_text_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./helper-text/component */ "./node_modules/@material/select/helper-text/component.js");
@@ -10117,1137 +7808,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/@material/select/node_modules/@material/floating-label/component.js":
-/*!******************************************************************************************!*\
-  !*** ./node_modules/@material/select/node_modules/@material/floating-label/component.js ***!
-  \******************************************************************************************/
-/*! exports provided: MDCFloatingLabel */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCFloatingLabel", function() { return MDCFloatingLabel; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/select/node_modules/@material/floating-label/foundation.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-var MDCFloatingLabel = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCFloatingLabel, _super);
-    function MDCFloatingLabel() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    MDCFloatingLabel.attachTo = function (root) {
-        return new MDCFloatingLabel(root);
-    };
-    /**
-     * Styles the label to produce the label shake for errors.
-     * @param shouldShake If true, shakes the label by adding a CSS class; otherwise, stops shaking by removing the class.
-     */
-    MDCFloatingLabel.prototype.shake = function (shouldShake) {
-        this.foundation_.shake(shouldShake);
-    };
-    /**
-     * Styles the label to float/dock.
-     * @param shouldFloat If true, floats the label by adding a CSS class; otherwise, docks it by removing the class.
-     */
-    MDCFloatingLabel.prototype.float = function (shouldFloat) {
-        this.foundation_.float(shouldFloat);
-    };
-    MDCFloatingLabel.prototype.getWidth = function () {
-        return this.foundation_.getWidth();
-    };
-    MDCFloatingLabel.prototype.getDefaultFoundation = function () {
-        var _this = this;
-        // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-        // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-        // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-        var adapter = {
-            addClass: function (className) { return _this.root_.classList.add(className); },
-            removeClass: function (className) { return _this.root_.classList.remove(className); },
-            getWidth: function () { return _this.root_.scrollWidth; },
-            registerInteractionHandler: function (evtType, handler) { return _this.listen(evtType, handler); },
-            deregisterInteractionHandler: function (evtType, handler) { return _this.unlisten(evtType, handler); },
-        };
-        // tslint:enable:object-literal-sort-keys
-        return new _foundation__WEBPACK_IMPORTED_MODULE_2__["MDCFloatingLabelFoundation"](adapter);
-    };
-    return MDCFloatingLabel;
-}(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
-
-//# sourceMappingURL=component.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/select/node_modules/@material/floating-label/constants.js":
-/*!******************************************************************************************!*\
-  !*** ./node_modules/@material/select/node_modules/@material/floating-label/constants.js ***!
-  \******************************************************************************************/
-/*! exports provided: cssClasses */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return cssClasses; });
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-var cssClasses = {
-    LABEL_FLOAT_ABOVE: 'mdc-floating-label--float-above',
-    LABEL_SHAKE: 'mdc-floating-label--shake',
-    ROOT: 'mdc-floating-label',
-};
-//# sourceMappingURL=constants.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/select/node_modules/@material/floating-label/foundation.js":
-/*!*******************************************************************************************!*\
-  !*** ./node_modules/@material/select/node_modules/@material/floating-label/foundation.js ***!
-  \*******************************************************************************************/
-/*! exports provided: MDCFloatingLabelFoundation, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCFloatingLabelFoundation", function() { return MDCFloatingLabelFoundation; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/foundation */ "./node_modules/@material/base/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/select/node_modules/@material/floating-label/constants.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-var MDCFloatingLabelFoundation = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCFloatingLabelFoundation, _super);
-    function MDCFloatingLabelFoundation(adapter) {
-        var _this = _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCFloatingLabelFoundation.defaultAdapter, adapter)) || this;
-        _this.shakeAnimationEndHandler_ = function () { return _this.handleShakeAnimationEnd_(); };
-        return _this;
-    }
-    Object.defineProperty(MDCFloatingLabelFoundation, "cssClasses", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCFloatingLabelFoundation, "defaultAdapter", {
-        /**
-         * See {@link MDCFloatingLabelAdapter} for typing information on parameters and return types.
-         */
-        get: function () {
-            // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-            return {
-                addClass: function () { return undefined; },
-                removeClass: function () { return undefined; },
-                getWidth: function () { return 0; },
-                registerInteractionHandler: function () { return undefined; },
-                deregisterInteractionHandler: function () { return undefined; },
-            };
-            // tslint:enable:object-literal-sort-keys
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MDCFloatingLabelFoundation.prototype.init = function () {
-        this.adapter_.registerInteractionHandler('animationend', this.shakeAnimationEndHandler_);
-    };
-    MDCFloatingLabelFoundation.prototype.destroy = function () {
-        this.adapter_.deregisterInteractionHandler('animationend', this.shakeAnimationEndHandler_);
-    };
-    /**
-     * Returns the width of the label element.
-     */
-    MDCFloatingLabelFoundation.prototype.getWidth = function () {
-        return this.adapter_.getWidth();
-    };
-    /**
-     * Styles the label to produce a shake animation to indicate an error.
-     * @param shouldShake If true, adds the shake CSS class; otherwise, removes shake class.
-     */
-    MDCFloatingLabelFoundation.prototype.shake = function (shouldShake) {
-        var LABEL_SHAKE = MDCFloatingLabelFoundation.cssClasses.LABEL_SHAKE;
-        if (shouldShake) {
-            this.adapter_.addClass(LABEL_SHAKE);
-        }
-        else {
-            this.adapter_.removeClass(LABEL_SHAKE);
-        }
-    };
-    /**
-     * Styles the label to float or dock.
-     * @param shouldFloat If true, adds the float CSS class; otherwise, removes float and shake classes to dock the label.
-     */
-    MDCFloatingLabelFoundation.prototype.float = function (shouldFloat) {
-        var _a = MDCFloatingLabelFoundation.cssClasses, LABEL_FLOAT_ABOVE = _a.LABEL_FLOAT_ABOVE, LABEL_SHAKE = _a.LABEL_SHAKE;
-        if (shouldFloat) {
-            this.adapter_.addClass(LABEL_FLOAT_ABOVE);
-        }
-        else {
-            this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
-            this.adapter_.removeClass(LABEL_SHAKE);
-        }
-    };
-    MDCFloatingLabelFoundation.prototype.handleShakeAnimationEnd_ = function () {
-        var LABEL_SHAKE = MDCFloatingLabelFoundation.cssClasses.LABEL_SHAKE;
-        this.adapter_.removeClass(LABEL_SHAKE);
-    };
-    return MDCFloatingLabelFoundation;
-}(_material_base_foundation__WEBPACK_IMPORTED_MODULE_1__["MDCFoundation"]));
-
-// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
-/* harmony default export */ __webpack_exports__["default"] = (MDCFloatingLabelFoundation);
-//# sourceMappingURL=foundation.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/select/node_modules/@material/menu-surface/constants.js":
-/*!****************************************************************************************!*\
-  !*** ./node_modules/@material/select/node_modules/@material/menu-surface/constants.js ***!
-  \****************************************************************************************/
-/*! exports provided: cssClasses, strings, numbers, CornerBit, Corner */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return cssClasses; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "strings", function() { return strings; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "numbers", function() { return numbers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CornerBit", function() { return CornerBit; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Corner", function() { return Corner; });
-/**
- * @license
- * Copyright 2018 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-var cssClasses = {
-    ANCHOR: 'mdc-menu-surface--anchor',
-    ANIMATING_CLOSED: 'mdc-menu-surface--animating-closed',
-    ANIMATING_OPEN: 'mdc-menu-surface--animating-open',
-    FIXED: 'mdc-menu-surface--fixed',
-    OPEN: 'mdc-menu-surface--open',
-    ROOT: 'mdc-menu-surface',
-};
-// tslint:disable:object-literal-sort-keys
-var strings = {
-    CLOSED_EVENT: 'MDCMenuSurface:closed',
-    OPENED_EVENT: 'MDCMenuSurface:opened',
-    FOCUSABLE_ELEMENTS: [
-        'button:not(:disabled)', '[href]:not([aria-disabled="true"])', 'input:not(:disabled)',
-        'select:not(:disabled)', 'textarea:not(:disabled)', '[tabindex]:not([tabindex="-1"]):not([aria-disabled="true"])',
-    ].join(', '),
-};
-// tslint:enable:object-literal-sort-keys
-var numbers = {
-    /** Total duration of menu-surface open animation. */
-    TRANSITION_OPEN_DURATION: 120,
-    /** Total duration of menu-surface close animation. */
-    TRANSITION_CLOSE_DURATION: 75,
-    /** Margin left to the edge of the viewport when menu-surface is at maximum possible height. */
-    MARGIN_TO_EDGE: 32,
-    /** Ratio of anchor width to menu-surface width for switching from corner positioning to center positioning. */
-    ANCHOR_TO_MENU_SURFACE_WIDTH_RATIO: 0.67,
-};
-/**
- * Enum for bits in the {@see Corner) bitmap.
- */
-var CornerBit;
-(function (CornerBit) {
-    CornerBit[CornerBit["BOTTOM"] = 1] = "BOTTOM";
-    CornerBit[CornerBit["CENTER"] = 2] = "CENTER";
-    CornerBit[CornerBit["RIGHT"] = 4] = "RIGHT";
-    CornerBit[CornerBit["FLIP_RTL"] = 8] = "FLIP_RTL";
-})(CornerBit || (CornerBit = {}));
-/**
- * Enum for representing an element corner for positioning the menu-surface.
- *
- * The START constants map to LEFT if element directionality is left
- * to right and RIGHT if the directionality is right to left.
- * Likewise END maps to RIGHT or LEFT depending on the directionality.
- */
-var Corner;
-(function (Corner) {
-    Corner[Corner["TOP_LEFT"] = 0] = "TOP_LEFT";
-    Corner[Corner["TOP_RIGHT"] = 4] = "TOP_RIGHT";
-    Corner[Corner["BOTTOM_LEFT"] = 1] = "BOTTOM_LEFT";
-    Corner[Corner["BOTTOM_RIGHT"] = 5] = "BOTTOM_RIGHT";
-    Corner[Corner["TOP_START"] = 8] = "TOP_START";
-    Corner[Corner["TOP_END"] = 12] = "TOP_END";
-    Corner[Corner["BOTTOM_START"] = 9] = "BOTTOM_START";
-    Corner[Corner["BOTTOM_END"] = 13] = "BOTTOM_END";
-})(Corner || (Corner = {}));
-
-//# sourceMappingURL=constants.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/select/node_modules/@material/ripple/component.js":
-/*!**********************************************************************************!*\
-  !*** ./node_modules/@material/select/node_modules/@material/ripple/component.js ***!
-  \**********************************************************************************/
-/*! exports provided: MDCRipple */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCRipple", function() { return MDCRipple; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
-/* harmony import */ var _material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/dom/ponyfill */ "./node_modules/@material/dom/ponyfill.js");
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/select/node_modules/@material/ripple/foundation.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./util */ "./node_modules/@material/select/node_modules/@material/ripple/util.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-
-
-var MDCRipple = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCRipple, _super);
-    function MDCRipple() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.disabled = false;
-        return _this;
-    }
-    MDCRipple.attachTo = function (root, opts) {
-        if (opts === void 0) { opts = { isUnbounded: undefined }; }
-        var ripple = new MDCRipple(root);
-        // Only override unbounded behavior if option is explicitly specified
-        if (opts.isUnbounded !== undefined) {
-            ripple.unbounded = opts.isUnbounded;
-        }
-        return ripple;
-    };
-    MDCRipple.createAdapter = function (instance) {
-        return {
-            addClass: function (className) { return instance.root_.classList.add(className); },
-            browserSupportsCssVars: function () { return _util__WEBPACK_IMPORTED_MODULE_4__["supportsCssVariables"](window); },
-            computeBoundingRect: function () { return instance.root_.getBoundingClientRect(); },
-            containsEventTarget: function (target) { return instance.root_.contains(target); },
-            deregisterDocumentInteractionHandler: function (evtType, handler) {
-                return document.documentElement.removeEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            deregisterInteractionHandler: function (evtType, handler) {
-                return instance.root_.removeEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            deregisterResizeHandler: function (handler) { return window.removeEventListener('resize', handler); },
-            getWindowPageOffset: function () { return ({ x: window.pageXOffset, y: window.pageYOffset }); },
-            isSurfaceActive: function () { return Object(_material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__["matches"])(instance.root_, ':active'); },
-            isSurfaceDisabled: function () { return Boolean(instance.disabled); },
-            isUnbounded: function () { return Boolean(instance.unbounded); },
-            registerDocumentInteractionHandler: function (evtType, handler) {
-                return document.documentElement.addEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            registerInteractionHandler: function (evtType, handler) {
-                return instance.root_.addEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            registerResizeHandler: function (handler) { return window.addEventListener('resize', handler); },
-            removeClass: function (className) { return instance.root_.classList.remove(className); },
-            updateCssVariable: function (varName, value) { return instance.root_.style.setProperty(varName, value); },
-        };
-    };
-    Object.defineProperty(MDCRipple.prototype, "unbounded", {
-        get: function () {
-            return Boolean(this.unbounded_);
-        },
-        set: function (unbounded) {
-            this.unbounded_ = Boolean(unbounded);
-            this.setUnbounded_();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MDCRipple.prototype.activate = function () {
-        this.foundation_.activate();
-    };
-    MDCRipple.prototype.deactivate = function () {
-        this.foundation_.deactivate();
-    };
-    MDCRipple.prototype.layout = function () {
-        this.foundation_.layout();
-    };
-    MDCRipple.prototype.getDefaultFoundation = function () {
-        return new _foundation__WEBPACK_IMPORTED_MODULE_3__["MDCRippleFoundation"](MDCRipple.createAdapter(this));
-    };
-    MDCRipple.prototype.initialSyncWithDOM = function () {
-        var root = this.root_;
-        this.unbounded = 'mdcRippleIsUnbounded' in root.dataset;
-    };
-    /**
-     * Closure Compiler throws an access control error when directly accessing a
-     * protected or private property inside a getter/setter, like unbounded above.
-     * By accessing the protected property inside a method, we solve that problem.
-     * That's why this function exists.
-     */
-    MDCRipple.prototype.setUnbounded_ = function () {
-        this.foundation_.setUnbounded(Boolean(this.unbounded_));
-    };
-    return MDCRipple;
-}(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
-
-//# sourceMappingURL=component.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/select/node_modules/@material/ripple/constants.js":
-/*!**********************************************************************************!*\
-  !*** ./node_modules/@material/select/node_modules/@material/ripple/constants.js ***!
-  \**********************************************************************************/
-/*! exports provided: cssClasses, strings, numbers */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return cssClasses; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "strings", function() { return strings; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "numbers", function() { return numbers; });
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-var cssClasses = {
-    // Ripple is a special case where the "root" component is really a "mixin" of sorts,
-    // given that it's an 'upgrade' to an existing component. That being said it is the root
-    // CSS class that all other CSS classes derive from.
-    BG_FOCUSED: 'mdc-ripple-upgraded--background-focused',
-    FG_ACTIVATION: 'mdc-ripple-upgraded--foreground-activation',
-    FG_DEACTIVATION: 'mdc-ripple-upgraded--foreground-deactivation',
-    ROOT: 'mdc-ripple-upgraded',
-    UNBOUNDED: 'mdc-ripple-upgraded--unbounded',
-};
-var strings = {
-    VAR_FG_SCALE: '--mdc-ripple-fg-scale',
-    VAR_FG_SIZE: '--mdc-ripple-fg-size',
-    VAR_FG_TRANSLATE_END: '--mdc-ripple-fg-translate-end',
-    VAR_FG_TRANSLATE_START: '--mdc-ripple-fg-translate-start',
-    VAR_LEFT: '--mdc-ripple-left',
-    VAR_TOP: '--mdc-ripple-top',
-};
-var numbers = {
-    DEACTIVATION_TIMEOUT_MS: 225,
-    FG_DEACTIVATION_MS: 150,
-    INITIAL_ORIGIN_SCALE: 0.6,
-    PADDING: 10,
-    TAP_DELAY_MS: 300,
-};
-//# sourceMappingURL=constants.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/select/node_modules/@material/ripple/foundation.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/@material/select/node_modules/@material/ripple/foundation.js ***!
-  \***********************************************************************************/
-/*! exports provided: MDCRippleFoundation, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCRippleFoundation", function() { return MDCRippleFoundation; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/foundation */ "./node_modules/@material/base/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/select/node_modules/@material/ripple/constants.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./util */ "./node_modules/@material/select/node_modules/@material/ripple/util.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-
-// Activation events registered on the root element of each instance for activation
-var ACTIVATION_EVENT_TYPES = [
-    'touchstart', 'pointerdown', 'mousedown', 'keydown',
-];
-// Deactivation events registered on documentElement when a pointer-related down event occurs
-var POINTER_DEACTIVATION_EVENT_TYPES = [
-    'touchend', 'pointerup', 'mouseup', 'contextmenu',
-];
-// simultaneous nested activations
-var activatedTargets = [];
-var MDCRippleFoundation = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCRippleFoundation, _super);
-    function MDCRippleFoundation(adapter) {
-        var _this = _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCRippleFoundation.defaultAdapter, adapter)) || this;
-        _this.activationAnimationHasEnded_ = false;
-        _this.activationTimer_ = 0;
-        _this.fgDeactivationRemovalTimer_ = 0;
-        _this.fgScale_ = '0';
-        _this.frame_ = { width: 0, height: 0 };
-        _this.initialSize_ = 0;
-        _this.layoutFrame_ = 0;
-        _this.maxRadius_ = 0;
-        _this.unboundedCoords_ = { left: 0, top: 0 };
-        _this.activationState_ = _this.defaultActivationState_();
-        _this.activationTimerCallback_ = function () {
-            _this.activationAnimationHasEnded_ = true;
-            _this.runDeactivationUXLogicIfReady_();
-        };
-        _this.activateHandler_ = function (e) { return _this.activate_(e); };
-        _this.deactivateHandler_ = function () { return _this.deactivate_(); };
-        _this.focusHandler_ = function () { return _this.handleFocus(); };
-        _this.blurHandler_ = function () { return _this.handleBlur(); };
-        _this.resizeHandler_ = function () { return _this.layout(); };
-        return _this;
-    }
-    Object.defineProperty(MDCRippleFoundation, "cssClasses", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCRippleFoundation, "strings", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["strings"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCRippleFoundation, "numbers", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCRippleFoundation, "defaultAdapter", {
-        get: function () {
-            return {
-                addClass: function () { return undefined; },
-                browserSupportsCssVars: function () { return true; },
-                computeBoundingRect: function () { return ({ top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0 }); },
-                containsEventTarget: function () { return true; },
-                deregisterDocumentInteractionHandler: function () { return undefined; },
-                deregisterInteractionHandler: function () { return undefined; },
-                deregisterResizeHandler: function () { return undefined; },
-                getWindowPageOffset: function () { return ({ x: 0, y: 0 }); },
-                isSurfaceActive: function () { return true; },
-                isSurfaceDisabled: function () { return true; },
-                isUnbounded: function () { return true; },
-                registerDocumentInteractionHandler: function () { return undefined; },
-                registerInteractionHandler: function () { return undefined; },
-                registerResizeHandler: function () { return undefined; },
-                removeClass: function () { return undefined; },
-                updateCssVariable: function () { return undefined; },
-            };
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MDCRippleFoundation.prototype.init = function () {
-        var _this = this;
-        var supportsPressRipple = this.supportsPressRipple_();
-        this.registerRootHandlers_(supportsPressRipple);
-        if (supportsPressRipple) {
-            var _a = MDCRippleFoundation.cssClasses, ROOT_1 = _a.ROOT, UNBOUNDED_1 = _a.UNBOUNDED;
-            requestAnimationFrame(function () {
-                _this.adapter_.addClass(ROOT_1);
-                if (_this.adapter_.isUnbounded()) {
-                    _this.adapter_.addClass(UNBOUNDED_1);
-                    // Unbounded ripples need layout logic applied immediately to set coordinates for both shade and ripple
-                    _this.layoutInternal_();
-                }
-            });
-        }
-    };
-    MDCRippleFoundation.prototype.destroy = function () {
-        var _this = this;
-        if (this.supportsPressRipple_()) {
-            if (this.activationTimer_) {
-                clearTimeout(this.activationTimer_);
-                this.activationTimer_ = 0;
-                this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_ACTIVATION);
-            }
-            if (this.fgDeactivationRemovalTimer_) {
-                clearTimeout(this.fgDeactivationRemovalTimer_);
-                this.fgDeactivationRemovalTimer_ = 0;
-                this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_DEACTIVATION);
-            }
-            var _a = MDCRippleFoundation.cssClasses, ROOT_2 = _a.ROOT, UNBOUNDED_2 = _a.UNBOUNDED;
-            requestAnimationFrame(function () {
-                _this.adapter_.removeClass(ROOT_2);
-                _this.adapter_.removeClass(UNBOUNDED_2);
-                _this.removeCssVars_();
-            });
-        }
-        this.deregisterRootHandlers_();
-        this.deregisterDeactivationHandlers_();
-    };
-    /**
-     * @param evt Optional event containing position information.
-     */
-    MDCRippleFoundation.prototype.activate = function (evt) {
-        this.activate_(evt);
-    };
-    MDCRippleFoundation.prototype.deactivate = function () {
-        this.deactivate_();
-    };
-    MDCRippleFoundation.prototype.layout = function () {
-        var _this = this;
-        if (this.layoutFrame_) {
-            cancelAnimationFrame(this.layoutFrame_);
-        }
-        this.layoutFrame_ = requestAnimationFrame(function () {
-            _this.layoutInternal_();
-            _this.layoutFrame_ = 0;
-        });
-    };
-    MDCRippleFoundation.prototype.setUnbounded = function (unbounded) {
-        var UNBOUNDED = MDCRippleFoundation.cssClasses.UNBOUNDED;
-        if (unbounded) {
-            this.adapter_.addClass(UNBOUNDED);
-        }
-        else {
-            this.adapter_.removeClass(UNBOUNDED);
-        }
-    };
-    MDCRippleFoundation.prototype.handleFocus = function () {
-        var _this = this;
-        requestAnimationFrame(function () {
-            return _this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
-        });
-    };
-    MDCRippleFoundation.prototype.handleBlur = function () {
-        var _this = this;
-        requestAnimationFrame(function () {
-            return _this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
-        });
-    };
-    /**
-     * We compute this property so that we are not querying information about the client
-     * until the point in time where the foundation requests it. This prevents scenarios where
-     * client-side feature-detection may happen too early, such as when components are rendered on the server
-     * and then initialized at mount time on the client.
-     */
-    MDCRippleFoundation.prototype.supportsPressRipple_ = function () {
-        return this.adapter_.browserSupportsCssVars();
-    };
-    MDCRippleFoundation.prototype.defaultActivationState_ = function () {
-        return {
-            activationEvent: undefined,
-            hasDeactivationUXRun: false,
-            isActivated: false,
-            isProgrammatic: false,
-            wasActivatedByPointer: false,
-            wasElementMadeActive: false,
-        };
-    };
-    /**
-     * supportsPressRipple Passed from init to save a redundant function call
-     */
-    MDCRippleFoundation.prototype.registerRootHandlers_ = function (supportsPressRipple) {
-        var _this = this;
-        if (supportsPressRipple) {
-            ACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-                _this.adapter_.registerInteractionHandler(evtType, _this.activateHandler_);
-            });
-            if (this.adapter_.isUnbounded()) {
-                this.adapter_.registerResizeHandler(this.resizeHandler_);
-            }
-        }
-        this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
-        this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
-    };
-    MDCRippleFoundation.prototype.registerDeactivationHandlers_ = function (evt) {
-        var _this = this;
-        if (evt.type === 'keydown') {
-            this.adapter_.registerInteractionHandler('keyup', this.deactivateHandler_);
-        }
-        else {
-            POINTER_DEACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-                _this.adapter_.registerDocumentInteractionHandler(evtType, _this.deactivateHandler_);
-            });
-        }
-    };
-    MDCRippleFoundation.prototype.deregisterRootHandlers_ = function () {
-        var _this = this;
-        ACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-            _this.adapter_.deregisterInteractionHandler(evtType, _this.activateHandler_);
-        });
-        this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
-        this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
-        if (this.adapter_.isUnbounded()) {
-            this.adapter_.deregisterResizeHandler(this.resizeHandler_);
-        }
-    };
-    MDCRippleFoundation.prototype.deregisterDeactivationHandlers_ = function () {
-        var _this = this;
-        this.adapter_.deregisterInteractionHandler('keyup', this.deactivateHandler_);
-        POINTER_DEACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-            _this.adapter_.deregisterDocumentInteractionHandler(evtType, _this.deactivateHandler_);
-        });
-    };
-    MDCRippleFoundation.prototype.removeCssVars_ = function () {
-        var _this = this;
-        var rippleStrings = MDCRippleFoundation.strings;
-        var keys = Object.keys(rippleStrings);
-        keys.forEach(function (key) {
-            if (key.indexOf('VAR_') === 0) {
-                _this.adapter_.updateCssVariable(rippleStrings[key], null);
-            }
-        });
-    };
-    MDCRippleFoundation.prototype.activate_ = function (evt) {
-        var _this = this;
-        if (this.adapter_.isSurfaceDisabled()) {
-            return;
-        }
-        var activationState = this.activationState_;
-        if (activationState.isActivated) {
-            return;
-        }
-        // Avoid reacting to follow-on events fired by touch device after an already-processed user interaction
-        var previousActivationEvent = this.previousActivationEvent_;
-        var isSameInteraction = previousActivationEvent && evt !== undefined && previousActivationEvent.type !== evt.type;
-        if (isSameInteraction) {
-            return;
-        }
-        activationState.isActivated = true;
-        activationState.isProgrammatic = evt === undefined;
-        activationState.activationEvent = evt;
-        activationState.wasActivatedByPointer = activationState.isProgrammatic ? false : evt !== undefined && (evt.type === 'mousedown' || evt.type === 'touchstart' || evt.type === 'pointerdown');
-        var hasActivatedChild = evt !== undefined && activatedTargets.length > 0 && activatedTargets.some(function (target) { return _this.adapter_.containsEventTarget(target); });
-        if (hasActivatedChild) {
-            // Immediately reset activation state, while preserving logic that prevents touch follow-on events
-            this.resetActivationState_();
-            return;
-        }
-        if (evt !== undefined) {
-            activatedTargets.push(evt.target);
-            this.registerDeactivationHandlers_(evt);
-        }
-        activationState.wasElementMadeActive = this.checkElementMadeActive_(evt);
-        if (activationState.wasElementMadeActive) {
-            this.animateActivation_();
-        }
-        requestAnimationFrame(function () {
-            // Reset array on next frame after the current event has had a chance to bubble to prevent ancestor ripples
-            activatedTargets = [];
-            if (!activationState.wasElementMadeActive
-                && evt !== undefined
-                && (evt.key === ' ' || evt.keyCode === 32)) {
-                // If space was pressed, try again within an rAF call to detect :active, because different UAs report
-                // active states inconsistently when they're called within event handling code:
-                // - https://bugs.chromium.org/p/chromium/issues/detail?id=635971
-                // - https://bugzilla.mozilla.org/show_bug.cgi?id=1293741
-                // We try first outside rAF to support Edge, which does not exhibit this problem, but will crash if a CSS
-                // variable is set within a rAF callback for a submit button interaction (#2241).
-                activationState.wasElementMadeActive = _this.checkElementMadeActive_(evt);
-                if (activationState.wasElementMadeActive) {
-                    _this.animateActivation_();
-                }
-            }
-            if (!activationState.wasElementMadeActive) {
-                // Reset activation state immediately if element was not made active.
-                _this.activationState_ = _this.defaultActivationState_();
-            }
-        });
-    };
-    MDCRippleFoundation.prototype.checkElementMadeActive_ = function (evt) {
-        return (evt !== undefined && evt.type === 'keydown') ? this.adapter_.isSurfaceActive() : true;
-    };
-    MDCRippleFoundation.prototype.animateActivation_ = function () {
-        var _this = this;
-        var _a = MDCRippleFoundation.strings, VAR_FG_TRANSLATE_START = _a.VAR_FG_TRANSLATE_START, VAR_FG_TRANSLATE_END = _a.VAR_FG_TRANSLATE_END;
-        var _b = MDCRippleFoundation.cssClasses, FG_DEACTIVATION = _b.FG_DEACTIVATION, FG_ACTIVATION = _b.FG_ACTIVATION;
-        var DEACTIVATION_TIMEOUT_MS = MDCRippleFoundation.numbers.DEACTIVATION_TIMEOUT_MS;
-        this.layoutInternal_();
-        var translateStart = '';
-        var translateEnd = '';
-        if (!this.adapter_.isUnbounded()) {
-            var _c = this.getFgTranslationCoordinates_(), startPoint = _c.startPoint, endPoint = _c.endPoint;
-            translateStart = startPoint.x + "px, " + startPoint.y + "px";
-            translateEnd = endPoint.x + "px, " + endPoint.y + "px";
-        }
-        this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_START, translateStart);
-        this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_END, translateEnd);
-        // Cancel any ongoing activation/deactivation animations
-        clearTimeout(this.activationTimer_);
-        clearTimeout(this.fgDeactivationRemovalTimer_);
-        this.rmBoundedActivationClasses_();
-        this.adapter_.removeClass(FG_DEACTIVATION);
-        // Force layout in order to re-trigger the animation.
-        this.adapter_.computeBoundingRect();
-        this.adapter_.addClass(FG_ACTIVATION);
-        this.activationTimer_ = setTimeout(function () { return _this.activationTimerCallback_(); }, DEACTIVATION_TIMEOUT_MS);
-    };
-    MDCRippleFoundation.prototype.getFgTranslationCoordinates_ = function () {
-        var _a = this.activationState_, activationEvent = _a.activationEvent, wasActivatedByPointer = _a.wasActivatedByPointer;
-        var startPoint;
-        if (wasActivatedByPointer) {
-            startPoint = Object(_util__WEBPACK_IMPORTED_MODULE_3__["getNormalizedEventCoords"])(activationEvent, this.adapter_.getWindowPageOffset(), this.adapter_.computeBoundingRect());
-        }
-        else {
-            startPoint = {
-                x: this.frame_.width / 2,
-                y: this.frame_.height / 2,
-            };
-        }
-        // Center the element around the start point.
-        startPoint = {
-            x: startPoint.x - (this.initialSize_ / 2),
-            y: startPoint.y - (this.initialSize_ / 2),
-        };
-        var endPoint = {
-            x: (this.frame_.width / 2) - (this.initialSize_ / 2),
-            y: (this.frame_.height / 2) - (this.initialSize_ / 2),
-        };
-        return { startPoint: startPoint, endPoint: endPoint };
-    };
-    MDCRippleFoundation.prototype.runDeactivationUXLogicIfReady_ = function () {
-        var _this = this;
-        // This method is called both when a pointing device is released, and when the activation animation ends.
-        // The deactivation animation should only run after both of those occur.
-        var FG_DEACTIVATION = MDCRippleFoundation.cssClasses.FG_DEACTIVATION;
-        var _a = this.activationState_, hasDeactivationUXRun = _a.hasDeactivationUXRun, isActivated = _a.isActivated;
-        var activationHasEnded = hasDeactivationUXRun || !isActivated;
-        if (activationHasEnded && this.activationAnimationHasEnded_) {
-            this.rmBoundedActivationClasses_();
-            this.adapter_.addClass(FG_DEACTIVATION);
-            this.fgDeactivationRemovalTimer_ = setTimeout(function () {
-                _this.adapter_.removeClass(FG_DEACTIVATION);
-            }, _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"].FG_DEACTIVATION_MS);
-        }
-    };
-    MDCRippleFoundation.prototype.rmBoundedActivationClasses_ = function () {
-        var FG_ACTIVATION = MDCRippleFoundation.cssClasses.FG_ACTIVATION;
-        this.adapter_.removeClass(FG_ACTIVATION);
-        this.activationAnimationHasEnded_ = false;
-        this.adapter_.computeBoundingRect();
-    };
-    MDCRippleFoundation.prototype.resetActivationState_ = function () {
-        var _this = this;
-        this.previousActivationEvent_ = this.activationState_.activationEvent;
-        this.activationState_ = this.defaultActivationState_();
-        // Touch devices may fire additional events for the same interaction within a short time.
-        // Store the previous event until it's safe to assume that subsequent events are for new interactions.
-        setTimeout(function () { return _this.previousActivationEvent_ = undefined; }, MDCRippleFoundation.numbers.TAP_DELAY_MS);
-    };
-    MDCRippleFoundation.prototype.deactivate_ = function () {
-        var _this = this;
-        var activationState = this.activationState_;
-        // This can happen in scenarios such as when you have a keyup event that blurs the element.
-        if (!activationState.isActivated) {
-            return;
-        }
-        var state = tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, activationState);
-        if (activationState.isProgrammatic) {
-            requestAnimationFrame(function () { return _this.animateDeactivation_(state); });
-            this.resetActivationState_();
-        }
-        else {
-            this.deregisterDeactivationHandlers_();
-            requestAnimationFrame(function () {
-                _this.activationState_.hasDeactivationUXRun = true;
-                _this.animateDeactivation_(state);
-                _this.resetActivationState_();
-            });
-        }
-    };
-    MDCRippleFoundation.prototype.animateDeactivation_ = function (_a) {
-        var wasActivatedByPointer = _a.wasActivatedByPointer, wasElementMadeActive = _a.wasElementMadeActive;
-        if (wasActivatedByPointer || wasElementMadeActive) {
-            this.runDeactivationUXLogicIfReady_();
-        }
-    };
-    MDCRippleFoundation.prototype.layoutInternal_ = function () {
-        var _this = this;
-        this.frame_ = this.adapter_.computeBoundingRect();
-        var maxDim = Math.max(this.frame_.height, this.frame_.width);
-        // Surface diameter is treated differently for unbounded vs. bounded ripples.
-        // Unbounded ripple diameter is calculated smaller since the surface is expected to already be padded appropriately
-        // to extend the hitbox, and the ripple is expected to meet the edges of the padded hitbox (which is typically
-        // square). Bounded ripples, on the other hand, are fully expected to expand beyond the surface's longest diameter
-        // (calculated based on the diagonal plus a constant padding), and are clipped at the surface's border via
-        // `overflow: hidden`.
-        var getBoundedRadius = function () {
-            var hypotenuse = Math.sqrt(Math.pow(_this.frame_.width, 2) + Math.pow(_this.frame_.height, 2));
-            return hypotenuse + MDCRippleFoundation.numbers.PADDING;
-        };
-        this.maxRadius_ = this.adapter_.isUnbounded() ? maxDim : getBoundedRadius();
-        // Ripple is sized as a fraction of the largest dimension of the surface, then scales up using a CSS scale transform
-        this.initialSize_ = Math.floor(maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE);
-        this.fgScale_ = "" + this.maxRadius_ / this.initialSize_;
-        this.updateLayoutCssVars_();
-    };
-    MDCRippleFoundation.prototype.updateLayoutCssVars_ = function () {
-        var _a = MDCRippleFoundation.strings, VAR_FG_SIZE = _a.VAR_FG_SIZE, VAR_LEFT = _a.VAR_LEFT, VAR_TOP = _a.VAR_TOP, VAR_FG_SCALE = _a.VAR_FG_SCALE;
-        this.adapter_.updateCssVariable(VAR_FG_SIZE, this.initialSize_ + "px");
-        this.adapter_.updateCssVariable(VAR_FG_SCALE, this.fgScale_);
-        if (this.adapter_.isUnbounded()) {
-            this.unboundedCoords_ = {
-                left: Math.round((this.frame_.width / 2) - (this.initialSize_ / 2)),
-                top: Math.round((this.frame_.height / 2) - (this.initialSize_ / 2)),
-            };
-            this.adapter_.updateCssVariable(VAR_LEFT, this.unboundedCoords_.left + "px");
-            this.adapter_.updateCssVariable(VAR_TOP, this.unboundedCoords_.top + "px");
-        }
-    };
-    return MDCRippleFoundation;
-}(_material_base_foundation__WEBPACK_IMPORTED_MODULE_1__["MDCFoundation"]));
-
-// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
-/* harmony default export */ __webpack_exports__["default"] = (MDCRippleFoundation);
-//# sourceMappingURL=foundation.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/select/node_modules/@material/ripple/util.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/@material/select/node_modules/@material/ripple/util.js ***!
-  \*****************************************************************************/
-/*! exports provided: supportsCssVariables, applyPassive, getNormalizedEventCoords */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "supportsCssVariables", function() { return supportsCssVariables; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyPassive", function() { return applyPassive; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNormalizedEventCoords", function() { return getNormalizedEventCoords; });
-/**
- * Stores result from supportsCssVariables to avoid redundant processing to
- * detect CSS custom variable support.
- */
-var supportsCssVariables_;
-/**
- * Stores result from applyPassive to avoid redundant processing to detect
- * passive event listener support.
- */
-var supportsPassive_;
-function detectEdgePseudoVarBug(windowObj) {
-    // Detect versions of Edge with buggy var() support
-    // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
-    var document = windowObj.document;
-    var node = document.createElement('div');
-    node.className = 'mdc-ripple-surface--test-edge-var-bug';
-    document.body.appendChild(node);
-    // The bug exists if ::before style ends up propagating to the parent element.
-    // Additionally, getComputedStyle returns null in iframes with display: "none" in Firefox,
-    // but Firefox is known to support CSS custom properties correctly.
-    // See: https://bugzilla.mozilla.org/show_bug.cgi?id=548397
-    var computedStyle = windowObj.getComputedStyle(node);
-    var hasPseudoVarBug = computedStyle !== null && computedStyle.borderTopStyle === 'solid';
-    if (node.parentNode) {
-        node.parentNode.removeChild(node);
-    }
-    return hasPseudoVarBug;
-}
-function supportsCssVariables(windowObj, forceRefresh) {
-    if (forceRefresh === void 0) { forceRefresh = false; }
-    var CSS = windowObj.CSS;
-    var supportsCssVars = supportsCssVariables_;
-    if (typeof supportsCssVariables_ === 'boolean' && !forceRefresh) {
-        return supportsCssVariables_;
-    }
-    var supportsFunctionPresent = CSS && typeof CSS.supports === 'function';
-    if (!supportsFunctionPresent) {
-        return false;
-    }
-    var explicitlySupportsCssVars = CSS.supports('--css-vars', 'yes');
-    // See: https://bugs.webkit.org/show_bug.cgi?id=154669
-    // See: README section on Safari
-    var weAreFeatureDetectingSafari10plus = (CSS.supports('(--css-vars: yes)') &&
-        CSS.supports('color', '#00000000'));
-    if (explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus) {
-        supportsCssVars = !detectEdgePseudoVarBug(windowObj);
-    }
-    else {
-        supportsCssVars = false;
-    }
-    if (!forceRefresh) {
-        supportsCssVariables_ = supportsCssVars;
-    }
-    return supportsCssVars;
-}
-/**
- * Determine whether the current browser supports passive event listeners, and
- * if so, use them.
- */
-function applyPassive(globalObj, forceRefresh) {
-    if (globalObj === void 0) { globalObj = window; }
-    if (forceRefresh === void 0) { forceRefresh = false; }
-    if (supportsPassive_ === undefined || forceRefresh) {
-        var isSupported_1 = false;
-        try {
-            globalObj.document.addEventListener('test', function () { return undefined; }, {
-                get passive() {
-                    isSupported_1 = true;
-                    return isSupported_1;
-                },
-            });
-        }
-        catch (e) {
-        } // tslint:disable-line:no-empty cannot throw error due to tests. tslint also disables console.log.
-        supportsPassive_ = isSupported_1;
-    }
-    return supportsPassive_ ? { passive: true } : false;
-}
-function getNormalizedEventCoords(evt, pageOffset, clientRect) {
-    if (!evt) {
-        return { x: 0, y: 0 };
-    }
-    var x = pageOffset.x, y = pageOffset.y;
-    var documentX = x + clientRect.left;
-    var documentY = y + clientRect.top;
-    var normalizedX;
-    var normalizedY;
-    // Determine touch point relative to the ripple container.
-    if (evt.type === 'touchstart') {
-        var touchEvent = evt;
-        normalizedX = touchEvent.changedTouches[0].pageX - documentX;
-        normalizedY = touchEvent.changedTouches[0].pageY - documentY;
-    }
-    else {
-        var mouseEvent = evt;
-        normalizedX = mouseEvent.pageX - documentX;
-        normalizedY = mouseEvent.pageY - documentY;
-    }
-    return { x: normalizedX, y: normalizedY };
-}
-//# sourceMappingURL=util.js.map
-
-/***/ }),
-
 /***/ "./node_modules/@material/textfield/character-counter/component.js":
 /*!*************************************************************************!*\
   !*** ./node_modules/@material/textfield/character-counter/component.js ***!
@@ -11506,19 +8066,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCTextField", function() { return MDCTextField; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
-/* harmony import */ var _material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/dom/ponyfill */ "./node_modules/@material/dom/ponyfill.js");
-/* harmony import */ var _material_floating_label_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material/floating-label/component */ "./node_modules/@material/textfield/node_modules/@material/floating-label/component.js");
-/* harmony import */ var _material_line_ripple_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material/line-ripple/component */ "./node_modules/@material/line-ripple/component.js");
-/* harmony import */ var _material_notched_outline_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material/notched-outline/component */ "./node_modules/@material/notched-outline/component.js");
-/* harmony import */ var _material_ripple_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material/ripple/component */ "./node_modules/@material/textfield/node_modules/@material/ripple/component.js");
-/* harmony import */ var _material_ripple_foundation__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material/ripple/foundation */ "./node_modules/@material/textfield/node_modules/@material/ripple/foundation.js");
-/* harmony import */ var _character_counter_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./character-counter/component */ "./node_modules/@material/textfield/character-counter/component.js");
-/* harmony import */ var _character_counter_foundation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./character-counter/foundation */ "./node_modules/@material/textfield/character-counter/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/textfield/constants.js");
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/textfield/foundation.js");
-/* harmony import */ var _helper_text_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./helper-text/component */ "./node_modules/@material/textfield/helper-text/component.js");
-/* harmony import */ var _helper_text_foundation__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./helper-text/foundation */ "./node_modules/@material/textfield/helper-text/foundation.js");
-/* harmony import */ var _icon_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./icon/component */ "./node_modules/@material/textfield/icon/component.js");
+/* harmony import */ var _material_dom_events__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/dom/events */ "./node_modules/@material/dom/events.js");
+/* harmony import */ var _material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material/dom/ponyfill */ "./node_modules/@material/dom/ponyfill.js");
+/* harmony import */ var _material_floating_label_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material/floating-label/component */ "./node_modules/@material/floating-label/component.js");
+/* harmony import */ var _material_line_ripple_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material/line-ripple/component */ "./node_modules/@material/line-ripple/component.js");
+/* harmony import */ var _material_notched_outline_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material/notched-outline/component */ "./node_modules/@material/notched-outline/component.js");
+/* harmony import */ var _material_ripple_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material/ripple/component */ "./node_modules/@material/ripple/component.js");
+/* harmony import */ var _material_ripple_foundation__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material/ripple/foundation */ "./node_modules/@material/ripple/foundation.js");
+/* harmony import */ var _character_counter_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./character-counter/component */ "./node_modules/@material/textfield/character-counter/component.js");
+/* harmony import */ var _character_counter_foundation__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./character-counter/foundation */ "./node_modules/@material/textfield/character-counter/foundation.js");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/textfield/constants.js");
+/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/textfield/foundation.js");
+/* harmony import */ var _helper_text_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./helper-text/component */ "./node_modules/@material/textfield/helper-text/component.js");
+/* harmony import */ var _helper_text_foundation__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./helper-text/foundation */ "./node_modules/@material/textfield/helper-text/foundation.js");
+/* harmony import */ var _icon_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./icon/component */ "./node_modules/@material/textfield/icon/component.js");
 /**
  * @license
  * Copyright 2016 Google Inc.
@@ -11556,6 +8117,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var MDCTextField = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCTextField, _super);
     function MDCTextField() {
@@ -11565,28 +8127,28 @@ var MDCTextField = /** @class */ (function (_super) {
         return new MDCTextField(root);
     };
     MDCTextField.prototype.initialize = function (rippleFactory, lineRippleFactory, helperTextFactory, characterCounterFactory, iconFactory, labelFactory, outlineFactory) {
-        if (rippleFactory === void 0) { rippleFactory = function (el, foundation) { return new _material_ripple_component__WEBPACK_IMPORTED_MODULE_6__["MDCRipple"](el, foundation); }; }
-        if (lineRippleFactory === void 0) { lineRippleFactory = function (el) { return new _material_line_ripple_component__WEBPACK_IMPORTED_MODULE_4__["MDCLineRipple"](el); }; }
-        if (helperTextFactory === void 0) { helperTextFactory = function (el) { return new _helper_text_component__WEBPACK_IMPORTED_MODULE_12__["MDCTextFieldHelperText"](el); }; }
-        if (characterCounterFactory === void 0) { characterCounterFactory = function (el) { return new _character_counter_component__WEBPACK_IMPORTED_MODULE_8__["MDCTextFieldCharacterCounter"](el); }; }
-        if (iconFactory === void 0) { iconFactory = function (el) { return new _icon_component__WEBPACK_IMPORTED_MODULE_14__["MDCTextFieldIcon"](el); }; }
-        if (labelFactory === void 0) { labelFactory = function (el) { return new _material_floating_label_component__WEBPACK_IMPORTED_MODULE_3__["MDCFloatingLabel"](el); }; }
-        if (outlineFactory === void 0) { outlineFactory = function (el) { return new _material_notched_outline_component__WEBPACK_IMPORTED_MODULE_5__["MDCNotchedOutline"](el); }; }
-        this.input_ = this.root_.querySelector(_constants__WEBPACK_IMPORTED_MODULE_10__["strings"].INPUT_SELECTOR);
-        var labelElement = this.root_.querySelector(_constants__WEBPACK_IMPORTED_MODULE_10__["strings"].LABEL_SELECTOR);
+        if (rippleFactory === void 0) { rippleFactory = function (el, foundation) { return new _material_ripple_component__WEBPACK_IMPORTED_MODULE_7__["MDCRipple"](el, foundation); }; }
+        if (lineRippleFactory === void 0) { lineRippleFactory = function (el) { return new _material_line_ripple_component__WEBPACK_IMPORTED_MODULE_5__["MDCLineRipple"](el); }; }
+        if (helperTextFactory === void 0) { helperTextFactory = function (el) { return new _helper_text_component__WEBPACK_IMPORTED_MODULE_13__["MDCTextFieldHelperText"](el); }; }
+        if (characterCounterFactory === void 0) { characterCounterFactory = function (el) { return new _character_counter_component__WEBPACK_IMPORTED_MODULE_9__["MDCTextFieldCharacterCounter"](el); }; }
+        if (iconFactory === void 0) { iconFactory = function (el) { return new _icon_component__WEBPACK_IMPORTED_MODULE_15__["MDCTextFieldIcon"](el); }; }
+        if (labelFactory === void 0) { labelFactory = function (el) { return new _material_floating_label_component__WEBPACK_IMPORTED_MODULE_4__["MDCFloatingLabel"](el); }; }
+        if (outlineFactory === void 0) { outlineFactory = function (el) { return new _material_notched_outline_component__WEBPACK_IMPORTED_MODULE_6__["MDCNotchedOutline"](el); }; }
+        this.input_ = this.root_.querySelector(_constants__WEBPACK_IMPORTED_MODULE_11__["strings"].INPUT_SELECTOR);
+        var labelElement = this.root_.querySelector(_constants__WEBPACK_IMPORTED_MODULE_11__["strings"].LABEL_SELECTOR);
         this.label_ = labelElement ? labelFactory(labelElement) : null;
-        var lineRippleElement = this.root_.querySelector(_constants__WEBPACK_IMPORTED_MODULE_10__["strings"].LINE_RIPPLE_SELECTOR);
+        var lineRippleElement = this.root_.querySelector(_constants__WEBPACK_IMPORTED_MODULE_11__["strings"].LINE_RIPPLE_SELECTOR);
         this.lineRipple_ = lineRippleElement ? lineRippleFactory(lineRippleElement) : null;
-        var outlineElement = this.root_.querySelector(_constants__WEBPACK_IMPORTED_MODULE_10__["strings"].OUTLINE_SELECTOR);
+        var outlineElement = this.root_.querySelector(_constants__WEBPACK_IMPORTED_MODULE_11__["strings"].OUTLINE_SELECTOR);
         this.outline_ = outlineElement ? outlineFactory(outlineElement) : null;
         // Helper text
-        var helperTextStrings = _helper_text_foundation__WEBPACK_IMPORTED_MODULE_13__["MDCTextFieldHelperTextFoundation"].strings;
+        var helperTextStrings = _helper_text_foundation__WEBPACK_IMPORTED_MODULE_14__["MDCTextFieldHelperTextFoundation"].strings;
         var nextElementSibling = this.root_.nextElementSibling;
-        var hasHelperLine = (nextElementSibling && nextElementSibling.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_10__["cssClasses"].HELPER_LINE));
+        var hasHelperLine = (nextElementSibling && nextElementSibling.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_11__["cssClasses"].HELPER_LINE));
         var helperTextEl = hasHelperLine && nextElementSibling && nextElementSibling.querySelector(helperTextStrings.ROOT_SELECTOR);
         this.helperText_ = helperTextEl ? helperTextFactory(helperTextEl) : null;
         // Character counter
-        var characterCounterStrings = _character_counter_foundation__WEBPACK_IMPORTED_MODULE_9__["MDCTextFieldCharacterCounterFoundation"].strings;
+        var characterCounterStrings = _character_counter_foundation__WEBPACK_IMPORTED_MODULE_10__["MDCTextFieldCharacterCounterFoundation"].strings;
         var characterCounterEl = this.root_.querySelector(characterCounterStrings.ROOT_SELECTOR);
         // If character counter is not found in root element search in sibling element.
         if (!characterCounterEl && hasHelperLine && nextElementSibling) {
@@ -11595,14 +8157,14 @@ var MDCTextField = /** @class */ (function (_super) {
         this.characterCounter_ = characterCounterEl ? characterCounterFactory(characterCounterEl) : null;
         this.leadingIcon_ = null;
         this.trailingIcon_ = null;
-        var iconElements = this.root_.querySelectorAll(_constants__WEBPACK_IMPORTED_MODULE_10__["strings"].ICON_SELECTOR);
+        var iconElements = this.root_.querySelectorAll(_constants__WEBPACK_IMPORTED_MODULE_11__["strings"].ICON_SELECTOR);
         if (iconElements.length > 0) {
             if (iconElements.length > 1) { // Has both icons.
                 this.leadingIcon_ = iconFactory(iconElements[0]);
                 this.trailingIcon_ = iconFactory(iconElements[1]);
             }
             else {
-                if (this.root_.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_10__["cssClasses"].WITH_LEADING_ICON)) {
+                if (this.root_.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_11__["cssClasses"].WITH_LEADING_ICON)) {
                     this.leadingIcon_ = iconFactory(iconElements[0]);
                 }
                 else {
@@ -11862,7 +8424,7 @@ var MDCTextField = /** @class */ (function (_super) {
         // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
         var adapter = tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, this.getRootAdapterMethods_(), this.getInputAdapterMethods_(), this.getLabelAdapterMethods_(), this.getLineRippleAdapterMethods_(), this.getOutlineAdapterMethods_());
         // tslint:enable:object-literal-sort-keys
-        return new _foundation__WEBPACK_IMPORTED_MODULE_11__["MDCTextFieldFoundation"](adapter, this.getFoundationMap_());
+        return new _foundation__WEBPACK_IMPORTED_MODULE_12__["MDCTextFieldFoundation"](adapter, this.getFoundationMap_());
     };
     MDCTextField.prototype.getRootAdapterMethods_ = function () {
         var _this = this;
@@ -11894,8 +8456,12 @@ var MDCTextField = /** @class */ (function (_super) {
         return {
             getNativeInput: function () { return _this.input_; },
             isFocused: function () { return document.activeElement === _this.input_; },
-            registerInputInteractionHandler: function (evtType, handler) { return _this.input_.addEventListener(evtType, handler); },
-            deregisterInputInteractionHandler: function (evtType, handler) { return _this.input_.removeEventListener(evtType, handler); },
+            registerInputInteractionHandler: function (evtType, handler) {
+                return _this.input_.addEventListener(evtType, handler, Object(_material_dom_events__WEBPACK_IMPORTED_MODULE_2__["applyPassive"])());
+            },
+            deregisterInputInteractionHandler: function (evtType, handler) {
+                return _this.input_.removeEventListener(evtType, handler, Object(_material_dom_events__WEBPACK_IMPORTED_MODULE_2__["applyPassive"])());
+            },
         };
         // tslint:enable:object-literal-sort-keys
     };
@@ -11949,17 +8515,19 @@ var MDCTextField = /** @class */ (function (_super) {
     };
     MDCTextField.prototype.createRipple_ = function (rippleFactory) {
         var _this = this;
-        var isTextArea = this.root_.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_10__["cssClasses"].TEXTAREA);
-        var isOutlined = this.root_.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_10__["cssClasses"].OUTLINED);
+        var isTextArea = this.root_.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_11__["cssClasses"].TEXTAREA);
+        var isOutlined = this.root_.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_11__["cssClasses"].OUTLINED);
         if (isTextArea || isOutlined) {
             return null;
         }
         // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
         // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
         // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-        var adapter = tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, _material_ripple_component__WEBPACK_IMPORTED_MODULE_6__["MDCRipple"].createAdapter(this), { isSurfaceActive: function () { return _material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__["matches"](_this.input_, ':active'); }, registerInteractionHandler: function (evtType, handler) { return _this.input_.addEventListener(evtType, handler); }, deregisterInteractionHandler: function (evtType, handler) { return _this.input_.removeEventListener(evtType, handler); } });
+        var adapter = tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, _material_ripple_component__WEBPACK_IMPORTED_MODULE_7__["MDCRipple"].createAdapter(this), { isSurfaceActive: function () { return _material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_3__["matches"](_this.input_, ':active'); }, registerInteractionHandler: function (evtType, handler) { return _this.input_.addEventListener(evtType, handler, Object(_material_dom_events__WEBPACK_IMPORTED_MODULE_2__["applyPassive"])()); }, deregisterInteractionHandler: function (evtType, handler) {
+                return _this.input_.removeEventListener(evtType, handler, Object(_material_dom_events__WEBPACK_IMPORTED_MODULE_2__["applyPassive"])());
+            } });
         // tslint:enable:object-literal-sort-keys
-        return rippleFactory(this.root_, new _material_ripple_foundation__WEBPACK_IMPORTED_MODULE_7__["MDCRippleFoundation"](adapter));
+        return rippleFactory(this.root_, new _material_ripple_foundation__WEBPACK_IMPORTED_MODULE_8__["MDCRippleFoundation"](adapter));
     };
     return MDCTextField;
 }(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
@@ -13227,1040 +9795,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/@material/textfield/node_modules/@material/floating-label/component.js":
-/*!*********************************************************************************************!*\
-  !*** ./node_modules/@material/textfield/node_modules/@material/floating-label/component.js ***!
-  \*********************************************************************************************/
-/*! exports provided: MDCFloatingLabel */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCFloatingLabel", function() { return MDCFloatingLabel; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/textfield/node_modules/@material/floating-label/foundation.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-var MDCFloatingLabel = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCFloatingLabel, _super);
-    function MDCFloatingLabel() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    MDCFloatingLabel.attachTo = function (root) {
-        return new MDCFloatingLabel(root);
-    };
-    /**
-     * Styles the label to produce the label shake for errors.
-     * @param shouldShake If true, shakes the label by adding a CSS class; otherwise, stops shaking by removing the class.
-     */
-    MDCFloatingLabel.prototype.shake = function (shouldShake) {
-        this.foundation_.shake(shouldShake);
-    };
-    /**
-     * Styles the label to float/dock.
-     * @param shouldFloat If true, floats the label by adding a CSS class; otherwise, docks it by removing the class.
-     */
-    MDCFloatingLabel.prototype.float = function (shouldFloat) {
-        this.foundation_.float(shouldFloat);
-    };
-    MDCFloatingLabel.prototype.getWidth = function () {
-        return this.foundation_.getWidth();
-    };
-    MDCFloatingLabel.prototype.getDefaultFoundation = function () {
-        var _this = this;
-        // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-        // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-        // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-        var adapter = {
-            addClass: function (className) { return _this.root_.classList.add(className); },
-            removeClass: function (className) { return _this.root_.classList.remove(className); },
-            getWidth: function () { return _this.root_.scrollWidth; },
-            registerInteractionHandler: function (evtType, handler) { return _this.listen(evtType, handler); },
-            deregisterInteractionHandler: function (evtType, handler) { return _this.unlisten(evtType, handler); },
-        };
-        // tslint:enable:object-literal-sort-keys
-        return new _foundation__WEBPACK_IMPORTED_MODULE_2__["MDCFloatingLabelFoundation"](adapter);
-    };
-    return MDCFloatingLabel;
-}(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
-
-//# sourceMappingURL=component.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/textfield/node_modules/@material/floating-label/constants.js":
-/*!*********************************************************************************************!*\
-  !*** ./node_modules/@material/textfield/node_modules/@material/floating-label/constants.js ***!
-  \*********************************************************************************************/
-/*! exports provided: cssClasses */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return cssClasses; });
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-var cssClasses = {
-    LABEL_FLOAT_ABOVE: 'mdc-floating-label--float-above',
-    LABEL_SHAKE: 'mdc-floating-label--shake',
-    ROOT: 'mdc-floating-label',
-};
-//# sourceMappingURL=constants.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/textfield/node_modules/@material/floating-label/foundation.js":
-/*!**********************************************************************************************!*\
-  !*** ./node_modules/@material/textfield/node_modules/@material/floating-label/foundation.js ***!
-  \**********************************************************************************************/
-/*! exports provided: MDCFloatingLabelFoundation, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCFloatingLabelFoundation", function() { return MDCFloatingLabelFoundation; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/foundation */ "./node_modules/@material/base/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/textfield/node_modules/@material/floating-label/constants.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-var MDCFloatingLabelFoundation = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCFloatingLabelFoundation, _super);
-    function MDCFloatingLabelFoundation(adapter) {
-        var _this = _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCFloatingLabelFoundation.defaultAdapter, adapter)) || this;
-        _this.shakeAnimationEndHandler_ = function () { return _this.handleShakeAnimationEnd_(); };
-        return _this;
-    }
-    Object.defineProperty(MDCFloatingLabelFoundation, "cssClasses", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCFloatingLabelFoundation, "defaultAdapter", {
-        /**
-         * See {@link MDCFloatingLabelAdapter} for typing information on parameters and return types.
-         */
-        get: function () {
-            // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-            return {
-                addClass: function () { return undefined; },
-                removeClass: function () { return undefined; },
-                getWidth: function () { return 0; },
-                registerInteractionHandler: function () { return undefined; },
-                deregisterInteractionHandler: function () { return undefined; },
-            };
-            // tslint:enable:object-literal-sort-keys
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MDCFloatingLabelFoundation.prototype.init = function () {
-        this.adapter_.registerInteractionHandler('animationend', this.shakeAnimationEndHandler_);
-    };
-    MDCFloatingLabelFoundation.prototype.destroy = function () {
-        this.adapter_.deregisterInteractionHandler('animationend', this.shakeAnimationEndHandler_);
-    };
-    /**
-     * Returns the width of the label element.
-     */
-    MDCFloatingLabelFoundation.prototype.getWidth = function () {
-        return this.adapter_.getWidth();
-    };
-    /**
-     * Styles the label to produce a shake animation to indicate an error.
-     * @param shouldShake If true, adds the shake CSS class; otherwise, removes shake class.
-     */
-    MDCFloatingLabelFoundation.prototype.shake = function (shouldShake) {
-        var LABEL_SHAKE = MDCFloatingLabelFoundation.cssClasses.LABEL_SHAKE;
-        if (shouldShake) {
-            this.adapter_.addClass(LABEL_SHAKE);
-        }
-        else {
-            this.adapter_.removeClass(LABEL_SHAKE);
-        }
-    };
-    /**
-     * Styles the label to float or dock.
-     * @param shouldFloat If true, adds the float CSS class; otherwise, removes float and shake classes to dock the label.
-     */
-    MDCFloatingLabelFoundation.prototype.float = function (shouldFloat) {
-        var _a = MDCFloatingLabelFoundation.cssClasses, LABEL_FLOAT_ABOVE = _a.LABEL_FLOAT_ABOVE, LABEL_SHAKE = _a.LABEL_SHAKE;
-        if (shouldFloat) {
-            this.adapter_.addClass(LABEL_FLOAT_ABOVE);
-        }
-        else {
-            this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
-            this.adapter_.removeClass(LABEL_SHAKE);
-        }
-    };
-    MDCFloatingLabelFoundation.prototype.handleShakeAnimationEnd_ = function () {
-        var LABEL_SHAKE = MDCFloatingLabelFoundation.cssClasses.LABEL_SHAKE;
-        this.adapter_.removeClass(LABEL_SHAKE);
-    };
-    return MDCFloatingLabelFoundation;
-}(_material_base_foundation__WEBPACK_IMPORTED_MODULE_1__["MDCFoundation"]));
-
-// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
-/* harmony default export */ __webpack_exports__["default"] = (MDCFloatingLabelFoundation);
-//# sourceMappingURL=foundation.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/textfield/node_modules/@material/ripple/component.js":
-/*!*************************************************************************************!*\
-  !*** ./node_modules/@material/textfield/node_modules/@material/ripple/component.js ***!
-  \*************************************************************************************/
-/*! exports provided: MDCRipple */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCRipple", function() { return MDCRipple; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
-/* harmony import */ var _material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/dom/ponyfill */ "./node_modules/@material/dom/ponyfill.js");
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./foundation */ "./node_modules/@material/textfield/node_modules/@material/ripple/foundation.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./util */ "./node_modules/@material/textfield/node_modules/@material/ripple/util.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-
-
-var MDCRipple = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCRipple, _super);
-    function MDCRipple() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.disabled = false;
-        return _this;
-    }
-    MDCRipple.attachTo = function (root, opts) {
-        if (opts === void 0) { opts = { isUnbounded: undefined }; }
-        var ripple = new MDCRipple(root);
-        // Only override unbounded behavior if option is explicitly specified
-        if (opts.isUnbounded !== undefined) {
-            ripple.unbounded = opts.isUnbounded;
-        }
-        return ripple;
-    };
-    MDCRipple.createAdapter = function (instance) {
-        return {
-            addClass: function (className) { return instance.root_.classList.add(className); },
-            browserSupportsCssVars: function () { return _util__WEBPACK_IMPORTED_MODULE_4__["supportsCssVariables"](window); },
-            computeBoundingRect: function () { return instance.root_.getBoundingClientRect(); },
-            containsEventTarget: function (target) { return instance.root_.contains(target); },
-            deregisterDocumentInteractionHandler: function (evtType, handler) {
-                return document.documentElement.removeEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            deregisterInteractionHandler: function (evtType, handler) {
-                return instance.root_.removeEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            deregisterResizeHandler: function (handler) { return window.removeEventListener('resize', handler); },
-            getWindowPageOffset: function () { return ({ x: window.pageXOffset, y: window.pageYOffset }); },
-            isSurfaceActive: function () { return Object(_material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__["matches"])(instance.root_, ':active'); },
-            isSurfaceDisabled: function () { return Boolean(instance.disabled); },
-            isUnbounded: function () { return Boolean(instance.unbounded); },
-            registerDocumentInteractionHandler: function (evtType, handler) {
-                return document.documentElement.addEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            registerInteractionHandler: function (evtType, handler) {
-                return instance.root_.addEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            registerResizeHandler: function (handler) { return window.addEventListener('resize', handler); },
-            removeClass: function (className) { return instance.root_.classList.remove(className); },
-            updateCssVariable: function (varName, value) { return instance.root_.style.setProperty(varName, value); },
-        };
-    };
-    Object.defineProperty(MDCRipple.prototype, "unbounded", {
-        get: function () {
-            return Boolean(this.unbounded_);
-        },
-        set: function (unbounded) {
-            this.unbounded_ = Boolean(unbounded);
-            this.setUnbounded_();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MDCRipple.prototype.activate = function () {
-        this.foundation_.activate();
-    };
-    MDCRipple.prototype.deactivate = function () {
-        this.foundation_.deactivate();
-    };
-    MDCRipple.prototype.layout = function () {
-        this.foundation_.layout();
-    };
-    MDCRipple.prototype.getDefaultFoundation = function () {
-        return new _foundation__WEBPACK_IMPORTED_MODULE_3__["MDCRippleFoundation"](MDCRipple.createAdapter(this));
-    };
-    MDCRipple.prototype.initialSyncWithDOM = function () {
-        var root = this.root_;
-        this.unbounded = 'mdcRippleIsUnbounded' in root.dataset;
-    };
-    /**
-     * Closure Compiler throws an access control error when directly accessing a
-     * protected or private property inside a getter/setter, like unbounded above.
-     * By accessing the protected property inside a method, we solve that problem.
-     * That's why this function exists.
-     */
-    MDCRipple.prototype.setUnbounded_ = function () {
-        this.foundation_.setUnbounded(Boolean(this.unbounded_));
-    };
-    return MDCRipple;
-}(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
-
-//# sourceMappingURL=component.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/textfield/node_modules/@material/ripple/constants.js":
-/*!*************************************************************************************!*\
-  !*** ./node_modules/@material/textfield/node_modules/@material/ripple/constants.js ***!
-  \*************************************************************************************/
-/*! exports provided: cssClasses, strings, numbers */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return cssClasses; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "strings", function() { return strings; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "numbers", function() { return numbers; });
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-var cssClasses = {
-    // Ripple is a special case where the "root" component is really a "mixin" of sorts,
-    // given that it's an 'upgrade' to an existing component. That being said it is the root
-    // CSS class that all other CSS classes derive from.
-    BG_FOCUSED: 'mdc-ripple-upgraded--background-focused',
-    FG_ACTIVATION: 'mdc-ripple-upgraded--foreground-activation',
-    FG_DEACTIVATION: 'mdc-ripple-upgraded--foreground-deactivation',
-    ROOT: 'mdc-ripple-upgraded',
-    UNBOUNDED: 'mdc-ripple-upgraded--unbounded',
-};
-var strings = {
-    VAR_FG_SCALE: '--mdc-ripple-fg-scale',
-    VAR_FG_SIZE: '--mdc-ripple-fg-size',
-    VAR_FG_TRANSLATE_END: '--mdc-ripple-fg-translate-end',
-    VAR_FG_TRANSLATE_START: '--mdc-ripple-fg-translate-start',
-    VAR_LEFT: '--mdc-ripple-left',
-    VAR_TOP: '--mdc-ripple-top',
-};
-var numbers = {
-    DEACTIVATION_TIMEOUT_MS: 225,
-    FG_DEACTIVATION_MS: 150,
-    INITIAL_ORIGIN_SCALE: 0.6,
-    PADDING: 10,
-    TAP_DELAY_MS: 300,
-};
-//# sourceMappingURL=constants.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/textfield/node_modules/@material/ripple/foundation.js":
-/*!**************************************************************************************!*\
-  !*** ./node_modules/@material/textfield/node_modules/@material/ripple/foundation.js ***!
-  \**************************************************************************************/
-/*! exports provided: MDCRippleFoundation, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCRippleFoundation", function() { return MDCRippleFoundation; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/foundation */ "./node_modules/@material/base/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@material/textfield/node_modules/@material/ripple/constants.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./util */ "./node_modules/@material/textfield/node_modules/@material/ripple/util.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-
-// Activation events registered on the root element of each instance for activation
-var ACTIVATION_EVENT_TYPES = [
-    'touchstart', 'pointerdown', 'mousedown', 'keydown',
-];
-// Deactivation events registered on documentElement when a pointer-related down event occurs
-var POINTER_DEACTIVATION_EVENT_TYPES = [
-    'touchend', 'pointerup', 'mouseup', 'contextmenu',
-];
-// simultaneous nested activations
-var activatedTargets = [];
-var MDCRippleFoundation = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCRippleFoundation, _super);
-    function MDCRippleFoundation(adapter) {
-        var _this = _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCRippleFoundation.defaultAdapter, adapter)) || this;
-        _this.activationAnimationHasEnded_ = false;
-        _this.activationTimer_ = 0;
-        _this.fgDeactivationRemovalTimer_ = 0;
-        _this.fgScale_ = '0';
-        _this.frame_ = { width: 0, height: 0 };
-        _this.initialSize_ = 0;
-        _this.layoutFrame_ = 0;
-        _this.maxRadius_ = 0;
-        _this.unboundedCoords_ = { left: 0, top: 0 };
-        _this.activationState_ = _this.defaultActivationState_();
-        _this.activationTimerCallback_ = function () {
-            _this.activationAnimationHasEnded_ = true;
-            _this.runDeactivationUXLogicIfReady_();
-        };
-        _this.activateHandler_ = function (e) { return _this.activate_(e); };
-        _this.deactivateHandler_ = function () { return _this.deactivate_(); };
-        _this.focusHandler_ = function () { return _this.handleFocus(); };
-        _this.blurHandler_ = function () { return _this.handleBlur(); };
-        _this.resizeHandler_ = function () { return _this.layout(); };
-        return _this;
-    }
-    Object.defineProperty(MDCRippleFoundation, "cssClasses", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCRippleFoundation, "strings", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["strings"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCRippleFoundation, "numbers", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCRippleFoundation, "defaultAdapter", {
-        get: function () {
-            return {
-                addClass: function () { return undefined; },
-                browserSupportsCssVars: function () { return true; },
-                computeBoundingRect: function () { return ({ top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0 }); },
-                containsEventTarget: function () { return true; },
-                deregisterDocumentInteractionHandler: function () { return undefined; },
-                deregisterInteractionHandler: function () { return undefined; },
-                deregisterResizeHandler: function () { return undefined; },
-                getWindowPageOffset: function () { return ({ x: 0, y: 0 }); },
-                isSurfaceActive: function () { return true; },
-                isSurfaceDisabled: function () { return true; },
-                isUnbounded: function () { return true; },
-                registerDocumentInteractionHandler: function () { return undefined; },
-                registerInteractionHandler: function () { return undefined; },
-                registerResizeHandler: function () { return undefined; },
-                removeClass: function () { return undefined; },
-                updateCssVariable: function () { return undefined; },
-            };
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MDCRippleFoundation.prototype.init = function () {
-        var _this = this;
-        var supportsPressRipple = this.supportsPressRipple_();
-        this.registerRootHandlers_(supportsPressRipple);
-        if (supportsPressRipple) {
-            var _a = MDCRippleFoundation.cssClasses, ROOT_1 = _a.ROOT, UNBOUNDED_1 = _a.UNBOUNDED;
-            requestAnimationFrame(function () {
-                _this.adapter_.addClass(ROOT_1);
-                if (_this.adapter_.isUnbounded()) {
-                    _this.adapter_.addClass(UNBOUNDED_1);
-                    // Unbounded ripples need layout logic applied immediately to set coordinates for both shade and ripple
-                    _this.layoutInternal_();
-                }
-            });
-        }
-    };
-    MDCRippleFoundation.prototype.destroy = function () {
-        var _this = this;
-        if (this.supportsPressRipple_()) {
-            if (this.activationTimer_) {
-                clearTimeout(this.activationTimer_);
-                this.activationTimer_ = 0;
-                this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_ACTIVATION);
-            }
-            if (this.fgDeactivationRemovalTimer_) {
-                clearTimeout(this.fgDeactivationRemovalTimer_);
-                this.fgDeactivationRemovalTimer_ = 0;
-                this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_DEACTIVATION);
-            }
-            var _a = MDCRippleFoundation.cssClasses, ROOT_2 = _a.ROOT, UNBOUNDED_2 = _a.UNBOUNDED;
-            requestAnimationFrame(function () {
-                _this.adapter_.removeClass(ROOT_2);
-                _this.adapter_.removeClass(UNBOUNDED_2);
-                _this.removeCssVars_();
-            });
-        }
-        this.deregisterRootHandlers_();
-        this.deregisterDeactivationHandlers_();
-    };
-    /**
-     * @param evt Optional event containing position information.
-     */
-    MDCRippleFoundation.prototype.activate = function (evt) {
-        this.activate_(evt);
-    };
-    MDCRippleFoundation.prototype.deactivate = function () {
-        this.deactivate_();
-    };
-    MDCRippleFoundation.prototype.layout = function () {
-        var _this = this;
-        if (this.layoutFrame_) {
-            cancelAnimationFrame(this.layoutFrame_);
-        }
-        this.layoutFrame_ = requestAnimationFrame(function () {
-            _this.layoutInternal_();
-            _this.layoutFrame_ = 0;
-        });
-    };
-    MDCRippleFoundation.prototype.setUnbounded = function (unbounded) {
-        var UNBOUNDED = MDCRippleFoundation.cssClasses.UNBOUNDED;
-        if (unbounded) {
-            this.adapter_.addClass(UNBOUNDED);
-        }
-        else {
-            this.adapter_.removeClass(UNBOUNDED);
-        }
-    };
-    MDCRippleFoundation.prototype.handleFocus = function () {
-        var _this = this;
-        requestAnimationFrame(function () {
-            return _this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
-        });
-    };
-    MDCRippleFoundation.prototype.handleBlur = function () {
-        var _this = this;
-        requestAnimationFrame(function () {
-            return _this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
-        });
-    };
-    /**
-     * We compute this property so that we are not querying information about the client
-     * until the point in time where the foundation requests it. This prevents scenarios where
-     * client-side feature-detection may happen too early, such as when components are rendered on the server
-     * and then initialized at mount time on the client.
-     */
-    MDCRippleFoundation.prototype.supportsPressRipple_ = function () {
-        return this.adapter_.browserSupportsCssVars();
-    };
-    MDCRippleFoundation.prototype.defaultActivationState_ = function () {
-        return {
-            activationEvent: undefined,
-            hasDeactivationUXRun: false,
-            isActivated: false,
-            isProgrammatic: false,
-            wasActivatedByPointer: false,
-            wasElementMadeActive: false,
-        };
-    };
-    /**
-     * supportsPressRipple Passed from init to save a redundant function call
-     */
-    MDCRippleFoundation.prototype.registerRootHandlers_ = function (supportsPressRipple) {
-        var _this = this;
-        if (supportsPressRipple) {
-            ACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-                _this.adapter_.registerInteractionHandler(evtType, _this.activateHandler_);
-            });
-            if (this.adapter_.isUnbounded()) {
-                this.adapter_.registerResizeHandler(this.resizeHandler_);
-            }
-        }
-        this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
-        this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
-    };
-    MDCRippleFoundation.prototype.registerDeactivationHandlers_ = function (evt) {
-        var _this = this;
-        if (evt.type === 'keydown') {
-            this.adapter_.registerInteractionHandler('keyup', this.deactivateHandler_);
-        }
-        else {
-            POINTER_DEACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-                _this.adapter_.registerDocumentInteractionHandler(evtType, _this.deactivateHandler_);
-            });
-        }
-    };
-    MDCRippleFoundation.prototype.deregisterRootHandlers_ = function () {
-        var _this = this;
-        ACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-            _this.adapter_.deregisterInteractionHandler(evtType, _this.activateHandler_);
-        });
-        this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
-        this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
-        if (this.adapter_.isUnbounded()) {
-            this.adapter_.deregisterResizeHandler(this.resizeHandler_);
-        }
-    };
-    MDCRippleFoundation.prototype.deregisterDeactivationHandlers_ = function () {
-        var _this = this;
-        this.adapter_.deregisterInteractionHandler('keyup', this.deactivateHandler_);
-        POINTER_DEACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-            _this.adapter_.deregisterDocumentInteractionHandler(evtType, _this.deactivateHandler_);
-        });
-    };
-    MDCRippleFoundation.prototype.removeCssVars_ = function () {
-        var _this = this;
-        var rippleStrings = MDCRippleFoundation.strings;
-        var keys = Object.keys(rippleStrings);
-        keys.forEach(function (key) {
-            if (key.indexOf('VAR_') === 0) {
-                _this.adapter_.updateCssVariable(rippleStrings[key], null);
-            }
-        });
-    };
-    MDCRippleFoundation.prototype.activate_ = function (evt) {
-        var _this = this;
-        if (this.adapter_.isSurfaceDisabled()) {
-            return;
-        }
-        var activationState = this.activationState_;
-        if (activationState.isActivated) {
-            return;
-        }
-        // Avoid reacting to follow-on events fired by touch device after an already-processed user interaction
-        var previousActivationEvent = this.previousActivationEvent_;
-        var isSameInteraction = previousActivationEvent && evt !== undefined && previousActivationEvent.type !== evt.type;
-        if (isSameInteraction) {
-            return;
-        }
-        activationState.isActivated = true;
-        activationState.isProgrammatic = evt === undefined;
-        activationState.activationEvent = evt;
-        activationState.wasActivatedByPointer = activationState.isProgrammatic ? false : evt !== undefined && (evt.type === 'mousedown' || evt.type === 'touchstart' || evt.type === 'pointerdown');
-        var hasActivatedChild = evt !== undefined && activatedTargets.length > 0 && activatedTargets.some(function (target) { return _this.adapter_.containsEventTarget(target); });
-        if (hasActivatedChild) {
-            // Immediately reset activation state, while preserving logic that prevents touch follow-on events
-            this.resetActivationState_();
-            return;
-        }
-        if (evt !== undefined) {
-            activatedTargets.push(evt.target);
-            this.registerDeactivationHandlers_(evt);
-        }
-        activationState.wasElementMadeActive = this.checkElementMadeActive_(evt);
-        if (activationState.wasElementMadeActive) {
-            this.animateActivation_();
-        }
-        requestAnimationFrame(function () {
-            // Reset array on next frame after the current event has had a chance to bubble to prevent ancestor ripples
-            activatedTargets = [];
-            if (!activationState.wasElementMadeActive
-                && evt !== undefined
-                && (evt.key === ' ' || evt.keyCode === 32)) {
-                // If space was pressed, try again within an rAF call to detect :active, because different UAs report
-                // active states inconsistently when they're called within event handling code:
-                // - https://bugs.chromium.org/p/chromium/issues/detail?id=635971
-                // - https://bugzilla.mozilla.org/show_bug.cgi?id=1293741
-                // We try first outside rAF to support Edge, which does not exhibit this problem, but will crash if a CSS
-                // variable is set within a rAF callback for a submit button interaction (#2241).
-                activationState.wasElementMadeActive = _this.checkElementMadeActive_(evt);
-                if (activationState.wasElementMadeActive) {
-                    _this.animateActivation_();
-                }
-            }
-            if (!activationState.wasElementMadeActive) {
-                // Reset activation state immediately if element was not made active.
-                _this.activationState_ = _this.defaultActivationState_();
-            }
-        });
-    };
-    MDCRippleFoundation.prototype.checkElementMadeActive_ = function (evt) {
-        return (evt !== undefined && evt.type === 'keydown') ? this.adapter_.isSurfaceActive() : true;
-    };
-    MDCRippleFoundation.prototype.animateActivation_ = function () {
-        var _this = this;
-        var _a = MDCRippleFoundation.strings, VAR_FG_TRANSLATE_START = _a.VAR_FG_TRANSLATE_START, VAR_FG_TRANSLATE_END = _a.VAR_FG_TRANSLATE_END;
-        var _b = MDCRippleFoundation.cssClasses, FG_DEACTIVATION = _b.FG_DEACTIVATION, FG_ACTIVATION = _b.FG_ACTIVATION;
-        var DEACTIVATION_TIMEOUT_MS = MDCRippleFoundation.numbers.DEACTIVATION_TIMEOUT_MS;
-        this.layoutInternal_();
-        var translateStart = '';
-        var translateEnd = '';
-        if (!this.adapter_.isUnbounded()) {
-            var _c = this.getFgTranslationCoordinates_(), startPoint = _c.startPoint, endPoint = _c.endPoint;
-            translateStart = startPoint.x + "px, " + startPoint.y + "px";
-            translateEnd = endPoint.x + "px, " + endPoint.y + "px";
-        }
-        this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_START, translateStart);
-        this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_END, translateEnd);
-        // Cancel any ongoing activation/deactivation animations
-        clearTimeout(this.activationTimer_);
-        clearTimeout(this.fgDeactivationRemovalTimer_);
-        this.rmBoundedActivationClasses_();
-        this.adapter_.removeClass(FG_DEACTIVATION);
-        // Force layout in order to re-trigger the animation.
-        this.adapter_.computeBoundingRect();
-        this.adapter_.addClass(FG_ACTIVATION);
-        this.activationTimer_ = setTimeout(function () { return _this.activationTimerCallback_(); }, DEACTIVATION_TIMEOUT_MS);
-    };
-    MDCRippleFoundation.prototype.getFgTranslationCoordinates_ = function () {
-        var _a = this.activationState_, activationEvent = _a.activationEvent, wasActivatedByPointer = _a.wasActivatedByPointer;
-        var startPoint;
-        if (wasActivatedByPointer) {
-            startPoint = Object(_util__WEBPACK_IMPORTED_MODULE_3__["getNormalizedEventCoords"])(activationEvent, this.adapter_.getWindowPageOffset(), this.adapter_.computeBoundingRect());
-        }
-        else {
-            startPoint = {
-                x: this.frame_.width / 2,
-                y: this.frame_.height / 2,
-            };
-        }
-        // Center the element around the start point.
-        startPoint = {
-            x: startPoint.x - (this.initialSize_ / 2),
-            y: startPoint.y - (this.initialSize_ / 2),
-        };
-        var endPoint = {
-            x: (this.frame_.width / 2) - (this.initialSize_ / 2),
-            y: (this.frame_.height / 2) - (this.initialSize_ / 2),
-        };
-        return { startPoint: startPoint, endPoint: endPoint };
-    };
-    MDCRippleFoundation.prototype.runDeactivationUXLogicIfReady_ = function () {
-        var _this = this;
-        // This method is called both when a pointing device is released, and when the activation animation ends.
-        // The deactivation animation should only run after both of those occur.
-        var FG_DEACTIVATION = MDCRippleFoundation.cssClasses.FG_DEACTIVATION;
-        var _a = this.activationState_, hasDeactivationUXRun = _a.hasDeactivationUXRun, isActivated = _a.isActivated;
-        var activationHasEnded = hasDeactivationUXRun || !isActivated;
-        if (activationHasEnded && this.activationAnimationHasEnded_) {
-            this.rmBoundedActivationClasses_();
-            this.adapter_.addClass(FG_DEACTIVATION);
-            this.fgDeactivationRemovalTimer_ = setTimeout(function () {
-                _this.adapter_.removeClass(FG_DEACTIVATION);
-            }, _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"].FG_DEACTIVATION_MS);
-        }
-    };
-    MDCRippleFoundation.prototype.rmBoundedActivationClasses_ = function () {
-        var FG_ACTIVATION = MDCRippleFoundation.cssClasses.FG_ACTIVATION;
-        this.adapter_.removeClass(FG_ACTIVATION);
-        this.activationAnimationHasEnded_ = false;
-        this.adapter_.computeBoundingRect();
-    };
-    MDCRippleFoundation.prototype.resetActivationState_ = function () {
-        var _this = this;
-        this.previousActivationEvent_ = this.activationState_.activationEvent;
-        this.activationState_ = this.defaultActivationState_();
-        // Touch devices may fire additional events for the same interaction within a short time.
-        // Store the previous event until it's safe to assume that subsequent events are for new interactions.
-        setTimeout(function () { return _this.previousActivationEvent_ = undefined; }, MDCRippleFoundation.numbers.TAP_DELAY_MS);
-    };
-    MDCRippleFoundation.prototype.deactivate_ = function () {
-        var _this = this;
-        var activationState = this.activationState_;
-        // This can happen in scenarios such as when you have a keyup event that blurs the element.
-        if (!activationState.isActivated) {
-            return;
-        }
-        var state = tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, activationState);
-        if (activationState.isProgrammatic) {
-            requestAnimationFrame(function () { return _this.animateDeactivation_(state); });
-            this.resetActivationState_();
-        }
-        else {
-            this.deregisterDeactivationHandlers_();
-            requestAnimationFrame(function () {
-                _this.activationState_.hasDeactivationUXRun = true;
-                _this.animateDeactivation_(state);
-                _this.resetActivationState_();
-            });
-        }
-    };
-    MDCRippleFoundation.prototype.animateDeactivation_ = function (_a) {
-        var wasActivatedByPointer = _a.wasActivatedByPointer, wasElementMadeActive = _a.wasElementMadeActive;
-        if (wasActivatedByPointer || wasElementMadeActive) {
-            this.runDeactivationUXLogicIfReady_();
-        }
-    };
-    MDCRippleFoundation.prototype.layoutInternal_ = function () {
-        var _this = this;
-        this.frame_ = this.adapter_.computeBoundingRect();
-        var maxDim = Math.max(this.frame_.height, this.frame_.width);
-        // Surface diameter is treated differently for unbounded vs. bounded ripples.
-        // Unbounded ripple diameter is calculated smaller since the surface is expected to already be padded appropriately
-        // to extend the hitbox, and the ripple is expected to meet the edges of the padded hitbox (which is typically
-        // square). Bounded ripples, on the other hand, are fully expected to expand beyond the surface's longest diameter
-        // (calculated based on the diagonal plus a constant padding), and are clipped at the surface's border via
-        // `overflow: hidden`.
-        var getBoundedRadius = function () {
-            var hypotenuse = Math.sqrt(Math.pow(_this.frame_.width, 2) + Math.pow(_this.frame_.height, 2));
-            return hypotenuse + MDCRippleFoundation.numbers.PADDING;
-        };
-        this.maxRadius_ = this.adapter_.isUnbounded() ? maxDim : getBoundedRadius();
-        // Ripple is sized as a fraction of the largest dimension of the surface, then scales up using a CSS scale transform
-        this.initialSize_ = Math.floor(maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE);
-        this.fgScale_ = "" + this.maxRadius_ / this.initialSize_;
-        this.updateLayoutCssVars_();
-    };
-    MDCRippleFoundation.prototype.updateLayoutCssVars_ = function () {
-        var _a = MDCRippleFoundation.strings, VAR_FG_SIZE = _a.VAR_FG_SIZE, VAR_LEFT = _a.VAR_LEFT, VAR_TOP = _a.VAR_TOP, VAR_FG_SCALE = _a.VAR_FG_SCALE;
-        this.adapter_.updateCssVariable(VAR_FG_SIZE, this.initialSize_ + "px");
-        this.adapter_.updateCssVariable(VAR_FG_SCALE, this.fgScale_);
-        if (this.adapter_.isUnbounded()) {
-            this.unboundedCoords_ = {
-                left: Math.round((this.frame_.width / 2) - (this.initialSize_ / 2)),
-                top: Math.round((this.frame_.height / 2) - (this.initialSize_ / 2)),
-            };
-            this.adapter_.updateCssVariable(VAR_LEFT, this.unboundedCoords_.left + "px");
-            this.adapter_.updateCssVariable(VAR_TOP, this.unboundedCoords_.top + "px");
-        }
-    };
-    return MDCRippleFoundation;
-}(_material_base_foundation__WEBPACK_IMPORTED_MODULE_1__["MDCFoundation"]));
-
-// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
-/* harmony default export */ __webpack_exports__["default"] = (MDCRippleFoundation);
-//# sourceMappingURL=foundation.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@material/textfield/node_modules/@material/ripple/util.js":
-/*!********************************************************************************!*\
-  !*** ./node_modules/@material/textfield/node_modules/@material/ripple/util.js ***!
-  \********************************************************************************/
-/*! exports provided: supportsCssVariables, applyPassive, getNormalizedEventCoords */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "supportsCssVariables", function() { return supportsCssVariables; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyPassive", function() { return applyPassive; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNormalizedEventCoords", function() { return getNormalizedEventCoords; });
-/**
- * Stores result from supportsCssVariables to avoid redundant processing to
- * detect CSS custom variable support.
- */
-var supportsCssVariables_;
-/**
- * Stores result from applyPassive to avoid redundant processing to detect
- * passive event listener support.
- */
-var supportsPassive_;
-function detectEdgePseudoVarBug(windowObj) {
-    // Detect versions of Edge with buggy var() support
-    // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
-    var document = windowObj.document;
-    var node = document.createElement('div');
-    node.className = 'mdc-ripple-surface--test-edge-var-bug';
-    document.body.appendChild(node);
-    // The bug exists if ::before style ends up propagating to the parent element.
-    // Additionally, getComputedStyle returns null in iframes with display: "none" in Firefox,
-    // but Firefox is known to support CSS custom properties correctly.
-    // See: https://bugzilla.mozilla.org/show_bug.cgi?id=548397
-    var computedStyle = windowObj.getComputedStyle(node);
-    var hasPseudoVarBug = computedStyle !== null && computedStyle.borderTopStyle === 'solid';
-    if (node.parentNode) {
-        node.parentNode.removeChild(node);
-    }
-    return hasPseudoVarBug;
-}
-function supportsCssVariables(windowObj, forceRefresh) {
-    if (forceRefresh === void 0) { forceRefresh = false; }
-    var CSS = windowObj.CSS;
-    var supportsCssVars = supportsCssVariables_;
-    if (typeof supportsCssVariables_ === 'boolean' && !forceRefresh) {
-        return supportsCssVariables_;
-    }
-    var supportsFunctionPresent = CSS && typeof CSS.supports === 'function';
-    if (!supportsFunctionPresent) {
-        return false;
-    }
-    var explicitlySupportsCssVars = CSS.supports('--css-vars', 'yes');
-    // See: https://bugs.webkit.org/show_bug.cgi?id=154669
-    // See: README section on Safari
-    var weAreFeatureDetectingSafari10plus = (CSS.supports('(--css-vars: yes)') &&
-        CSS.supports('color', '#00000000'));
-    if (explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus) {
-        supportsCssVars = !detectEdgePseudoVarBug(windowObj);
-    }
-    else {
-        supportsCssVars = false;
-    }
-    if (!forceRefresh) {
-        supportsCssVariables_ = supportsCssVars;
-    }
-    return supportsCssVars;
-}
-/**
- * Determine whether the current browser supports passive event listeners, and
- * if so, use them.
- */
-function applyPassive(globalObj, forceRefresh) {
-    if (globalObj === void 0) { globalObj = window; }
-    if (forceRefresh === void 0) { forceRefresh = false; }
-    if (supportsPassive_ === undefined || forceRefresh) {
-        var isSupported_1 = false;
-        try {
-            globalObj.document.addEventListener('test', function () { return undefined; }, {
-                get passive() {
-                    isSupported_1 = true;
-                    return isSupported_1;
-                },
-            });
-        }
-        catch (e) {
-        } // tslint:disable-line:no-empty cannot throw error due to tests. tslint also disables console.log.
-        supportsPassive_ = isSupported_1;
-    }
-    return supportsPassive_ ? { passive: true } : false;
-}
-function getNormalizedEventCoords(evt, pageOffset, clientRect) {
-    if (!evt) {
-        return { x: 0, y: 0 };
-    }
-    var x = pageOffset.x, y = pageOffset.y;
-    var documentX = x + clientRect.left;
-    var documentY = y + clientRect.top;
-    var normalizedX;
-    var normalizedY;
-    // Determine touch point relative to the ripple container.
-    if (evt.type === 'touchstart') {
-        var touchEvent = evt;
-        normalizedX = touchEvent.changedTouches[0].pageX - documentX;
-        normalizedY = touchEvent.changedTouches[0].pageY - documentY;
-    }
-    else {
-        var mouseEvent = evt;
-        normalizedX = mouseEvent.pageX - documentX;
-        normalizedY = mouseEvent.pageY - documentY;
-    }
-    return { x: normalizedX, y: normalizedY };
-}
-//# sourceMappingURL=util.js.map
-
-/***/ }),
-
 /***/ "./node_modules/@rmwc/base/next/component.js":
 /*!***************************************************!*\
   !*** ./node_modules/@rmwc/base/next/component.js ***!
@@ -14293,8 +9827,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 var __read = (undefined && undefined.__read) || function (o, n) {
@@ -14668,7 +10204,7 @@ var FoundationComponent = /** @class */ (function (_super) {
 /*!***********************************************!*\
   !*** ./node_modules/@rmwc/base/next/index.js ***!
   \***********************************************/
-/*! exports provided: classNames, parseThemeOptions, withTheme, FoundationComponent, componentFactory, createFocusTrap, debounce, deprecationWarning, handleDeprecations, eventsMap, closest, matches, randomId, toCamel, toDashCase, wrapChild, EventEmitter, ArrayEmitter */
+/*! exports provided: classNames, parseThemeOptions, withTheme, FoundationComponent, componentFactory, createFocusTrap, debounce, deprecationWarning, handleDeprecations, eventsMap, closest, matches, randomId, toCamel, toDashCase, wrapChild, EventEmitter, ArrayEmitter, applyPassive */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14709,6 +10245,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ArrayEmitter", function() { return _utils__WEBPACK_IMPORTED_MODULE_3__["ArrayEmitter"]; });
 
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "applyPassive", function() { return _utils__WEBPACK_IMPORTED_MODULE_3__["applyPassive"]; });
+
 /* harmony import */ var _foundation_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./foundation-component */ "./node_modules/@rmwc/base/next/foundation-component.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FoundationComponent", function() { return _foundation_component__WEBPACK_IMPORTED_MODULE_4__["FoundationComponent"]; });
 
@@ -14722,6 +10260,76 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var createFocusTrap = focus_trap__WEBPACK_IMPORTED_MODULE_0___default.a;
+
+
+/***/ }),
+
+/***/ "./node_modules/@rmwc/base/next/utils/apply-passive.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/@rmwc/base/next/utils/apply-passive.js ***!
+  \*************************************************************/
+/*! exports provided: applyPassive */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyPassive", function() { return applyPassive; });
+/**
+ * @license
+ * Copyright 2019 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+/**
+ * Stores result from applyPassive to avoid redundant processing to detect
+ * passive event listener support.
+ */
+var supportsPassive_;
+/**
+ * Determine whether the current browser supports passive event listeners, and
+ * if so, use them.
+ */
+function applyPassive(globalObj, forceRefresh) {
+    if (globalObj === void 0) {
+        globalObj = window;
+    }
+    if (forceRefresh === void 0) {
+        forceRefresh = false;
+    }
+    if (supportsPassive_ === undefined || forceRefresh) {
+        var isSupported_1 = false;
+        try {
+            globalObj.document.addEventListener('test', function () {
+                return undefined;
+            }, {
+                get passive() {
+                    isSupported_1 = true;
+                    return isSupported_1;
+                }
+            });
+        }
+        catch (e) { } // tslint:disable-line:no-empty cannot throw error due to tests. tslint also disables console.log.
+        supportsPassive_ = isSupported_1;
+    }
+    return supportsPassive_ ? { passive: true } : false;
+}
+//# sourceMappingURL=events.js.map
 
 
 /***/ }),
@@ -15022,7 +10630,7 @@ var eventsMap = {
 /*!*****************************************************!*\
   !*** ./node_modules/@rmwc/base/next/utils/index.js ***!
   \*****************************************************/
-/*! exports provided: debounce, deprecationWarning, handleDeprecations, eventsMap, closest, matches, randomId, toCamel, toDashCase, wrapChild, EventEmitter, ArrayEmitter */
+/*! exports provided: debounce, deprecationWarning, handleDeprecations, eventsMap, closest, matches, randomId, toCamel, toDashCase, wrapChild, EventEmitter, ArrayEmitter, applyPassive */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15058,6 +10666,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "EventEmitter", function() { return _emitter__WEBPACK_IMPORTED_MODULE_7__["EventEmitter"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ArrayEmitter", function() { return _emitter__WEBPACK_IMPORTED_MODULE_7__["ArrayEmitter"]; });
+
+/* harmony import */ var _apply_passive__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./apply-passive */ "./node_modules/@rmwc/base/next/utils/apply-passive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "applyPassive", function() { return _apply_passive__WEBPACK_IMPORTED_MODULE_8__["applyPassive"]; });
+
 
 
 
@@ -15227,8 +10839,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -15303,8 +10917,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -15409,8 +11025,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -15433,8 +11051,8 @@ var DialogQueue = /** @class */ (function (_super) {
         this.props.dialogs.off('change', this.forceUpdate);
     };
     DialogQueue.prototype.removeDialog = function (evt, dialog) {
-        var _this = this;
         var _a;
+        var _this = this;
         this.setState({
             closingDialogs: __assign({}, this.state.closingDialogs, (_a = {}, _a[dialog.id] = true, _a))
         }, function () {
@@ -15587,8 +11205,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -15650,14 +11270,11 @@ var DialogButton = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     DialogButton.prototype.render = function () {
-        var _a = this.props, _b = _a.action, action = _b === void 0 ? '' : _b, className = _a.className, isDefaultAction = _a.isDefaultAction, rest = __rest(_a, ["action", "className", "isDefaultAction"]);
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_rmwc_button__WEBPACK_IMPORTED_MODULE_3__["Button"], __assign({}, rest, { "data-mdc-dialog-action": action, className: [
-                className,
-                'mdc-dialog__button',
-                isDefaultAction && 'mdc-dialog__button--default'
-            ]
-                .filter(Boolean)
-                .join(' ') })));
+        var _a;
+        var _b = this.props, _c = _b.action, action = _c === void 0 ? '' : _c, className = _b.className, isDefaultAction = _b.isDefaultAction, rest = __rest(_b, ["action", "className", "isDefaultAction"]);
+        var defaultProp = !!isDefaultAction
+            ? (_a = {}, _a[_material_dialog__WEBPACK_IMPORTED_MODULE_1__["MDCDialogFoundation"].strings.BUTTON_DEFAULT_ATTRIBUTE] = true, _a) : {};
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_rmwc_button__WEBPACK_IMPORTED_MODULE_3__["Button"], __assign({}, rest, defaultProp, { "data-mdc-dialog-action": action, className: [className, 'mdc-dialog__button'].filter(Boolean).join(' ') })));
     };
     DialogButton.displayName = 'DialogButton';
     return DialogButton;
@@ -15675,7 +11292,8 @@ var Dialog = /** @class */ (function (_super) {
         _this.defaultButton = null;
         _this.focusTrap = null;
         _this.handleDocumentKeydown = function () { };
-        _this.handleInteraction = _this.handleInteraction.bind(_this);
+        _this.handleClick = _this.handleClick.bind(_this);
+        _this.handleKeydown = _this.handleKeydown.bind(_this);
         return _this;
     }
     Dialog.prototype.open = function () {
@@ -15683,7 +11301,7 @@ var Dialog = /** @class */ (function (_super) {
         if (!this.foundation.isOpen()) {
             document.addEventListener('keydown', this.handleDocumentKeydown);
             this.foundation.open();
-            // Dont like this fix
+            // Don't like this fix
             // This corrects an issue where the default button was stealing focus
             // When something else in the dialog should have it
             setTimeout(function () {
@@ -15693,7 +11311,7 @@ var Dialog = /** @class */ (function (_super) {
                     document.activeElement.classList.contains('mdc-dialog__button')) {
                     _this.defaultButton.focus();
                 }
-            }, 180);
+            }, 200);
         }
     };
     Dialog.prototype.close = function () {
@@ -15715,7 +11333,7 @@ var Dialog = /** @class */ (function (_super) {
                 [].slice.call(this.root.ref.querySelectorAll(_material_dialog__WEBPACK_IMPORTED_MODULE_1__["MDCDialogFoundation"].strings.BUTTON_SELECTOR));
         this.defaultButton =
             this.root.ref &&
-                this.root.ref.querySelector(_material_dialog__WEBPACK_IMPORTED_MODULE_1__["MDCDialogFoundation"].strings.DEFAULT_BUTTON_SELECTOR);
+                this.root.ref.querySelector("[" + _material_dialog__WEBPACK_IMPORTED_MODULE_1__["MDCDialogFoundation"].strings.BUTTON_DEFAULT_ATTRIBUTE + "]");
         this.container &&
             (this.focusTrap = Object(_rmwc_base__WEBPACK_IMPORTED_MODULE_2__["createFocusTrap"])(this.container, {
                 initialFocus: undefined,
@@ -15795,17 +11413,23 @@ var Dialog = /** @class */ (function (_super) {
             notifyClosed: function (action) {
                 _this.emit('onClosed', action ? { action: action } : {});
                 _this.props.onStateChange && _this.props.onStateChange('closed');
+            },
+            getInitialFocusEl: function () {
+                return document.querySelector("[" + _material_dialog__WEBPACK_IMPORTED_MODULE_1__["MDCDialogFoundation"].strings.INITIAL_FOCUS_ATTRIBUTE + "]");
             }
         });
     };
-    Dialog.prototype.handleInteraction = function (evt) {
-        evt.type === 'click' && this.props.onClick && this.props.onClick(evt);
-        evt.type === 'keydown' && this.props.onKeyDown && this.props.onKeyDown(evt);
-        return this.foundation.handleInteraction(evt);
+    Dialog.prototype.handleClick = function (evt) {
+        this.props.onClick && this.props.onClick(evt);
+        return this.foundation.handleClick(evt);
+    };
+    Dialog.prototype.handleKeydown = function (evt) {
+        this.props.onKeyDown && this.props.onKeyDown(evt);
+        return this.foundation.handleKeydown(evt);
     };
     Dialog.prototype.render = function () {
         var _a = this.props, children = _a.children, open = _a.open, onOpen = _a.onOpen, onClose = _a.onClose, onStateChange = _a.onStateChange, preventOutsideDismiss = _a.preventOutsideDismiss, rest = __rest(_a, ["children", "open", "onOpen", "onClose", "onStateChange", "preventOutsideDismiss"]);
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](DialogRoot, __assign({}, this.root.props(rest), { ref: this.root.setRef, onClick: this.handleInteraction, onKeyDown: this.handleInteraction }),
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](DialogRoot, __assign({}, this.root.props(rest), { ref: this.root.setRef, onClick: this.handleClick, onKeyDown: this.handleKeydown }),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "mdc-dialog__container" },
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "mdc-dialog__surface" }, children)),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](DialogScrim, { disableInteraction: preventOutsideDismiss })));
@@ -15897,7 +11521,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FloatingLabel", function() { return FloatingLabel; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _material_floating_label__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/floating-label */ "./node_modules/@rmwc/floating-label/node_modules/@material/floating-label/index.js");
+/* harmony import */ var _material_floating_label__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/floating-label */ "./node_modules/@material/floating-label/index.js");
 /* harmony import */ var _rmwc_base__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @rmwc/base */ "./node_modules/@rmwc/base/next/index.js");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -15928,8 +11552,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -15978,297 +11604,6 @@ var FloatingLabel = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./node_modules/@rmwc/floating-label/node_modules/@material/floating-label/component.js":
-/*!**********************************************************************************************!*\
-  !*** ./node_modules/@rmwc/floating-label/node_modules/@material/floating-label/component.js ***!
-  \**********************************************************************************************/
-/*! exports provided: MDCFloatingLabel */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCFloatingLabel", function() { return MDCFloatingLabel; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./foundation */ "./node_modules/@rmwc/floating-label/node_modules/@material/floating-label/foundation.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-var MDCFloatingLabel = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCFloatingLabel, _super);
-    function MDCFloatingLabel() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    MDCFloatingLabel.attachTo = function (root) {
-        return new MDCFloatingLabel(root);
-    };
-    /**
-     * Styles the label to produce the label shake for errors.
-     * @param shouldShake If true, shakes the label by adding a CSS class; otherwise, stops shaking by removing the class.
-     */
-    MDCFloatingLabel.prototype.shake = function (shouldShake) {
-        this.foundation_.shake(shouldShake);
-    };
-    /**
-     * Styles the label to float/dock.
-     * @param shouldFloat If true, floats the label by adding a CSS class; otherwise, docks it by removing the class.
-     */
-    MDCFloatingLabel.prototype.float = function (shouldFloat) {
-        this.foundation_.float(shouldFloat);
-    };
-    MDCFloatingLabel.prototype.getWidth = function () {
-        return this.foundation_.getWidth();
-    };
-    MDCFloatingLabel.prototype.getDefaultFoundation = function () {
-        var _this = this;
-        // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-        // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-        // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-        var adapter = {
-            addClass: function (className) { return _this.root_.classList.add(className); },
-            removeClass: function (className) { return _this.root_.classList.remove(className); },
-            getWidth: function () { return _this.root_.scrollWidth; },
-            registerInteractionHandler: function (evtType, handler) { return _this.listen(evtType, handler); },
-            deregisterInteractionHandler: function (evtType, handler) { return _this.unlisten(evtType, handler); },
-        };
-        // tslint:enable:object-literal-sort-keys
-        return new _foundation__WEBPACK_IMPORTED_MODULE_2__["MDCFloatingLabelFoundation"](adapter);
-    };
-    return MDCFloatingLabel;
-}(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
-
-//# sourceMappingURL=component.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@rmwc/floating-label/node_modules/@material/floating-label/constants.js":
-/*!**********************************************************************************************!*\
-  !*** ./node_modules/@rmwc/floating-label/node_modules/@material/floating-label/constants.js ***!
-  \**********************************************************************************************/
-/*! exports provided: cssClasses */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return cssClasses; });
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-var cssClasses = {
-    LABEL_FLOAT_ABOVE: 'mdc-floating-label--float-above',
-    LABEL_SHAKE: 'mdc-floating-label--shake',
-    ROOT: 'mdc-floating-label',
-};
-//# sourceMappingURL=constants.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@rmwc/floating-label/node_modules/@material/floating-label/foundation.js":
-/*!***********************************************************************************************!*\
-  !*** ./node_modules/@rmwc/floating-label/node_modules/@material/floating-label/foundation.js ***!
-  \***********************************************************************************************/
-/*! exports provided: MDCFloatingLabelFoundation, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCFloatingLabelFoundation", function() { return MDCFloatingLabelFoundation; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/foundation */ "./node_modules/@material/base/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@rmwc/floating-label/node_modules/@material/floating-label/constants.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-var MDCFloatingLabelFoundation = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCFloatingLabelFoundation, _super);
-    function MDCFloatingLabelFoundation(adapter) {
-        var _this = _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCFloatingLabelFoundation.defaultAdapter, adapter)) || this;
-        _this.shakeAnimationEndHandler_ = function () { return _this.handleShakeAnimationEnd_(); };
-        return _this;
-    }
-    Object.defineProperty(MDCFloatingLabelFoundation, "cssClasses", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCFloatingLabelFoundation, "defaultAdapter", {
-        /**
-         * See {@link MDCFloatingLabelAdapter} for typing information on parameters and return types.
-         */
-        get: function () {
-            // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-            return {
-                addClass: function () { return undefined; },
-                removeClass: function () { return undefined; },
-                getWidth: function () { return 0; },
-                registerInteractionHandler: function () { return undefined; },
-                deregisterInteractionHandler: function () { return undefined; },
-            };
-            // tslint:enable:object-literal-sort-keys
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MDCFloatingLabelFoundation.prototype.init = function () {
-        this.adapter_.registerInteractionHandler('animationend', this.shakeAnimationEndHandler_);
-    };
-    MDCFloatingLabelFoundation.prototype.destroy = function () {
-        this.adapter_.deregisterInteractionHandler('animationend', this.shakeAnimationEndHandler_);
-    };
-    /**
-     * Returns the width of the label element.
-     */
-    MDCFloatingLabelFoundation.prototype.getWidth = function () {
-        return this.adapter_.getWidth();
-    };
-    /**
-     * Styles the label to produce a shake animation to indicate an error.
-     * @param shouldShake If true, adds the shake CSS class; otherwise, removes shake class.
-     */
-    MDCFloatingLabelFoundation.prototype.shake = function (shouldShake) {
-        var LABEL_SHAKE = MDCFloatingLabelFoundation.cssClasses.LABEL_SHAKE;
-        if (shouldShake) {
-            this.adapter_.addClass(LABEL_SHAKE);
-        }
-        else {
-            this.adapter_.removeClass(LABEL_SHAKE);
-        }
-    };
-    /**
-     * Styles the label to float or dock.
-     * @param shouldFloat If true, adds the float CSS class; otherwise, removes float and shake classes to dock the label.
-     */
-    MDCFloatingLabelFoundation.prototype.float = function (shouldFloat) {
-        var _a = MDCFloatingLabelFoundation.cssClasses, LABEL_FLOAT_ABOVE = _a.LABEL_FLOAT_ABOVE, LABEL_SHAKE = _a.LABEL_SHAKE;
-        if (shouldFloat) {
-            this.adapter_.addClass(LABEL_FLOAT_ABOVE);
-        }
-        else {
-            this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
-            this.adapter_.removeClass(LABEL_SHAKE);
-        }
-    };
-    MDCFloatingLabelFoundation.prototype.handleShakeAnimationEnd_ = function () {
-        var LABEL_SHAKE = MDCFloatingLabelFoundation.cssClasses.LABEL_SHAKE;
-        this.adapter_.removeClass(LABEL_SHAKE);
-    };
-    return MDCFloatingLabelFoundation;
-}(_material_base_foundation__WEBPACK_IMPORTED_MODULE_1__["MDCFoundation"]));
-
-// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
-/* harmony default export */ __webpack_exports__["default"] = (MDCFloatingLabelFoundation);
-//# sourceMappingURL=foundation.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@rmwc/floating-label/node_modules/@material/floating-label/index.js":
-/*!******************************************************************************************!*\
-  !*** ./node_modules/@rmwc/floating-label/node_modules/@material/floating-label/index.js ***!
-  \******************************************************************************************/
-/*! exports provided: MDCFloatingLabel, MDCFloatingLabelFoundation */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./component */ "./node_modules/@rmwc/floating-label/node_modules/@material/floating-label/component.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCFloatingLabel", function() { return _component__WEBPACK_IMPORTED_MODULE_0__["MDCFloatingLabel"]; });
-
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./foundation */ "./node_modules/@rmwc/floating-label/node_modules/@material/floating-label/foundation.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCFloatingLabelFoundation", function() { return _foundation__WEBPACK_IMPORTED_MODULE_1__["MDCFloatingLabelFoundation"]; });
-
-/**
- * @license
- * Copyright 2019 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-
 /***/ "./node_modules/@rmwc/icon-button/next/index.js":
 /*!******************************************************!*\
   !*** ./node_modules/@rmwc/icon-button/next/index.js ***!
@@ -16314,8 +11649,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -16475,8 +11812,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -16602,7 +11941,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LineRipple", function() { return LineRipple; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _material_line_ripple__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/line-ripple */ "./node_modules/@rmwc/line-ripple/node_modules/@material/line-ripple/index.js");
+/* harmony import */ var _material_line_ripple__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/line-ripple */ "./node_modules/@material/line-ripple/index.js");
 /* harmony import */ var _rmwc_base__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @rmwc/base */ "./node_modules/@rmwc/base/next/index.js");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -16633,8 +11972,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -16684,285 +12025,6 @@ var LineRipple = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./node_modules/@rmwc/line-ripple/node_modules/@material/line-ripple/component.js":
-/*!****************************************************************************************!*\
-  !*** ./node_modules/@rmwc/line-ripple/node_modules/@material/line-ripple/component.js ***!
-  \****************************************************************************************/
-/*! exports provided: MDCLineRipple */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCLineRipple", function() { return MDCLineRipple; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./foundation */ "./node_modules/@rmwc/line-ripple/node_modules/@material/line-ripple/foundation.js");
-/**
- * @license
- * Copyright 2018 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-var MDCLineRipple = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCLineRipple, _super);
-    function MDCLineRipple() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    MDCLineRipple.attachTo = function (root) {
-        return new MDCLineRipple(root);
-    };
-    /**
-     * Activates the line ripple
-     */
-    MDCLineRipple.prototype.activate = function () {
-        this.foundation_.activate();
-    };
-    /**
-     * Deactivates the line ripple
-     */
-    MDCLineRipple.prototype.deactivate = function () {
-        this.foundation_.deactivate();
-    };
-    /**
-     * Sets the transform origin given a user's click location.
-     * The `rippleCenter` is the x-coordinate of the middle of the ripple.
-     */
-    MDCLineRipple.prototype.setRippleCenter = function (xCoordinate) {
-        this.foundation_.setRippleCenter(xCoordinate);
-    };
-    MDCLineRipple.prototype.getDefaultFoundation = function () {
-        var _this = this;
-        // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-        // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-        // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-        var adapter = {
-            addClass: function (className) { return _this.root_.classList.add(className); },
-            removeClass: function (className) { return _this.root_.classList.remove(className); },
-            hasClass: function (className) { return _this.root_.classList.contains(className); },
-            setStyle: function (propertyName, value) { return _this.root_.style.setProperty(propertyName, value); },
-            registerEventHandler: function (evtType, handler) { return _this.listen(evtType, handler); },
-            deregisterEventHandler: function (evtType, handler) { return _this.unlisten(evtType, handler); },
-        };
-        // tslint:enable:object-literal-sort-keys
-        return new _foundation__WEBPACK_IMPORTED_MODULE_2__["MDCLineRippleFoundation"](adapter);
-    };
-    return MDCLineRipple;
-}(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
-
-//# sourceMappingURL=component.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@rmwc/line-ripple/node_modules/@material/line-ripple/constants.js":
-/*!****************************************************************************************!*\
-  !*** ./node_modules/@rmwc/line-ripple/node_modules/@material/line-ripple/constants.js ***!
-  \****************************************************************************************/
-/*! exports provided: cssClasses */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return cssClasses; });
-/**
- * @license
- * Copyright 2018 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-var cssClasses = {
-    LINE_RIPPLE_ACTIVE: 'mdc-line-ripple--active',
-    LINE_RIPPLE_DEACTIVATING: 'mdc-line-ripple--deactivating',
-};
-
-//# sourceMappingURL=constants.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@rmwc/line-ripple/node_modules/@material/line-ripple/foundation.js":
-/*!*****************************************************************************************!*\
-  !*** ./node_modules/@rmwc/line-ripple/node_modules/@material/line-ripple/foundation.js ***!
-  \*****************************************************************************************/
-/*! exports provided: MDCLineRippleFoundation, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCLineRippleFoundation", function() { return MDCLineRippleFoundation; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/foundation */ "./node_modules/@material/base/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@rmwc/line-ripple/node_modules/@material/line-ripple/constants.js");
-/**
- * @license
- * Copyright 2018 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-var MDCLineRippleFoundation = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCLineRippleFoundation, _super);
-    function MDCLineRippleFoundation(adapter) {
-        var _this = _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCLineRippleFoundation.defaultAdapter, adapter)) || this;
-        _this.transitionEndHandler_ = function (evt) { return _this.handleTransitionEnd(evt); };
-        return _this;
-    }
-    Object.defineProperty(MDCLineRippleFoundation, "cssClasses", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCLineRippleFoundation, "defaultAdapter", {
-        /**
-         * See {@link MDCLineRippleAdapter} for typing information on parameters and return types.
-         */
-        get: function () {
-            // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-            return {
-                addClass: function () { return undefined; },
-                removeClass: function () { return undefined; },
-                hasClass: function () { return false; },
-                setStyle: function () { return undefined; },
-                registerEventHandler: function () { return undefined; },
-                deregisterEventHandler: function () { return undefined; },
-            };
-            // tslint:enable:object-literal-sort-keys
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MDCLineRippleFoundation.prototype.init = function () {
-        this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
-    };
-    MDCLineRippleFoundation.prototype.destroy = function () {
-        this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
-    };
-    MDCLineRippleFoundation.prototype.activate = function () {
-        this.adapter_.removeClass(_constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].LINE_RIPPLE_DEACTIVATING);
-        this.adapter_.addClass(_constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].LINE_RIPPLE_ACTIVE);
-    };
-    MDCLineRippleFoundation.prototype.setRippleCenter = function (xCoordinate) {
-        this.adapter_.setStyle('transform-origin', xCoordinate + "px center");
-    };
-    MDCLineRippleFoundation.prototype.deactivate = function () {
-        this.adapter_.addClass(_constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].LINE_RIPPLE_DEACTIVATING);
-    };
-    MDCLineRippleFoundation.prototype.handleTransitionEnd = function (evt) {
-        // Wait for the line ripple to be either transparent or opaque
-        // before emitting the animation end event
-        var isDeactivating = this.adapter_.hasClass(_constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].LINE_RIPPLE_DEACTIVATING);
-        if (evt.propertyName === 'opacity') {
-            if (isDeactivating) {
-                this.adapter_.removeClass(_constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].LINE_RIPPLE_ACTIVE);
-                this.adapter_.removeClass(_constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"].LINE_RIPPLE_DEACTIVATING);
-            }
-        }
-    };
-    return MDCLineRippleFoundation;
-}(_material_base_foundation__WEBPACK_IMPORTED_MODULE_1__["MDCFoundation"]));
-
-// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
-/* harmony default export */ __webpack_exports__["default"] = (MDCLineRippleFoundation);
-//# sourceMappingURL=foundation.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@rmwc/line-ripple/node_modules/@material/line-ripple/index.js":
-/*!************************************************************************************!*\
-  !*** ./node_modules/@rmwc/line-ripple/node_modules/@material/line-ripple/index.js ***!
-  \************************************************************************************/
-/*! exports provided: MDCLineRipple, MDCLineRippleFoundation */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./component */ "./node_modules/@rmwc/line-ripple/node_modules/@material/line-ripple/component.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCLineRipple", function() { return _component__WEBPACK_IMPORTED_MODULE_0__["MDCLineRipple"]; });
-
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./foundation */ "./node_modules/@rmwc/line-ripple/node_modules/@material/line-ripple/foundation.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCLineRippleFoundation", function() { return _foundation__WEBPACK_IMPORTED_MODULE_1__["MDCLineRippleFoundation"]; });
-
-/**
- * @license
- * Copyright 2019 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-
 /***/ "./node_modules/@rmwc/list/next/collapsible-list.js":
 /*!**********************************************************!*\
   !*** ./node_modules/@rmwc/list/next/collapsible-list.js ***!
@@ -17005,8 +12067,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -17159,8 +12223,8 @@ var CollapsibleList = /** @class */ (function (_super) {
         }
     };
     CollapsibleList.prototype.render = function () {
-        var _this = this;
         var _a;
+        var _this = this;
         var _b = this.props, children = _b.children, handle = _b.handle, onOpen = _b.onOpen, onClose = _b.onClose, openProp = _b.open, startOpen = _b.startOpen, rest = __rest(_b, ["children", "handle", "onOpen", "onClose", "open", "startOpen"]);
         var _c = this.state, open = _c.open, childrenStyle = _c.childrenStyle;
         return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](CollapsibleRoot, __assign({}, rest, { onFocus: this.handleFocus, ref: function (el) { return (_this.root = el); }, className: Object(_rmwc_base__WEBPACK_IMPORTED_MODULE_1__["classNames"])('rmwc-collapsible-list', (_a = {},
@@ -17261,8 +12325,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -17401,8 +12467,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -17674,8 +12742,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -17993,8 +13063,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -18075,10 +13147,6 @@ var Menu = /** @class */ (function (_super) {
             },
             getElementIndex: function (element) {
                 return _this.items.indexOf(element);
-            },
-            getParentElement: function (element) { return element.parentElement; },
-            getSelectedElementIndex: function (selectionGroup) {
-                return _this.items.indexOf(selectionGroup.querySelector("." + _material_menu__WEBPACK_IMPORTED_MODULE_1__["MDCMenuFoundation"].cssClasses.MENU_SELECTED_LIST_ITEM));
             },
             notifySelected: function (evtData) {
                 return _this.emit('onSelect', {
@@ -18207,7 +13275,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _rmwc_base__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @rmwc/base */ "./node_modules/@rmwc/base/next/index.js");
-/* harmony import */ var _material_notched_outline__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/notched-outline */ "./node_modules/@rmwc/notched-outline/node_modules/@material/notched-outline/index.js");
+/* harmony import */ var _material_notched_outline__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/notched-outline */ "./node_modules/@material/notched-outline/index.js");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -18237,8 +13305,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -18328,470 +13398,6 @@ var NotchedOutline = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./node_modules/@rmwc/notched-outline/node_modules/@material/floating-label/constants.js":
-/*!***********************************************************************************************!*\
-  !*** ./node_modules/@rmwc/notched-outline/node_modules/@material/floating-label/constants.js ***!
-  \***********************************************************************************************/
-/*! exports provided: cssClasses */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return cssClasses; });
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-var cssClasses = {
-    LABEL_FLOAT_ABOVE: 'mdc-floating-label--float-above',
-    LABEL_SHAKE: 'mdc-floating-label--shake',
-    ROOT: 'mdc-floating-label',
-};
-//# sourceMappingURL=constants.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@rmwc/notched-outline/node_modules/@material/floating-label/foundation.js":
-/*!************************************************************************************************!*\
-  !*** ./node_modules/@rmwc/notched-outline/node_modules/@material/floating-label/foundation.js ***!
-  \************************************************************************************************/
-/*! exports provided: MDCFloatingLabelFoundation, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCFloatingLabelFoundation", function() { return MDCFloatingLabelFoundation; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/foundation */ "./node_modules/@material/base/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@rmwc/notched-outline/node_modules/@material/floating-label/constants.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-var MDCFloatingLabelFoundation = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCFloatingLabelFoundation, _super);
-    function MDCFloatingLabelFoundation(adapter) {
-        var _this = _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCFloatingLabelFoundation.defaultAdapter, adapter)) || this;
-        _this.shakeAnimationEndHandler_ = function () { return _this.handleShakeAnimationEnd_(); };
-        return _this;
-    }
-    Object.defineProperty(MDCFloatingLabelFoundation, "cssClasses", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCFloatingLabelFoundation, "defaultAdapter", {
-        /**
-         * See {@link MDCFloatingLabelAdapter} for typing information on parameters and return types.
-         */
-        get: function () {
-            // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-            return {
-                addClass: function () { return undefined; },
-                removeClass: function () { return undefined; },
-                getWidth: function () { return 0; },
-                registerInteractionHandler: function () { return undefined; },
-                deregisterInteractionHandler: function () { return undefined; },
-            };
-            // tslint:enable:object-literal-sort-keys
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MDCFloatingLabelFoundation.prototype.init = function () {
-        this.adapter_.registerInteractionHandler('animationend', this.shakeAnimationEndHandler_);
-    };
-    MDCFloatingLabelFoundation.prototype.destroy = function () {
-        this.adapter_.deregisterInteractionHandler('animationend', this.shakeAnimationEndHandler_);
-    };
-    /**
-     * Returns the width of the label element.
-     */
-    MDCFloatingLabelFoundation.prototype.getWidth = function () {
-        return this.adapter_.getWidth();
-    };
-    /**
-     * Styles the label to produce a shake animation to indicate an error.
-     * @param shouldShake If true, adds the shake CSS class; otherwise, removes shake class.
-     */
-    MDCFloatingLabelFoundation.prototype.shake = function (shouldShake) {
-        var LABEL_SHAKE = MDCFloatingLabelFoundation.cssClasses.LABEL_SHAKE;
-        if (shouldShake) {
-            this.adapter_.addClass(LABEL_SHAKE);
-        }
-        else {
-            this.adapter_.removeClass(LABEL_SHAKE);
-        }
-    };
-    /**
-     * Styles the label to float or dock.
-     * @param shouldFloat If true, adds the float CSS class; otherwise, removes float and shake classes to dock the label.
-     */
-    MDCFloatingLabelFoundation.prototype.float = function (shouldFloat) {
-        var _a = MDCFloatingLabelFoundation.cssClasses, LABEL_FLOAT_ABOVE = _a.LABEL_FLOAT_ABOVE, LABEL_SHAKE = _a.LABEL_SHAKE;
-        if (shouldFloat) {
-            this.adapter_.addClass(LABEL_FLOAT_ABOVE);
-        }
-        else {
-            this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
-            this.adapter_.removeClass(LABEL_SHAKE);
-        }
-    };
-    MDCFloatingLabelFoundation.prototype.handleShakeAnimationEnd_ = function () {
-        var LABEL_SHAKE = MDCFloatingLabelFoundation.cssClasses.LABEL_SHAKE;
-        this.adapter_.removeClass(LABEL_SHAKE);
-    };
-    return MDCFloatingLabelFoundation;
-}(_material_base_foundation__WEBPACK_IMPORTED_MODULE_1__["MDCFoundation"]));
-
-// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
-/* harmony default export */ __webpack_exports__["default"] = (MDCFloatingLabelFoundation);
-//# sourceMappingURL=foundation.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@rmwc/notched-outline/node_modules/@material/notched-outline/component.js":
-/*!************************************************************************************************!*\
-  !*** ./node_modules/@rmwc/notched-outline/node_modules/@material/notched-outline/component.js ***!
-  \************************************************************************************************/
-/*! exports provided: MDCNotchedOutline */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCNotchedOutline", function() { return MDCNotchedOutline; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
-/* harmony import */ var _material_floating_label_foundation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/floating-label/foundation */ "./node_modules/@rmwc/notched-outline/node_modules/@material/floating-label/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "./node_modules/@rmwc/notched-outline/node_modules/@material/notched-outline/constants.js");
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./foundation */ "./node_modules/@rmwc/notched-outline/node_modules/@material/notched-outline/foundation.js");
-/**
- * @license
- * Copyright 2017 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-
-
-var MDCNotchedOutline = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCNotchedOutline, _super);
-    function MDCNotchedOutline() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    MDCNotchedOutline.attachTo = function (root) {
-        return new MDCNotchedOutline(root);
-    };
-    MDCNotchedOutline.prototype.initialSyncWithDOM = function () {
-        this.notchElement_ = this.root_.querySelector(_constants__WEBPACK_IMPORTED_MODULE_3__["strings"].NOTCH_ELEMENT_SELECTOR);
-        var label = this.root_.querySelector('.' + _material_floating_label_foundation__WEBPACK_IMPORTED_MODULE_2__["MDCFloatingLabelFoundation"].cssClasses.ROOT);
-        if (label) {
-            label.style.transitionDuration = '0s';
-            this.root_.classList.add(_constants__WEBPACK_IMPORTED_MODULE_3__["cssClasses"].OUTLINE_UPGRADED);
-            requestAnimationFrame(function () {
-                label.style.transitionDuration = '';
-            });
-        }
-        else {
-            this.root_.classList.add(_constants__WEBPACK_IMPORTED_MODULE_3__["cssClasses"].NO_LABEL);
-        }
-    };
-    /**
-     * Updates classes and styles to open the notch to the specified width.
-     * @param notchWidth The notch width in the outline.
-     */
-    MDCNotchedOutline.prototype.notch = function (notchWidth) {
-        this.foundation_.notch(notchWidth);
-    };
-    /**
-     * Updates classes and styles to close the notch.
-     */
-    MDCNotchedOutline.prototype.closeNotch = function () {
-        this.foundation_.closeNotch();
-    };
-    MDCNotchedOutline.prototype.getDefaultFoundation = function () {
-        var _this = this;
-        // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-        // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-        // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-        var adapter = {
-            addClass: function (className) { return _this.root_.classList.add(className); },
-            removeClass: function (className) { return _this.root_.classList.remove(className); },
-            setNotchWidthProperty: function (width) { return _this.notchElement_.style.setProperty('width', width + 'px'); },
-            removeNotchWidthProperty: function () { return _this.notchElement_.style.removeProperty('width'); },
-        };
-        // tslint:enable:object-literal-sort-keys
-        return new _foundation__WEBPACK_IMPORTED_MODULE_4__["MDCNotchedOutlineFoundation"](adapter);
-    };
-    return MDCNotchedOutline;
-}(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
-
-//# sourceMappingURL=component.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@rmwc/notched-outline/node_modules/@material/notched-outline/constants.js":
-/*!************************************************************************************************!*\
-  !*** ./node_modules/@rmwc/notched-outline/node_modules/@material/notched-outline/constants.js ***!
-  \************************************************************************************************/
-/*! exports provided: cssClasses, numbers, strings */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return cssClasses; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "numbers", function() { return numbers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "strings", function() { return strings; });
-/**
- * @license
- * Copyright 2018 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-var strings = {
-    NOTCH_ELEMENT_SELECTOR: '.mdc-notched-outline__notch',
-};
-var numbers = {
-    // This should stay in sync with $mdc-notched-outline-padding * 2.
-    NOTCH_ELEMENT_PADDING: 8,
-};
-var cssClasses = {
-    NO_LABEL: 'mdc-notched-outline--no-label',
-    OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
-    OUTLINE_UPGRADED: 'mdc-notched-outline--upgraded',
-};
-
-//# sourceMappingURL=constants.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@rmwc/notched-outline/node_modules/@material/notched-outline/foundation.js":
-/*!*************************************************************************************************!*\
-  !*** ./node_modules/@rmwc/notched-outline/node_modules/@material/notched-outline/foundation.js ***!
-  \*************************************************************************************************/
-/*! exports provided: MDCNotchedOutlineFoundation, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCNotchedOutlineFoundation", function() { return MDCNotchedOutlineFoundation; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/foundation */ "./node_modules/@material/base/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@rmwc/notched-outline/node_modules/@material/notched-outline/constants.js");
-/**
- * @license
- * Copyright 2017 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-var MDCNotchedOutlineFoundation = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCNotchedOutlineFoundation, _super);
-    function MDCNotchedOutlineFoundation(adapter) {
-        return _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCNotchedOutlineFoundation.defaultAdapter, adapter)) || this;
-    }
-    Object.defineProperty(MDCNotchedOutlineFoundation, "strings", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["strings"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCNotchedOutlineFoundation, "cssClasses", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCNotchedOutlineFoundation, "numbers", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCNotchedOutlineFoundation, "defaultAdapter", {
-        /**
-         * See {@link MDCNotchedOutlineAdapter} for typing information on parameters and return types.
-         */
-        get: function () {
-            // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-            return {
-                addClass: function () { return undefined; },
-                removeClass: function () { return undefined; },
-                setNotchWidthProperty: function () { return undefined; },
-                removeNotchWidthProperty: function () { return undefined; },
-            };
-            // tslint:enable:object-literal-sort-keys
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Adds the outline notched selector and updates the notch width calculated based off of notchWidth.
-     */
-    MDCNotchedOutlineFoundation.prototype.notch = function (notchWidth) {
-        var OUTLINE_NOTCHED = MDCNotchedOutlineFoundation.cssClasses.OUTLINE_NOTCHED;
-        if (notchWidth > 0) {
-            notchWidth += _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"].NOTCH_ELEMENT_PADDING; // Add padding from left/right.
-        }
-        this.adapter_.setNotchWidthProperty(notchWidth);
-        this.adapter_.addClass(OUTLINE_NOTCHED);
-    };
-    /**
-     * Removes notched outline selector to close the notch in the outline.
-     */
-    MDCNotchedOutlineFoundation.prototype.closeNotch = function () {
-        var OUTLINE_NOTCHED = MDCNotchedOutlineFoundation.cssClasses.OUTLINE_NOTCHED;
-        this.adapter_.removeClass(OUTLINE_NOTCHED);
-        this.adapter_.removeNotchWidthProperty();
-    };
-    return MDCNotchedOutlineFoundation;
-}(_material_base_foundation__WEBPACK_IMPORTED_MODULE_1__["MDCFoundation"]));
-
-// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
-/* harmony default export */ __webpack_exports__["default"] = (MDCNotchedOutlineFoundation);
-//# sourceMappingURL=foundation.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@rmwc/notched-outline/node_modules/@material/notched-outline/index.js":
-/*!********************************************************************************************!*\
-  !*** ./node_modules/@rmwc/notched-outline/node_modules/@material/notched-outline/index.js ***!
-  \********************************************************************************************/
-/*! exports provided: MDCNotchedOutline, MDCNotchedOutlineFoundation */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./component */ "./node_modules/@rmwc/notched-outline/node_modules/@material/notched-outline/component.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCNotchedOutline", function() { return _component__WEBPACK_IMPORTED_MODULE_0__["MDCNotchedOutline"]; });
-
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./foundation */ "./node_modules/@rmwc/notched-outline/node_modules/@material/notched-outline/foundation.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCNotchedOutlineFoundation", function() { return _foundation__WEBPACK_IMPORTED_MODULE_1__["MDCNotchedOutlineFoundation"]; });
-
-/**
- * @license
- * Copyright 2019 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-
 /***/ "./node_modules/@rmwc/provider/next/index.js":
 /*!***************************************************!*\
   !*** ./node_modules/@rmwc/provider/next/index.js ***!
@@ -18823,8 +13429,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -18832,6 +13440,14 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
 // Default provider options
 var providerDefaults = {
     ripple: true,
+    tooltip: {
+        align: 'top',
+        showArrow: false,
+        activateOn: ['hover', 'focus'],
+        enterDelay: 0,
+        leaveDelay: 0
+    },
+    typography: {},
     icon: {
         icon: '',
         basename: 'material-icons',
@@ -18861,6 +13477,7 @@ var RMWCProvider = function (_a) {
     value.icon = iconOptions;
     return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](ProviderContext.Provider, { value: __assign({}, value, rest) }, children));
 };
+RMWCProvider.displayName = 'RMWCProvider';
 
 
 /***/ }),
@@ -18881,7 +13498,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _material_ripple__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/ripple */ "./node_modules/@rmwc/ripple/node_modules/@material/ripple/index.js");
+/* harmony import */ var _material_ripple__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/ripple */ "./node_modules/@material/ripple/index.js");
 /* harmony import */ var _rmwc_base__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @rmwc/base */ "./node_modules/@rmwc/base/next/index.js");
 /* harmony import */ var _rmwc_provider__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @rmwc/provider */ "./node_modules/@rmwc/provider/next/index.js");
 var __extends = (undefined && undefined.__extends) || (function () {
@@ -18913,8 +13530,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -18961,10 +13580,10 @@ var Ripple = /** @class */ (function (_super) {
             registerInteractionHandler: function (evtType, handler) { return _this.root.addEventListener(evtType, handler); },
             deregisterInteractionHandler: function (evtType, handler) { return _this.root.removeEventListener(evtType, handler); },
             registerDocumentInteractionHandler: function (evtType, handler) {
-                return document.documentElement.addEventListener(evtType, handler, _material_ripple__WEBPACK_IMPORTED_MODULE_2__["util"].applyPassive());
+                return document.documentElement.addEventListener(evtType, handler, Object(_rmwc_base__WEBPACK_IMPORTED_MODULE_3__["applyPassive"])());
             },
             deregisterDocumentInteractionHandler: function (evtType, handler) {
-                return document.documentElement.removeEventListener(evtType, handler, _material_ripple__WEBPACK_IMPORTED_MODULE_2__["util"].applyPassive());
+                return document.documentElement.removeEventListener(evtType, handler, Object(_rmwc_base__WEBPACK_IMPORTED_MODULE_3__["applyPassive"])());
             },
             registerResizeHandler: function (handler) {
                 return window.addEventListener('resize', handler);
@@ -19107,847 +13726,6 @@ var withRipple = function (_a) {
 
 /***/ }),
 
-/***/ "./node_modules/@rmwc/ripple/node_modules/@material/ripple/component.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/@rmwc/ripple/node_modules/@material/ripple/component.js ***!
-  \******************************************************************************/
-/*! exports provided: MDCRipple */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCRipple", function() { return MDCRipple; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/component */ "./node_modules/@material/base/component.js");
-/* harmony import */ var _material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/dom/ponyfill */ "./node_modules/@material/dom/ponyfill.js");
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./foundation */ "./node_modules/@rmwc/ripple/node_modules/@material/ripple/foundation.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./util */ "./node_modules/@rmwc/ripple/node_modules/@material/ripple/util.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-
-
-var MDCRipple = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCRipple, _super);
-    function MDCRipple() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.disabled = false;
-        return _this;
-    }
-    MDCRipple.attachTo = function (root, opts) {
-        if (opts === void 0) { opts = { isUnbounded: undefined }; }
-        var ripple = new MDCRipple(root);
-        // Only override unbounded behavior if option is explicitly specified
-        if (opts.isUnbounded !== undefined) {
-            ripple.unbounded = opts.isUnbounded;
-        }
-        return ripple;
-    };
-    MDCRipple.createAdapter = function (instance) {
-        return {
-            addClass: function (className) { return instance.root_.classList.add(className); },
-            browserSupportsCssVars: function () { return _util__WEBPACK_IMPORTED_MODULE_4__["supportsCssVariables"](window); },
-            computeBoundingRect: function () { return instance.root_.getBoundingClientRect(); },
-            containsEventTarget: function (target) { return instance.root_.contains(target); },
-            deregisterDocumentInteractionHandler: function (evtType, handler) {
-                return document.documentElement.removeEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            deregisterInteractionHandler: function (evtType, handler) {
-                return instance.root_.removeEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            deregisterResizeHandler: function (handler) { return window.removeEventListener('resize', handler); },
-            getWindowPageOffset: function () { return ({ x: window.pageXOffset, y: window.pageYOffset }); },
-            isSurfaceActive: function () { return Object(_material_dom_ponyfill__WEBPACK_IMPORTED_MODULE_2__["matches"])(instance.root_, ':active'); },
-            isSurfaceDisabled: function () { return Boolean(instance.disabled); },
-            isUnbounded: function () { return Boolean(instance.unbounded); },
-            registerDocumentInteractionHandler: function (evtType, handler) {
-                return document.documentElement.addEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            registerInteractionHandler: function (evtType, handler) {
-                return instance.root_.addEventListener(evtType, handler, _util__WEBPACK_IMPORTED_MODULE_4__["applyPassive"]());
-            },
-            registerResizeHandler: function (handler) { return window.addEventListener('resize', handler); },
-            removeClass: function (className) { return instance.root_.classList.remove(className); },
-            updateCssVariable: function (varName, value) { return instance.root_.style.setProperty(varName, value); },
-        };
-    };
-    Object.defineProperty(MDCRipple.prototype, "unbounded", {
-        get: function () {
-            return Boolean(this.unbounded_);
-        },
-        set: function (unbounded) {
-            this.unbounded_ = Boolean(unbounded);
-            this.setUnbounded_();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MDCRipple.prototype.activate = function () {
-        this.foundation_.activate();
-    };
-    MDCRipple.prototype.deactivate = function () {
-        this.foundation_.deactivate();
-    };
-    MDCRipple.prototype.layout = function () {
-        this.foundation_.layout();
-    };
-    MDCRipple.prototype.getDefaultFoundation = function () {
-        return new _foundation__WEBPACK_IMPORTED_MODULE_3__["MDCRippleFoundation"](MDCRipple.createAdapter(this));
-    };
-    MDCRipple.prototype.initialSyncWithDOM = function () {
-        var root = this.root_;
-        this.unbounded = 'mdcRippleIsUnbounded' in root.dataset;
-    };
-    /**
-     * Closure Compiler throws an access control error when directly accessing a
-     * protected or private property inside a getter/setter, like unbounded above.
-     * By accessing the protected property inside a method, we solve that problem.
-     * That's why this function exists.
-     */
-    MDCRipple.prototype.setUnbounded_ = function () {
-        this.foundation_.setUnbounded(Boolean(this.unbounded_));
-    };
-    return MDCRipple;
-}(_material_base_component__WEBPACK_IMPORTED_MODULE_1__["MDCComponent"]));
-
-//# sourceMappingURL=component.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@rmwc/ripple/node_modules/@material/ripple/constants.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/@rmwc/ripple/node_modules/@material/ripple/constants.js ***!
-  \******************************************************************************/
-/*! exports provided: cssClasses, strings, numbers */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return cssClasses; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "strings", function() { return strings; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "numbers", function() { return numbers; });
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-var cssClasses = {
-    // Ripple is a special case where the "root" component is really a "mixin" of sorts,
-    // given that it's an 'upgrade' to an existing component. That being said it is the root
-    // CSS class that all other CSS classes derive from.
-    BG_FOCUSED: 'mdc-ripple-upgraded--background-focused',
-    FG_ACTIVATION: 'mdc-ripple-upgraded--foreground-activation',
-    FG_DEACTIVATION: 'mdc-ripple-upgraded--foreground-deactivation',
-    ROOT: 'mdc-ripple-upgraded',
-    UNBOUNDED: 'mdc-ripple-upgraded--unbounded',
-};
-var strings = {
-    VAR_FG_SCALE: '--mdc-ripple-fg-scale',
-    VAR_FG_SIZE: '--mdc-ripple-fg-size',
-    VAR_FG_TRANSLATE_END: '--mdc-ripple-fg-translate-end',
-    VAR_FG_TRANSLATE_START: '--mdc-ripple-fg-translate-start',
-    VAR_LEFT: '--mdc-ripple-left',
-    VAR_TOP: '--mdc-ripple-top',
-};
-var numbers = {
-    DEACTIVATION_TIMEOUT_MS: 225,
-    FG_DEACTIVATION_MS: 150,
-    INITIAL_ORIGIN_SCALE: 0.6,
-    PADDING: 10,
-    TAP_DELAY_MS: 300,
-};
-//# sourceMappingURL=constants.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@rmwc/ripple/node_modules/@material/ripple/foundation.js":
-/*!*******************************************************************************!*\
-  !*** ./node_modules/@rmwc/ripple/node_modules/@material/ripple/foundation.js ***!
-  \*******************************************************************************/
-/*! exports provided: MDCRippleFoundation, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MDCRippleFoundation", function() { return MDCRippleFoundation; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _material_base_foundation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material/base/foundation */ "./node_modules/@material/base/foundation.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@rmwc/ripple/node_modules/@material/ripple/constants.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./util */ "./node_modules/@rmwc/ripple/node_modules/@material/ripple/util.js");
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-
-// Activation events registered on the root element of each instance for activation
-var ACTIVATION_EVENT_TYPES = [
-    'touchstart', 'pointerdown', 'mousedown', 'keydown',
-];
-// Deactivation events registered on documentElement when a pointer-related down event occurs
-var POINTER_DEACTIVATION_EVENT_TYPES = [
-    'touchend', 'pointerup', 'mouseup', 'contextmenu',
-];
-// simultaneous nested activations
-var activatedTargets = [];
-var MDCRippleFoundation = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](MDCRippleFoundation, _super);
-    function MDCRippleFoundation(adapter) {
-        var _this = _super.call(this, tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, MDCRippleFoundation.defaultAdapter, adapter)) || this;
-        _this.activationAnimationHasEnded_ = false;
-        _this.activationTimer_ = 0;
-        _this.fgDeactivationRemovalTimer_ = 0;
-        _this.fgScale_ = '0';
-        _this.frame_ = { width: 0, height: 0 };
-        _this.initialSize_ = 0;
-        _this.layoutFrame_ = 0;
-        _this.maxRadius_ = 0;
-        _this.unboundedCoords_ = { left: 0, top: 0 };
-        _this.activationState_ = _this.defaultActivationState_();
-        _this.activationTimerCallback_ = function () {
-            _this.activationAnimationHasEnded_ = true;
-            _this.runDeactivationUXLogicIfReady_();
-        };
-        _this.activateHandler_ = function (e) { return _this.activate_(e); };
-        _this.deactivateHandler_ = function () { return _this.deactivate_(); };
-        _this.focusHandler_ = function () { return _this.handleFocus(); };
-        _this.blurHandler_ = function () { return _this.handleBlur(); };
-        _this.resizeHandler_ = function () { return _this.layout(); };
-        return _this;
-    }
-    Object.defineProperty(MDCRippleFoundation, "cssClasses", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCRippleFoundation, "strings", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["strings"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCRippleFoundation, "numbers", {
-        get: function () {
-            return _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MDCRippleFoundation, "defaultAdapter", {
-        get: function () {
-            return {
-                addClass: function () { return undefined; },
-                browserSupportsCssVars: function () { return true; },
-                computeBoundingRect: function () { return ({ top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0 }); },
-                containsEventTarget: function () { return true; },
-                deregisterDocumentInteractionHandler: function () { return undefined; },
-                deregisterInteractionHandler: function () { return undefined; },
-                deregisterResizeHandler: function () { return undefined; },
-                getWindowPageOffset: function () { return ({ x: 0, y: 0 }); },
-                isSurfaceActive: function () { return true; },
-                isSurfaceDisabled: function () { return true; },
-                isUnbounded: function () { return true; },
-                registerDocumentInteractionHandler: function () { return undefined; },
-                registerInteractionHandler: function () { return undefined; },
-                registerResizeHandler: function () { return undefined; },
-                removeClass: function () { return undefined; },
-                updateCssVariable: function () { return undefined; },
-            };
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MDCRippleFoundation.prototype.init = function () {
-        var _this = this;
-        var supportsPressRipple = this.supportsPressRipple_();
-        this.registerRootHandlers_(supportsPressRipple);
-        if (supportsPressRipple) {
-            var _a = MDCRippleFoundation.cssClasses, ROOT_1 = _a.ROOT, UNBOUNDED_1 = _a.UNBOUNDED;
-            requestAnimationFrame(function () {
-                _this.adapter_.addClass(ROOT_1);
-                if (_this.adapter_.isUnbounded()) {
-                    _this.adapter_.addClass(UNBOUNDED_1);
-                    // Unbounded ripples need layout logic applied immediately to set coordinates for both shade and ripple
-                    _this.layoutInternal_();
-                }
-            });
-        }
-    };
-    MDCRippleFoundation.prototype.destroy = function () {
-        var _this = this;
-        if (this.supportsPressRipple_()) {
-            if (this.activationTimer_) {
-                clearTimeout(this.activationTimer_);
-                this.activationTimer_ = 0;
-                this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_ACTIVATION);
-            }
-            if (this.fgDeactivationRemovalTimer_) {
-                clearTimeout(this.fgDeactivationRemovalTimer_);
-                this.fgDeactivationRemovalTimer_ = 0;
-                this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_DEACTIVATION);
-            }
-            var _a = MDCRippleFoundation.cssClasses, ROOT_2 = _a.ROOT, UNBOUNDED_2 = _a.UNBOUNDED;
-            requestAnimationFrame(function () {
-                _this.adapter_.removeClass(ROOT_2);
-                _this.adapter_.removeClass(UNBOUNDED_2);
-                _this.removeCssVars_();
-            });
-        }
-        this.deregisterRootHandlers_();
-        this.deregisterDeactivationHandlers_();
-    };
-    /**
-     * @param evt Optional event containing position information.
-     */
-    MDCRippleFoundation.prototype.activate = function (evt) {
-        this.activate_(evt);
-    };
-    MDCRippleFoundation.prototype.deactivate = function () {
-        this.deactivate_();
-    };
-    MDCRippleFoundation.prototype.layout = function () {
-        var _this = this;
-        if (this.layoutFrame_) {
-            cancelAnimationFrame(this.layoutFrame_);
-        }
-        this.layoutFrame_ = requestAnimationFrame(function () {
-            _this.layoutInternal_();
-            _this.layoutFrame_ = 0;
-        });
-    };
-    MDCRippleFoundation.prototype.setUnbounded = function (unbounded) {
-        var UNBOUNDED = MDCRippleFoundation.cssClasses.UNBOUNDED;
-        if (unbounded) {
-            this.adapter_.addClass(UNBOUNDED);
-        }
-        else {
-            this.adapter_.removeClass(UNBOUNDED);
-        }
-    };
-    MDCRippleFoundation.prototype.handleFocus = function () {
-        var _this = this;
-        requestAnimationFrame(function () {
-            return _this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
-        });
-    };
-    MDCRippleFoundation.prototype.handleBlur = function () {
-        var _this = this;
-        requestAnimationFrame(function () {
-            return _this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED);
-        });
-    };
-    /**
-     * We compute this property so that we are not querying information about the client
-     * until the point in time where the foundation requests it. This prevents scenarios where
-     * client-side feature-detection may happen too early, such as when components are rendered on the server
-     * and then initialized at mount time on the client.
-     */
-    MDCRippleFoundation.prototype.supportsPressRipple_ = function () {
-        return this.adapter_.browserSupportsCssVars();
-    };
-    MDCRippleFoundation.prototype.defaultActivationState_ = function () {
-        return {
-            activationEvent: undefined,
-            hasDeactivationUXRun: false,
-            isActivated: false,
-            isProgrammatic: false,
-            wasActivatedByPointer: false,
-            wasElementMadeActive: false,
-        };
-    };
-    /**
-     * supportsPressRipple Passed from init to save a redundant function call
-     */
-    MDCRippleFoundation.prototype.registerRootHandlers_ = function (supportsPressRipple) {
-        var _this = this;
-        if (supportsPressRipple) {
-            ACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-                _this.adapter_.registerInteractionHandler(evtType, _this.activateHandler_);
-            });
-            if (this.adapter_.isUnbounded()) {
-                this.adapter_.registerResizeHandler(this.resizeHandler_);
-            }
-        }
-        this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
-        this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
-    };
-    MDCRippleFoundation.prototype.registerDeactivationHandlers_ = function (evt) {
-        var _this = this;
-        if (evt.type === 'keydown') {
-            this.adapter_.registerInteractionHandler('keyup', this.deactivateHandler_);
-        }
-        else {
-            POINTER_DEACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-                _this.adapter_.registerDocumentInteractionHandler(evtType, _this.deactivateHandler_);
-            });
-        }
-    };
-    MDCRippleFoundation.prototype.deregisterRootHandlers_ = function () {
-        var _this = this;
-        ACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-            _this.adapter_.deregisterInteractionHandler(evtType, _this.activateHandler_);
-        });
-        this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
-        this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
-        if (this.adapter_.isUnbounded()) {
-            this.adapter_.deregisterResizeHandler(this.resizeHandler_);
-        }
-    };
-    MDCRippleFoundation.prototype.deregisterDeactivationHandlers_ = function () {
-        var _this = this;
-        this.adapter_.deregisterInteractionHandler('keyup', this.deactivateHandler_);
-        POINTER_DEACTIVATION_EVENT_TYPES.forEach(function (evtType) {
-            _this.adapter_.deregisterDocumentInteractionHandler(evtType, _this.deactivateHandler_);
-        });
-    };
-    MDCRippleFoundation.prototype.removeCssVars_ = function () {
-        var _this = this;
-        var rippleStrings = MDCRippleFoundation.strings;
-        var keys = Object.keys(rippleStrings);
-        keys.forEach(function (key) {
-            if (key.indexOf('VAR_') === 0) {
-                _this.adapter_.updateCssVariable(rippleStrings[key], null);
-            }
-        });
-    };
-    MDCRippleFoundation.prototype.activate_ = function (evt) {
-        var _this = this;
-        if (this.adapter_.isSurfaceDisabled()) {
-            return;
-        }
-        var activationState = this.activationState_;
-        if (activationState.isActivated) {
-            return;
-        }
-        // Avoid reacting to follow-on events fired by touch device after an already-processed user interaction
-        var previousActivationEvent = this.previousActivationEvent_;
-        var isSameInteraction = previousActivationEvent && evt !== undefined && previousActivationEvent.type !== evt.type;
-        if (isSameInteraction) {
-            return;
-        }
-        activationState.isActivated = true;
-        activationState.isProgrammatic = evt === undefined;
-        activationState.activationEvent = evt;
-        activationState.wasActivatedByPointer = activationState.isProgrammatic ? false : evt !== undefined && (evt.type === 'mousedown' || evt.type === 'touchstart' || evt.type === 'pointerdown');
-        var hasActivatedChild = evt !== undefined && activatedTargets.length > 0 && activatedTargets.some(function (target) { return _this.adapter_.containsEventTarget(target); });
-        if (hasActivatedChild) {
-            // Immediately reset activation state, while preserving logic that prevents touch follow-on events
-            this.resetActivationState_();
-            return;
-        }
-        if (evt !== undefined) {
-            activatedTargets.push(evt.target);
-            this.registerDeactivationHandlers_(evt);
-        }
-        activationState.wasElementMadeActive = this.checkElementMadeActive_(evt);
-        if (activationState.wasElementMadeActive) {
-            this.animateActivation_();
-        }
-        requestAnimationFrame(function () {
-            // Reset array on next frame after the current event has had a chance to bubble to prevent ancestor ripples
-            activatedTargets = [];
-            if (!activationState.wasElementMadeActive
-                && evt !== undefined
-                && (evt.key === ' ' || evt.keyCode === 32)) {
-                // If space was pressed, try again within an rAF call to detect :active, because different UAs report
-                // active states inconsistently when they're called within event handling code:
-                // - https://bugs.chromium.org/p/chromium/issues/detail?id=635971
-                // - https://bugzilla.mozilla.org/show_bug.cgi?id=1293741
-                // We try first outside rAF to support Edge, which does not exhibit this problem, but will crash if a CSS
-                // variable is set within a rAF callback for a submit button interaction (#2241).
-                activationState.wasElementMadeActive = _this.checkElementMadeActive_(evt);
-                if (activationState.wasElementMadeActive) {
-                    _this.animateActivation_();
-                }
-            }
-            if (!activationState.wasElementMadeActive) {
-                // Reset activation state immediately if element was not made active.
-                _this.activationState_ = _this.defaultActivationState_();
-            }
-        });
-    };
-    MDCRippleFoundation.prototype.checkElementMadeActive_ = function (evt) {
-        return (evt !== undefined && evt.type === 'keydown') ? this.adapter_.isSurfaceActive() : true;
-    };
-    MDCRippleFoundation.prototype.animateActivation_ = function () {
-        var _this = this;
-        var _a = MDCRippleFoundation.strings, VAR_FG_TRANSLATE_START = _a.VAR_FG_TRANSLATE_START, VAR_FG_TRANSLATE_END = _a.VAR_FG_TRANSLATE_END;
-        var _b = MDCRippleFoundation.cssClasses, FG_DEACTIVATION = _b.FG_DEACTIVATION, FG_ACTIVATION = _b.FG_ACTIVATION;
-        var DEACTIVATION_TIMEOUT_MS = MDCRippleFoundation.numbers.DEACTIVATION_TIMEOUT_MS;
-        this.layoutInternal_();
-        var translateStart = '';
-        var translateEnd = '';
-        if (!this.adapter_.isUnbounded()) {
-            var _c = this.getFgTranslationCoordinates_(), startPoint = _c.startPoint, endPoint = _c.endPoint;
-            translateStart = startPoint.x + "px, " + startPoint.y + "px";
-            translateEnd = endPoint.x + "px, " + endPoint.y + "px";
-        }
-        this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_START, translateStart);
-        this.adapter_.updateCssVariable(VAR_FG_TRANSLATE_END, translateEnd);
-        // Cancel any ongoing activation/deactivation animations
-        clearTimeout(this.activationTimer_);
-        clearTimeout(this.fgDeactivationRemovalTimer_);
-        this.rmBoundedActivationClasses_();
-        this.adapter_.removeClass(FG_DEACTIVATION);
-        // Force layout in order to re-trigger the animation.
-        this.adapter_.computeBoundingRect();
-        this.adapter_.addClass(FG_ACTIVATION);
-        this.activationTimer_ = setTimeout(function () { return _this.activationTimerCallback_(); }, DEACTIVATION_TIMEOUT_MS);
-    };
-    MDCRippleFoundation.prototype.getFgTranslationCoordinates_ = function () {
-        var _a = this.activationState_, activationEvent = _a.activationEvent, wasActivatedByPointer = _a.wasActivatedByPointer;
-        var startPoint;
-        if (wasActivatedByPointer) {
-            startPoint = Object(_util__WEBPACK_IMPORTED_MODULE_3__["getNormalizedEventCoords"])(activationEvent, this.adapter_.getWindowPageOffset(), this.adapter_.computeBoundingRect());
-        }
-        else {
-            startPoint = {
-                x: this.frame_.width / 2,
-                y: this.frame_.height / 2,
-            };
-        }
-        // Center the element around the start point.
-        startPoint = {
-            x: startPoint.x - (this.initialSize_ / 2),
-            y: startPoint.y - (this.initialSize_ / 2),
-        };
-        var endPoint = {
-            x: (this.frame_.width / 2) - (this.initialSize_ / 2),
-            y: (this.frame_.height / 2) - (this.initialSize_ / 2),
-        };
-        return { startPoint: startPoint, endPoint: endPoint };
-    };
-    MDCRippleFoundation.prototype.runDeactivationUXLogicIfReady_ = function () {
-        var _this = this;
-        // This method is called both when a pointing device is released, and when the activation animation ends.
-        // The deactivation animation should only run after both of those occur.
-        var FG_DEACTIVATION = MDCRippleFoundation.cssClasses.FG_DEACTIVATION;
-        var _a = this.activationState_, hasDeactivationUXRun = _a.hasDeactivationUXRun, isActivated = _a.isActivated;
-        var activationHasEnded = hasDeactivationUXRun || !isActivated;
-        if (activationHasEnded && this.activationAnimationHasEnded_) {
-            this.rmBoundedActivationClasses_();
-            this.adapter_.addClass(FG_DEACTIVATION);
-            this.fgDeactivationRemovalTimer_ = setTimeout(function () {
-                _this.adapter_.removeClass(FG_DEACTIVATION);
-            }, _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"].FG_DEACTIVATION_MS);
-        }
-    };
-    MDCRippleFoundation.prototype.rmBoundedActivationClasses_ = function () {
-        var FG_ACTIVATION = MDCRippleFoundation.cssClasses.FG_ACTIVATION;
-        this.adapter_.removeClass(FG_ACTIVATION);
-        this.activationAnimationHasEnded_ = false;
-        this.adapter_.computeBoundingRect();
-    };
-    MDCRippleFoundation.prototype.resetActivationState_ = function () {
-        var _this = this;
-        this.previousActivationEvent_ = this.activationState_.activationEvent;
-        this.activationState_ = this.defaultActivationState_();
-        // Touch devices may fire additional events for the same interaction within a short time.
-        // Store the previous event until it's safe to assume that subsequent events are for new interactions.
-        setTimeout(function () { return _this.previousActivationEvent_ = undefined; }, MDCRippleFoundation.numbers.TAP_DELAY_MS);
-    };
-    MDCRippleFoundation.prototype.deactivate_ = function () {
-        var _this = this;
-        var activationState = this.activationState_;
-        // This can happen in scenarios such as when you have a keyup event that blurs the element.
-        if (!activationState.isActivated) {
-            return;
-        }
-        var state = tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, activationState);
-        if (activationState.isProgrammatic) {
-            requestAnimationFrame(function () { return _this.animateDeactivation_(state); });
-            this.resetActivationState_();
-        }
-        else {
-            this.deregisterDeactivationHandlers_();
-            requestAnimationFrame(function () {
-                _this.activationState_.hasDeactivationUXRun = true;
-                _this.animateDeactivation_(state);
-                _this.resetActivationState_();
-            });
-        }
-    };
-    MDCRippleFoundation.prototype.animateDeactivation_ = function (_a) {
-        var wasActivatedByPointer = _a.wasActivatedByPointer, wasElementMadeActive = _a.wasElementMadeActive;
-        if (wasActivatedByPointer || wasElementMadeActive) {
-            this.runDeactivationUXLogicIfReady_();
-        }
-    };
-    MDCRippleFoundation.prototype.layoutInternal_ = function () {
-        var _this = this;
-        this.frame_ = this.adapter_.computeBoundingRect();
-        var maxDim = Math.max(this.frame_.height, this.frame_.width);
-        // Surface diameter is treated differently for unbounded vs. bounded ripples.
-        // Unbounded ripple diameter is calculated smaller since the surface is expected to already be padded appropriately
-        // to extend the hitbox, and the ripple is expected to meet the edges of the padded hitbox (which is typically
-        // square). Bounded ripples, on the other hand, are fully expected to expand beyond the surface's longest diameter
-        // (calculated based on the diagonal plus a constant padding), and are clipped at the surface's border via
-        // `overflow: hidden`.
-        var getBoundedRadius = function () {
-            var hypotenuse = Math.sqrt(Math.pow(_this.frame_.width, 2) + Math.pow(_this.frame_.height, 2));
-            return hypotenuse + MDCRippleFoundation.numbers.PADDING;
-        };
-        this.maxRadius_ = this.adapter_.isUnbounded() ? maxDim : getBoundedRadius();
-        // Ripple is sized as a fraction of the largest dimension of the surface, then scales up using a CSS scale transform
-        this.initialSize_ = Math.floor(maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE);
-        this.fgScale_ = "" + this.maxRadius_ / this.initialSize_;
-        this.updateLayoutCssVars_();
-    };
-    MDCRippleFoundation.prototype.updateLayoutCssVars_ = function () {
-        var _a = MDCRippleFoundation.strings, VAR_FG_SIZE = _a.VAR_FG_SIZE, VAR_LEFT = _a.VAR_LEFT, VAR_TOP = _a.VAR_TOP, VAR_FG_SCALE = _a.VAR_FG_SCALE;
-        this.adapter_.updateCssVariable(VAR_FG_SIZE, this.initialSize_ + "px");
-        this.adapter_.updateCssVariable(VAR_FG_SCALE, this.fgScale_);
-        if (this.adapter_.isUnbounded()) {
-            this.unboundedCoords_ = {
-                left: Math.round((this.frame_.width / 2) - (this.initialSize_ / 2)),
-                top: Math.round((this.frame_.height / 2) - (this.initialSize_ / 2)),
-            };
-            this.adapter_.updateCssVariable(VAR_LEFT, this.unboundedCoords_.left + "px");
-            this.adapter_.updateCssVariable(VAR_TOP, this.unboundedCoords_.top + "px");
-        }
-    };
-    return MDCRippleFoundation;
-}(_material_base_foundation__WEBPACK_IMPORTED_MODULE_1__["MDCFoundation"]));
-
-// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
-/* harmony default export */ __webpack_exports__["default"] = (MDCRippleFoundation);
-//# sourceMappingURL=foundation.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@rmwc/ripple/node_modules/@material/ripple/index.js":
-/*!**************************************************************************!*\
-  !*** ./node_modules/@rmwc/ripple/node_modules/@material/ripple/index.js ***!
-  \**************************************************************************/
-/*! exports provided: util, MDCRipple, cssClasses, strings, numbers, MDCRippleFoundation */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./node_modules/@rmwc/ripple/node_modules/@material/ripple/util.js");
-/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "util", function() { return _util__WEBPACK_IMPORTED_MODULE_0__; });
-/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./component */ "./node_modules/@rmwc/ripple/node_modules/@material/ripple/component.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCRipple", function() { return _component__WEBPACK_IMPORTED_MODULE_1__["MDCRipple"]; });
-
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./node_modules/@rmwc/ripple/node_modules/@material/ripple/constants.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "cssClasses", function() { return _constants__WEBPACK_IMPORTED_MODULE_2__["cssClasses"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "strings", function() { return _constants__WEBPACK_IMPORTED_MODULE_2__["strings"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "numbers", function() { return _constants__WEBPACK_IMPORTED_MODULE_2__["numbers"]; });
-
-/* harmony import */ var _foundation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./foundation */ "./node_modules/@rmwc/ripple/node_modules/@material/ripple/foundation.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MDCRippleFoundation", function() { return _foundation__WEBPACK_IMPORTED_MODULE_3__["MDCRippleFoundation"]; });
-
-/**
- * @license
- * Copyright 2019 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-
-
-
-
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@rmwc/ripple/node_modules/@material/ripple/util.js":
-/*!*************************************************************************!*\
-  !*** ./node_modules/@rmwc/ripple/node_modules/@material/ripple/util.js ***!
-  \*************************************************************************/
-/*! exports provided: supportsCssVariables, applyPassive, getNormalizedEventCoords */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "supportsCssVariables", function() { return supportsCssVariables; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyPassive", function() { return applyPassive; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNormalizedEventCoords", function() { return getNormalizedEventCoords; });
-/**
- * Stores result from supportsCssVariables to avoid redundant processing to
- * detect CSS custom variable support.
- */
-var supportsCssVariables_;
-/**
- * Stores result from applyPassive to avoid redundant processing to detect
- * passive event listener support.
- */
-var supportsPassive_;
-function detectEdgePseudoVarBug(windowObj) {
-    // Detect versions of Edge with buggy var() support
-    // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
-    var document = windowObj.document;
-    var node = document.createElement('div');
-    node.className = 'mdc-ripple-surface--test-edge-var-bug';
-    document.body.appendChild(node);
-    // The bug exists if ::before style ends up propagating to the parent element.
-    // Additionally, getComputedStyle returns null in iframes with display: "none" in Firefox,
-    // but Firefox is known to support CSS custom properties correctly.
-    // See: https://bugzilla.mozilla.org/show_bug.cgi?id=548397
-    var computedStyle = windowObj.getComputedStyle(node);
-    var hasPseudoVarBug = computedStyle !== null && computedStyle.borderTopStyle === 'solid';
-    if (node.parentNode) {
-        node.parentNode.removeChild(node);
-    }
-    return hasPseudoVarBug;
-}
-function supportsCssVariables(windowObj, forceRefresh) {
-    if (forceRefresh === void 0) { forceRefresh = false; }
-    var CSS = windowObj.CSS;
-    var supportsCssVars = supportsCssVariables_;
-    if (typeof supportsCssVariables_ === 'boolean' && !forceRefresh) {
-        return supportsCssVariables_;
-    }
-    var supportsFunctionPresent = CSS && typeof CSS.supports === 'function';
-    if (!supportsFunctionPresent) {
-        return false;
-    }
-    var explicitlySupportsCssVars = CSS.supports('--css-vars', 'yes');
-    // See: https://bugs.webkit.org/show_bug.cgi?id=154669
-    // See: README section on Safari
-    var weAreFeatureDetectingSafari10plus = (CSS.supports('(--css-vars: yes)') &&
-        CSS.supports('color', '#00000000'));
-    if (explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus) {
-        supportsCssVars = !detectEdgePseudoVarBug(windowObj);
-    }
-    else {
-        supportsCssVars = false;
-    }
-    if (!forceRefresh) {
-        supportsCssVariables_ = supportsCssVars;
-    }
-    return supportsCssVars;
-}
-/**
- * Determine whether the current browser supports passive event listeners, and
- * if so, use them.
- */
-function applyPassive(globalObj, forceRefresh) {
-    if (globalObj === void 0) { globalObj = window; }
-    if (forceRefresh === void 0) { forceRefresh = false; }
-    if (supportsPassive_ === undefined || forceRefresh) {
-        var isSupported_1 = false;
-        try {
-            globalObj.document.addEventListener('test', function () { return undefined; }, {
-                get passive() {
-                    isSupported_1 = true;
-                    return isSupported_1;
-                },
-            });
-        }
-        catch (e) {
-        } // tslint:disable-line:no-empty cannot throw error due to tests. tslint also disables console.log.
-        supportsPassive_ = isSupported_1;
-    }
-    return supportsPassive_ ? { passive: true } : false;
-}
-function getNormalizedEventCoords(evt, pageOffset, clientRect) {
-    if (!evt) {
-        return { x: 0, y: 0 };
-    }
-    var x = pageOffset.x, y = pageOffset.y;
-    var documentX = x + clientRect.left;
-    var documentY = y + clientRect.top;
-    var normalizedX;
-    var normalizedY;
-    // Determine touch point relative to the ripple container.
-    if (evt.type === 'touchstart') {
-        var touchEvent = evt;
-        normalizedX = touchEvent.changedTouches[0].pageX - documentX;
-        normalizedY = touchEvent.changedTouches[0].pageY - documentY;
-    }
-    else {
-        var mouseEvent = evt;
-        normalizedX = mouseEvent.pageX - documentX;
-        normalizedY = mouseEvent.pageY - documentY;
-    }
-    return { x: normalizedX, y: normalizedY };
-}
-//# sourceMappingURL=util.js.map
-
-/***/ }),
-
 /***/ "./node_modules/@rmwc/select/next/index.js":
 /*!*************************************************!*\
   !*** ./node_modules/@rmwc/select/next/index.js ***!
@@ -20001,8 +13779,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -20232,8 +14012,7 @@ var SelectBase = /** @class */ (function (_super) {
         return {
             getValue: function () {
                 var value = '';
-                var listItem = _this.menuElement &&
-                    _this.menuElement.querySelector('.mdc-list-item--activated');
+                var listItem = _this.menu && _this.menu.items[_this.state.selectedIndex];
                 if (listItem &&
                     listItem.hasAttribute(_material_select__WEBPACK_IMPORTED_MODULE_2__["MDCSelectFoundation"].strings.ENHANCED_VALUE_ATTR)) {
                     value = listItem.getAttribute(_material_select__WEBPACK_IMPORTED_MODULE_2__["MDCSelectFoundation"].strings.ENHANCED_VALUE_ATTR);
@@ -20247,9 +14026,13 @@ var SelectBase = /** @class */ (function (_super) {
                         ? _this.menu.items.indexOf(element)
                         : -1;
                     var selectedItem = _this.menu && _this.menu.items[selectedIndex];
-                    var selectedTextContent_1 = selectedItem && selectedItem.textContent
-                        ? selectedItem.textContent.trim()
-                        : '';
+                    var selectedTextContent_1 = '';
+                    if (!!selectedItem) {
+                        selectedTextContent_1 =
+                            selectedItem.dataset['label'] ||
+                                ((selectedItem.textContent && selectedItem.textContent.trim()) ||
+                                    '');
+                    }
                     _this.setState({
                         selectedIndex: selectedIndex,
                         selectedTextContent: selectedTextContent_1
@@ -20611,8 +14394,10 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 
@@ -20831,7 +14616,12 @@ var TextField = /** @class */ (function (_super) {
         }
         var tagProps = __assign({}, this.input.props(rest), { disabled: disabled, ref: function (ref) {
                 _this.input.setRef(ref);
-                inputRef && inputRef(ref);
+                if (typeof inputRef === 'function') {
+                    inputRef && inputRef(ref);
+                }
+                else if (typeof inputRef === 'object') {
+                    inputRef.current = ref;
+                }
             }, id: rest.id || this.generatedId });
         var renderedTag = textarea ? (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](TextFieldTextarea, __assign({}, tagProps))) : (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](TextFieldInput, __assign({}, tagProps)));
         var renderedLabel = label ? (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_rmwc_floating_label__WEBPACK_IMPORTED_MODULE_5__["FloatingLabel"], __assign({}, this.label.props({}), { ref: this.label.setRef, htmlFor: tagProps.id }), label)) : null;
@@ -21881,9 +15671,15 @@ function focusTrap(element, userOptions) {
       deactivate({
         returnFocus: !tabbable.isFocusable(e.target)
       });
-    } else {
-      e.preventDefault();
+      return;
     }
+    // This is needed for mobile devices.
+    // (If we'll only let `click` events through,
+    // then on mobile they will be blocked anyways if `touchstart` is blocked.)
+    if (config.allowOutsideClick && config.allowOutsideClick(e)) {
+      return;
+    }
+    e.preventDefault();
   }
 
   // In case focus escapes the trap for some strange reason, pull it back in.
@@ -21929,6 +15725,9 @@ function focusTrap(element, userOptions) {
   function checkClick(e) {
     if (config.clickOutsideDeactivates) return;
     if (container.contains(e.target)) return;
+    if (config.allowOutsideClick && config.allowOutsideClick(e)) {
+      return;
+    }
     e.preventDefault();
     e.stopImmediatePropagation();
   }
@@ -55966,6 +49765,8 @@ var SimpleDialog = function SimpleDialog(_ref) {
   var handleSecondary = function handleSecondary() {
     return onClose(secondaryLabel);
   };
+  /* eslint-disable no-confusing-arrow */
+
 
   var handleCloseFromHeader = function handleCloseFromHeader() {
     return onCloseFromHeader ? onCloseFromHeader() : onClose();
@@ -56054,6 +49855,39 @@ var InfoDialog = function InfoDialog(props) {
   SimpleSuccessDialog: SimpleSuccessDialog,
   SimpleInfoDialog: SimpleInfoDialog
 });
+
+/***/ }),
+
+/***/ "./src/components/icon-button/Icon-button.tsx":
+/*!****************************************************!*\
+  !*** ./src/components/icon-button/Icon-button.tsx ***!
+  \****************************************************/
+/*! exports provided: IconButton, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IconButton", function() { return IconButton; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _rmwc_icon_button__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @rmwc/icon-button */ "./node_modules/@rmwc/icon-button/next/index.js");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+/**
+ * Icon button properties.
+ */
+
+/**
+ * Icon button
+ */
+var IconButton = function IconButton(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_rmwc_icon_button__WEBPACK_IMPORTED_MODULE_1__["IconButton"], _extends({
+    ripple: false
+  }, props), props.children);
+};
+/* harmony default export */ __webpack_exports__["default"] = (IconButton);
 
 /***/ }),
 
@@ -56250,28 +50084,32 @@ var Toggler = function Toggler(props) {
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/*! exports provided: Select, Toggler, MultiSelect, Dialog, Button */
+/*! exports provided: Button, Dialog, IconButton, MultiSelect, Select, Toggler */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_select_Select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/select/Select */ "./src/components/select/Select.tsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Select", function() { return _components_select_Select__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+/* harmony import */ var _components_button_Button__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/button/Button */ "./src/components/button/Button.tsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Button", function() { return _components_button_Button__WEBPACK_IMPORTED_MODULE_0__["default"]; });
 
-/* harmony import */ var _components_toggler_Toggler__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/toggler/Toggler */ "./src/components/toggler/Toggler.tsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Toggler", function() { return _components_toggler_Toggler__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+/* harmony import */ var _components_dialog_Dialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/dialog/Dialog */ "./src/components/dialog/Dialog.tsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Dialog", function() { return _components_dialog_Dialog__WEBPACK_IMPORTED_MODULE_1__["default"]; });
 
-/* harmony import */ var _components_multi_select_Multi_select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/multi-select/Multi-select */ "./src/components/multi-select/Multi-select.tsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MultiSelect", function() { return _components_multi_select_Multi_select__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+/* harmony import */ var _components_icon_button_Icon_button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/icon-button/Icon-button */ "./src/components/icon-button/Icon-button.tsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "IconButton", function() { return _components_icon_button_Icon_button__WEBPACK_IMPORTED_MODULE_2__["default"]; });
 
-/* harmony import */ var _components_dialog_Dialog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/dialog/Dialog */ "./src/components/dialog/Dialog.tsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Dialog", function() { return _components_dialog_Dialog__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+/* harmony import */ var _components_multi_select_Multi_select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/multi-select/Multi-select */ "./src/components/multi-select/Multi-select.tsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MultiSelect", function() { return _components_multi_select_Multi_select__WEBPACK_IMPORTED_MODULE_3__["default"]; });
 
-/* harmony import */ var _components_button_Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/button/Button */ "./src/components/button/Button.tsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Button", function() { return _components_button_Button__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+/* harmony import */ var _components_select_Select__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/select/Select */ "./src/components/select/Select.tsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Select", function() { return _components_select_Select__WEBPACK_IMPORTED_MODULE_4__["default"]; });
 
-/* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./index.scss */ "./src/index.scss");
-/* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_index_scss__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _components_toggler_Toggler__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/toggler/Toggler */ "./src/components/toggler/Toggler.tsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Toggler", function() { return _components_toggler_Toggler__WEBPACK_IMPORTED_MODULE_5__["default"]; });
+
+/* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./index.scss */ "./src/index.scss");
+/* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_index_scss__WEBPACK_IMPORTED_MODULE_6__);
+
 
 
 

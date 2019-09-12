@@ -31,7 +31,7 @@ export interface ISimpleDialogProps {
 
 export interface IDialogProps {
   /** Whether or not the Dialog is showing. */
-  open: boolean
+  open?: boolean
   /** Callback for when the Dialog opens. */
   onOpen?: any
   /** Callback for when the Dialog closes. */
@@ -56,30 +56,28 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
 }) => {
   const handlePrimary = () => onClose(primaryLabel)
   const handleSecondary = () => onClose(secondaryLabel)
-  const handleCloseFromHeader = () => onCloseFromHeader ? onCloseFromHeader() : onClose()
+  /* eslint-disable no-confusing-arrow */
+  const handleCloseFromHeader = () =>
+    onCloseFromHeader ? onCloseFromHeader() : onClose()
 
   return (
-    <Dialog
-      className={type}
-      open={open}
-      onOpen={onOpen}
-    >
+    <Dialog className={type} open={open} onOpen={onOpen}>
       <DialogTitle>
         {title}
         {!hideCloseIcon && (
-          <IconButton icon="close" onClick={handleCloseFromHeader} ripple={false} />
+          <IconButton
+            icon="close"
+            onClick={handleCloseFromHeader}
+            ripple={false}
+          />
         )}
       </DialogTitle>
       <DialogContent>
         {(type === "warning" || type === "danger") && (
           <Icon icon="warning_outline" />
         )}
-        {(type === "success") && (
-          <Icon icon="check_circle_outline" />
-        )}
-        {(type === "info") && (
-          <Icon icon="info_outline" />
-        )}
+        {type === "success" && <Icon icon="check_circle_outline" />}
+        {type === "info" && <Icon icon="info_outline" />}
         <div className="dialog-message">{message}</div>
       </DialogContent>
       <DialogActions>
@@ -91,7 +89,9 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
         {
           {
             danger: (
-              <DangerButton onClick={handlePrimary}>{primaryLabel}</DangerButton>
+              <DangerButton onClick={handlePrimary}>
+                {primaryLabel}
+              </DangerButton>
             ),
             warning: (
               <WarningButton onClick={handlePrimary}>

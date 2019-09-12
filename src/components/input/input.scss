@@ -14,42 +14,9 @@
 
   &.mdc-text-field--textarea {
     display: inline-flex;
-    border: none;
-    overflow: visible;
 
-    .mdc-text-field__input {
-      outline: none;
-    }
-
-    &.mdc-text-field--focused {
-      .mdc-floating-label {
-        background: white;
-        margin: 4px 8px;
-      }
-      .mdc-notched-outline .mdc-notched-outline__path {
-        stroke: none;
-      }
-    }
-
-    &.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-text-field__input:focus,
-    &.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-text-field__input:active {
-      border: 1px solid $mdc-theme-primary!important;
-      border-color: $mdc-theme-primary!important;
-      border-radius: 4px;
-    }
-
-    &.mdc-text-field--fullwidth .mdc-text-field__input {
+    &.mdc-text-field--fullwidth {
       resize: vertical;
-    }
-
-    .mdc-floating-label {
-      margin: 0 8px;
-      right: initial;
-      z-index: 1;
-    }
-
-    .mdc-floating-label.mdc-floating-label--float-above {
-      top: 18px;
     }
   }
 
@@ -62,16 +29,21 @@
   }
 
   .mdc-floating-label {
-    top: 8px;
+    top: 6px;
     bottom: initial;
   }
 
   .mdc-floating-label.mdc-floating-label--float-above {
-    top: 16px;
+    // top: 16px;
+    transform: translateY(-70%) translateX(0) scale(0.75)
   }
 
   &.mdc-text-field--with-leading-icon .mdc-floating-label {
     left: 24px;
+  }
+
+  &.mdc-text-field--with-leading-icon .mdc-floating-label.mdc-floating-label--float-above {
+    transform: translateY(-70%) translateX(-20px) scale(0.75)
   }
 
   &.mdc-text-field--with-leading-icon .mdc-text-field__icon, 
@@ -88,7 +60,6 @@
   }
 
   &.mdc-text-field--textarea .mdc-floating-label--float-above {
-    transform: translateY(-100%) translateX(4px) scale(0.75)
+    // transform: translateY(-100%) translateX(4px) scale(0.75)
   }
-
 }

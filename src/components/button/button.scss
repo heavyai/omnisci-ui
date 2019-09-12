@@ -77,27 +77,5 @@
       }
     }
   }
-}
 
-.dark-mode .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined {
-  color: $textOnDark !important;
-  border: 1px solid $secondaryButtonBorder !important;
-  background-color: $secondaryButtonBackground !important;
-
-  &:hover {
-    background-color: $highlightOnDark !important;
-  }
-
-  &:disabled {
-    color: $disabledButtonFontColor !important;
-    background-color: $disabledButtonBackgroundColor;
-    border: 1px solid $disabledButtonBorderColor !important;
-    opacity: 1;
-    cursor: not-allowed;
-
-    svg,
-    svg use {
-      fill: $disabledButtonFontColor;
-    }
-  }
 }

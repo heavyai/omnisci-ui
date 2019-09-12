@@ -10,10 +10,10 @@ module.exports = {
     }
   },
   require: [
-    path.join(__dirname, "src/styleguidist.scss"),
-    path.join(__dirname, "src/theme-switcher.js")
+    path.join(__dirname, "src/styleguidist.scss")
   ],
   webpackConfig: require("./webpack.config.js"),
+  // ignore: ["**/node_modules/**/*.*", "src/components/**/*.spec*"],
   components: "src/components/**/*.{ts,tsx}",
   propsParser: require("react-docgen-typescript").withDefaultConfig({propFilter: {skipPropsWithoutDoc: true}}).parse
 }

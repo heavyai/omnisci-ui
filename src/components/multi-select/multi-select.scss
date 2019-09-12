@@ -22,6 +22,15 @@
     }
   }
 
+  .select__multi-value {
+    background-color: $mdc-theme-primary;
+    color: $textOnDark;
+
+    .select__multi-value__label {
+      color: $textOnDark;
+    }
+  }
+
   .select__control--is-focused {
     border-color: $mdc-theme-primary;
     box-shadow: none;
@@ -32,21 +41,18 @@
   }
 
   .select__option {
-
     &:active {
       background-color: transparent;
     }
 
     &.select__option--is-selected {
-      background-color: rgba($mdc-theme-primary, 0.3);
+      color: $very-dark-gray;
+      background-color: $very-light-gray;
     }
 
     &.select__option--is-selected {
-      background-color: rgba($mdc-theme-primary, 0.3);
-    }
-
-    &.select__option--is-focused {
-      background-color: rgba($mdc-theme-primary, 0.3);
+      color: $mdc-theme-primary;
+      background-color: $very-light-gray;
     }
   }
 
@@ -64,6 +70,87 @@
   &.required {
     .mdc-floating-label::after {
       content: " *";
+    }
+  }
+}
+
+.dark-mode .multi-select {
+  .select-container-wrapper {
+    .select__control {
+      background-color: $grayDp24;
+      border: none;
+
+      .select__single-value {
+        color: $textOnDark !important;
+      }
+
+      .select__input input{
+        color: $textOnDark !important;
+      }
+      
+      .select__indicator-separator {
+        background-color: $dimTextOnDark !important;
+      }
+
+      .select__dropdown-indicator,
+      .select__clear-indicator {
+        svg {
+          fill: $dimTextOnDark !important;
+        }
+      }
+    }
+  }
+
+  .mdc-floating-label {
+    color: $dimTextOnDark;
+
+    &.mdc-floating-label--float-above {
+      background: none;
+    }
+  }
+
+  .select__menu {
+    background: $grayDp6;
+    color: $dimTextOnDark;
+  }
+
+  .select__option {
+    &:active {
+      background-color: transparent;
+    }
+
+    &.select__option--is-selected,
+    &.select__option--is-focused {
+      color: $textOnDark;
+      background-color: $highlightOnDark;
+    }
+  }
+
+  &.select--is-disabled {
+    .select-container-wrapper {
+      .select__control {
+        background-color: $disabledButtonBackgroundColor;
+        border: none;
+
+        .select__single-value {
+          color: $disabledButtonFontColor !important;
+        }
+
+        .select__input input{
+          color: $disabledButtonFontColor !important;
+        }
+        
+        .select__indicator-separator {
+          background-color: $disabledButtonFontColor !important;
+        }
+
+        .select__dropdown-indicator,
+        .select__clear-indicator {
+          svg {
+            fill: $disabledButtonFontColor !important;
+          }
+        }
+      }
     }
   }
 }

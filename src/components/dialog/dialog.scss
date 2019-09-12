@@ -2,7 +2,6 @@
 @import "../button/button";
 
 .mdc-dialog {
-
   .mdc-dialog__container {
     .mdc-dialog__title {
       border-radius: 4px 4px 0 0;
@@ -132,8 +131,9 @@
   }
 }
 
-.dark .mdc-dialog {
-  .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined {
+.dark-mode .mdc-dialog {
+  /* dialog doesn't have dark mode for now, but button could be dark using daark-mode class */
+  .mdc-button:not(.mdc-ripple-upgraded):not(.dark-mode).mdc-button--outlined {
     background-color: white !important;
     border: 1px solid $light-gray !important;
 

@@ -3902,6 +3902,11 @@ a.mdc-list-item {
       padding: 0 4px;
       margin: 2px 14px;
       color: initial; }
+  .multi-select .select__multi-value {
+    background-color: #0089D1;
+    color: #eee; }
+    .multi-select .select__multi-value .select__multi-value__label {
+      color: #eee; }
   .multi-select .select__control--is-focused {
     border-color: #0089D1;
     box-shadow: none; }
@@ -3909,11 +3914,7 @@ a.mdc-list-item {
       border-color: #0089D1; }
   .multi-select .select__option:active {
     background-color: transparent; }
-  .multi-select .select__option.select__option--is-selected {
-    background-color: rgba(0, 137, 209, 0.3); }
-  .multi-select .select__option.select__option--is-selected {
-    background-color: rgba(0, 137, 209, 0.3); }
-  .multi-select .select__option.select__option--is-focused {
+  .multi-select .select__option.select__option--is-selected, .multi-select .select__option.select__option--is-focused {
     background-color: rgba(0, 137, 209, 0.3); }
   .multi-select.error .select__control {
     border: 1px solid #D83C3C; }
@@ -3939,6 +3940,17 @@ a.mdc-list-item {
   color: #888; }
   .dark .multi-select .mdc-floating-label.mdc-floating-label--float-above {
     background: none; }
+
+.dark .multi-select .select__menu {
+  background: #2c2c2c;
+  color: #888; }
+
+.dark .multi-select .select__option:active {
+  background-color: transparent; }
+
+.dark .multi-select .select__option.select__option--is-selected, .dark .multi-select .select__option.select__option--is-focused {
+  color: #eee;
+  background-color: #0089D1; }
 
 .dark .multi-select.select--is-disabled .select-container-wrapper .select__control {
   background-color: #313131;
@@ -4601,10 +4613,12 @@ svg.mdc-button__icon {
 .mdc-dialog.info .mdc-dialog__content .material-icons {
   color: #3BA1D9; }
 
-.dark .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined {
+.dark .mdc-dialog .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined {
   background-color: white !important;
   border: 1px solid #ddd !important; }
-  .dark .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined .mdc-button__label {
+  .dark .mdc-dialog .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:active, .dark .mdc-dialog .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined:hover {
+    background-color: whitesmoke; }
+  .dark .mdc-dialog .mdc-button:not(.mdc-ripple-upgraded).mdc-button--outlined .mdc-button__label {
     color: #666; }
 
 /*# sourceMappingURL=omnisci-ui.css.map*/

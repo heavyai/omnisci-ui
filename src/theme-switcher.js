@@ -7,10 +7,10 @@ const button = body.querySelector(".theme-switcher button")
 button.addEventListener(
   "click",
   () => {
-    body.classList.toggle("dark")
-    button.innerText = body.classList.contains("dark") ? "Dark" : "Light"
+    body.classList.toggle("dark-mode")
+    button.innerText = body.classList.contains("dark-mode") ? "Dark" : "Light"
   },
   false
 )
 
-body.classList.toggle("dark")
+body.classList.toggle("dark-mode")

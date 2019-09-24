@@ -19,6 +19,10 @@
       padding: 0 4px;
       margin: 2px 14px;
       color: initial;
+
+      &.no-label {
+        display: none;
+      }
     }
   }
 
@@ -38,6 +42,10 @@
     &:hover {
       border-color: $mdc-theme-primary;
     }
+  }
+
+  .select__indicator-separator {
+    display: none !important;
   }
 
   .select__option {
@@ -87,10 +95,6 @@
       .select__input input{
         color: $textOnDark !important;
       }
-      
-      .select__indicator-separator {
-        background-color: $dimTextOnDark !important;
-      }
 
       .select__dropdown-indicator,
       .select__clear-indicator {
@@ -138,10 +142,6 @@
 
         .select__input input{
           color: $disabledButtonFontColor !important;
-        }
-        
-        .select__indicator-separator {
-          background-color: $disabledButtonFontColor !important;
         }
 
         .select__dropdown-indicator,

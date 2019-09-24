@@ -6,25 +6,27 @@ import "@material/react-floating-label/index.scss"
 import "../../vars.scss"
 
 export interface IMultiSelectProps {
-  label?: string
   options?: any
   value?: any
   /** When the input changes */
   onChange?: any
   hasError?: boolean
   isRequired?: boolean
+  noLabel?: boolean
 }
 
 export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
   private SelectContainer = ({ children, ...childProps }) => (
     <components.SelectContainer {...childProps}>
       <span className="select-container-wrapper">{children}</span>
-      <FloatingLabel
-        className={"floating-label"}
-        float={childProps.hasValue || childProps.selectProps.inputValue}
-      >
-        {childProps.selectProps.placeholder}
-      </FloatingLabel>
+        <FloatingLabel
+          className={cx("floating-label", {
+            "no-label": childProps.selectProps.noLabel
+          })}
+          float={childProps.hasValue || childProps.selectProps.inputValue}
+        >
+          {childProps.selectProps.placeholder}
+        </FloatingLabel>
     </components.SelectContainer>
   )
 

@@ -27,6 +27,9 @@ export interface ISimpleDialogProps {
   type?: string
   hideCloseIcon?: boolean
   onCloseFromHeader?: any
+  children?: React.ReactNode
+  footer?: React.ReactNode
+  className?: any
 }
 
 export interface IDialogProps {
@@ -36,7 +39,7 @@ export interface IDialogProps {
   onOpen?: any
   /** Callback for when the Dialog closes. */
   onClose?: any
-  children?: any
+  children?: React.ReactNode
 }
 
 /**
@@ -45,6 +48,8 @@ export interface IDialogProps {
 export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   primaryLabel,
   secondaryLabel,
+  primaryButton,
+  secondaryButton,
   message,
   onClose,
   onOpen,
@@ -52,7 +57,10 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   open,
   type,
   hideCloseIcon,
-  onCloseFromHeader
+  onCloseFromHeader,
+  children,
+  footer,
+  className
 }) => {
   const handlePrimary = () => onClose(primaryLabel)
   const handleSecondary = () => onClose(secondaryLabel)
@@ -61,7 +69,7 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
     onCloseFromHeader ? onCloseFromHeader() : onClose()
 
   return (
-    <Dialog className={type} open={open} onOpen={onOpen}>
+    <Dialog className={`${type} ${className}`} open={open} onOpen={onOpen}>
       <DialogTitle>
         {title}
         {!hideCloseIcon && (
@@ -73,43 +81,56 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
         )}
       </DialogTitle>
       <DialogContent>
-        {(type === "warning" || type === "danger") && (
-          <Icon icon="warning_outline" />
-        )}
-        {type === "success" && <Icon icon="check_circle_outline" />}
-        {type === "info" && <Icon icon="info_outline" />}
-        <div className="dialog-message">{message}</div>
+        {children ?
+          children : (<>
+            {(type === "warning" || type === "danger") && (
+              <Icon icon="warning_outline" />
+            )}
+            {type === "success" && <Icon icon="check_circle_outline" />}
+            {type === "info" && <Icon icon="info_outline" />}
+            <div className="dialog-message">{message}</div>
+          </>)
+        }
       </DialogContent>
       <DialogActions>
-        {secondaryLabel && (
-          <SecondaryButton onClick={handleSecondary}>
-            {secondaryLabel}
-          </SecondaryButton>
-        )}
-        {
-          {
-            danger: (
-              <DangerButton onClick={handlePrimary}>
-                {primaryLabel}
-              </DangerButton>
-            ),
-            warning: (
-              <WarningButton onClick={handlePrimary}>
-                {primaryLabel}
-              </WarningButton>
-            ),
-            success: (
-              <SuccessButton onClick={handlePrimary}>
-                {primaryLabel}
-              </SuccessButton>
-            ),
-            info: (
-              <PrimaryButton onClick={handlePrimary}>
-                {primaryLabel}
-              </PrimaryButton>
+        {footer || (
+
+          secondaryButton || (
+            secondaryLabel && (
+              <SecondaryButton onClick={handleSecondary}>
+                {secondaryLabel}
+              </SecondaryButton>
             )
-          }[type]
-        }
+          )
+
+          && 
+
+          primaryButton || (
+            {
+              danger: (
+                <DangerButton onClick={handlePrimary}>
+                  {primaryLabel}
+                </DangerButton>
+              ),
+              warning: (
+                <WarningButton onClick={handlePrimary}>
+                  {primaryLabel}
+                </WarningButton>
+              ),
+              success: (
+                <SuccessButton onClick={handlePrimary}>
+                  {primaryLabel}
+                </SuccessButton>
+              ),
+              info: (
+                <PrimaryButton onClick={handlePrimary}>
+                  {primaryLabel}
+                </PrimaryButton>
+              )
+            }[type]
+          )
+
+        )}
       </DialogActions>
     </Dialog>
   )

@@ -58,7 +58,7 @@
     }
 
     .mdc-dialog__actions {
-      border: 1px solid #ddd;
+      border-top: 1px solid #ddd;
     }
 
     .dialog-message {
@@ -132,8 +132,8 @@
 }
 
 .dark-mode .mdc-dialog {
-  /* dialog doesn't have dark mode for now, but button could be dark using daark-mode class */
-  .mdc-button:not(.mdc-ripple-upgraded):not(.dark-mode).mdc-button--outlined {
+  /* dialog doesn't have dark mode for now, but button could be dark using dark-mode class */
+  &:not(.info) .mdc-button:not(.mdc-ripple-upgraded):not(.dark-mode).mdc-button--outlined {
     background-color: white !important;
     border: 1px solid $light-gray !important;
 
@@ -143,6 +143,34 @@
 
     .mdc-button__label {
       color: $gray;
+    }
+  }
+
+  &.info {
+
+    .mdc-dialog__surface {
+      background-color: $grayDp3;
+
+      .mdc-dialog__title {
+        background-color: $grayDp4;
+        border-bottom: 1px solid $borderSeparator;
+
+        .mdc-icon-button {
+          color: $dimTextOnDark;
+        }
+      }
+    }
+
+    .mdc-dialog__content {
+      color: $textOnDark;
+
+      .material-icons {
+        color: $dimTextOnDark;
+      }
+    }
+
+    .mdc-dialog__actions {
+      border-top: 1px solid $borderSeparator;
     }
   }
 }

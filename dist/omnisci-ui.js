@@ -49749,6 +49749,8 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 var SimpleDialog = function SimpleDialog(_ref) {
   var primaryLabel = _ref.primaryLabel,
       secondaryLabel = _ref.secondaryLabel,
+      primaryButton = _ref.primaryButton,
+      secondaryButton = _ref.secondaryButton,
       message = _ref.message,
       onClose = _ref.onClose,
       onOpen = _ref.onOpen,
@@ -49756,7 +49758,10 @@ var SimpleDialog = function SimpleDialog(_ref) {
       open = _ref.open,
       type = _ref.type,
       hideCloseIcon = _ref.hideCloseIcon,
-      onCloseFromHeader = _ref.onCloseFromHeader;
+      onCloseFromHeader = _ref.onCloseFromHeader,
+      children = _ref.children,
+      footer = _ref.footer,
+      className = _ref.className;
 
   var handlePrimary = function handlePrimary() {
     return onClose(primaryLabel);
@@ -49773,14 +49778,14 @@ var SimpleDialog = function SimpleDialog(_ref) {
   };
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_dialog__WEBPACK_IMPORTED_MODULE_1__["Dialog"], {
-    className: type,
+    className: "".concat(type, " ").concat(className),
     open: open,
     onOpen: onOpen
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_dialog__WEBPACK_IMPORTED_MODULE_1__["DialogTitle"], null, title, !hideCloseIcon && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_icon_button__WEBPACK_IMPORTED_MODULE_2__["IconButton"], {
     icon: "close",
     onClick: handleCloseFromHeader,
     ripple: false
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_dialog__WEBPACK_IMPORTED_MODULE_1__["DialogContent"], null, (type === "warning" || type === "danger") && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_icon__WEBPACK_IMPORTED_MODULE_3__["Icon"], {
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_dialog__WEBPACK_IMPORTED_MODULE_1__["DialogContent"], null, children ? children : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, (type === "warning" || type === "danger") && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_icon__WEBPACK_IMPORTED_MODULE_3__["Icon"], {
     icon: "warning_outline"
   }), type === "success" && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_icon__WEBPACK_IMPORTED_MODULE_3__["Icon"], {
     icon: "check_circle_outline"
@@ -49788,9 +49793,9 @@ var SimpleDialog = function SimpleDialog(_ref) {
     icon: "info_outline"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "dialog-message"
-  }, message)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_dialog__WEBPACK_IMPORTED_MODULE_1__["DialogActions"], null, secondaryLabel && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_4__["SecondaryButton"], {
+  }, message))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_dialog__WEBPACK_IMPORTED_MODULE_1__["DialogActions"], null, footer || secondaryButton || secondaryLabel && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_4__["SecondaryButton"], {
     onClick: handleSecondary
-  }, secondaryLabel), {
+  }, secondaryLabel) && primaryButton || {
     danger: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_4__["DangerButton"], {
       onClick: handlePrimary
     }, primaryLabel),
@@ -49969,7 +49974,9 @@ function (_React$PureComponent) {
       return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_select__WEBPACK_IMPORTED_MODULE_1__["components"].SelectContainer, childProps, react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", {
         className: "select-container-wrapper"
       }, children), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_material_react_floating_label__WEBPACK_IMPORTED_MODULE_2___default.a, {
-        className: "floating-label",
+        className: classnames__WEBPACK_IMPORTED_MODULE_3___default()("floating-label", {
+          "no-label": childProps.selectProps.noLabel
+        }),
         float: childProps.hasValue || childProps.selectProps.inputValue
       }, childProps.selectProps.placeholder));
     });

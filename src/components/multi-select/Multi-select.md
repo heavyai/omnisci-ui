@@ -75,3 +75,19 @@ initialState = {
   onChange={(e) => setState({ value: e })}
 />
 ```
+
+```js
+initialState = {
+  placeholder: "placeholder text, no label",
+  value: null, 
+  options: new Array(200).fill(0).map((d, i) => ({label: i, value: i}))
+};
+
+<MultiSelect
+  noLabel
+  options={state.options}
+  value={state.value}
+  placeholder={state.placeholder}
+  onChange={(e) => setState({ value: e })}
+/>
+```

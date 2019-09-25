@@ -3923,6 +3923,8 @@ a.mdc-list-item {
       padding: 0 4px;
       margin: 2px 14px;
       color: initial; }
+      .multi-select .mdc-floating-label.mdc-floating-label--float-above.no-label {
+        display: none; }
   .multi-select .select__multi-value {
     background-color: #0089D1;
     color: #eee; }
@@ -3933,6 +3935,8 @@ a.mdc-list-item {
     box-shadow: none; }
     .multi-select .select__control--is-focused:hover {
       border-color: #0089D1; }
+  .multi-select .select__indicator-separator {
+    display: none !important; }
   .multi-select .select__option:active {
     background-color: transparent; }
   .multi-select .select__option.select__option--is-selected {
@@ -3955,8 +3959,6 @@ a.mdc-list-item {
     color: #eee !important; }
   .dark-mode .multi-select .select-container-wrapper .select__control .select__input input {
     color: #eee !important; }
-  .dark-mode .multi-select .select-container-wrapper .select__control .select__indicator-separator {
-    background-color: #888 !important; }
   .dark-mode .multi-select .select-container-wrapper .select__control .select__dropdown-indicator svg,
   .dark-mode .multi-select .select-container-wrapper .select__control .select__clear-indicator svg {
     fill: #888 !important; }
@@ -3984,8 +3986,6 @@ a.mdc-list-item {
     color: #555 !important; }
   .dark-mode .multi-select.select--is-disabled .select-container-wrapper .select__control .select__input input {
     color: #555 !important; }
-  .dark-mode .multi-select.select--is-disabled .select-container-wrapper .select__control .select__indicator-separator {
-    background-color: #555 !important; }
   .dark-mode .multi-select.select--is-disabled .select-container-wrapper .select__control .select__dropdown-indicator svg,
   .dark-mode .multi-select.select--is-disabled .select-container-wrapper .select__control .select__clear-indicator svg {
     fill: #555 !important; }
@@ -4589,7 +4589,7 @@ svg.mdc-button__icon {
   flex: 0 32px; }
 
 .mdc-dialog .mdc-dialog__container .mdc-dialog__actions {
-  border: 1px solid #ddd; }
+  border-top: 1px solid #ddd; }
 
 .mdc-dialog .mdc-dialog__container .dialog-message {
   float: left;
@@ -4639,13 +4639,26 @@ svg.mdc-button__icon {
   color: #3BA1D9; }
 
 .dark-mode .mdc-dialog {
-  /* dialog doesn't have dark mode for now, but button could be dark using daark-mode class */ }
-  .dark-mode .mdc-dialog .mdc-button:not(.mdc-ripple-upgraded):not(.dark-mode).mdc-button--outlined {
+  /* dialog doesn't have dark mode for now, but button could be dark using dark-mode class */ }
+  .dark-mode .mdc-dialog:not(.info) .mdc-button:not(.mdc-ripple-upgraded):not(.dark-mode).mdc-button--outlined {
     background-color: white !important;
     border: 1px solid #ddd !important; }
-    .dark-mode .mdc-dialog .mdc-button:not(.mdc-ripple-upgraded):not(.dark-mode).mdc-button--outlined:active, .dark-mode .mdc-dialog .mdc-button:not(.mdc-ripple-upgraded):not(.dark-mode).mdc-button--outlined:hover {
+    .dark-mode .mdc-dialog:not(.info) .mdc-button:not(.mdc-ripple-upgraded):not(.dark-mode).mdc-button--outlined:active, .dark-mode .mdc-dialog:not(.info) .mdc-button:not(.mdc-ripple-upgraded):not(.dark-mode).mdc-button--outlined:hover {
       background-color: whitesmoke; }
-    .dark-mode .mdc-dialog .mdc-button:not(.mdc-ripple-upgraded):not(.dark-mode).mdc-button--outlined .mdc-button__label {
+    .dark-mode .mdc-dialog:not(.info) .mdc-button:not(.mdc-ripple-upgraded):not(.dark-mode).mdc-button--outlined .mdc-button__label {
       color: #666; }
+  .dark-mode .mdc-dialog.info .mdc-dialog__surface {
+    background-color: #252525; }
+    .dark-mode .mdc-dialog.info .mdc-dialog__surface .mdc-dialog__title {
+      background-color: #272727;
+      border-bottom: 1px solid #444; }
+      .dark-mode .mdc-dialog.info .mdc-dialog__surface .mdc-dialog__title .mdc-icon-button {
+        color: #888; }
+  .dark-mode .mdc-dialog.info .mdc-dialog__content {
+    color: #eee; }
+    .dark-mode .mdc-dialog.info .mdc-dialog__content .material-icons {
+      color: #888; }
+  .dark-mode .mdc-dialog.info .mdc-dialog__actions {
+    border-top: 1px solid #444; }
 
 /*# sourceMappingURL=omnisci-ui.css.map*/

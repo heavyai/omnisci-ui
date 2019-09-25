@@ -88,42 +88,7 @@ initialState = {
   unelevated
   onClick={() => setState({isOpen: true})}
 >
-  onCloseFromHeader
-</WarningButton>
-</>
-```
-
-```js
-import { SimpleWarningDialog } from "./Dialog"
-import { WarningButton } from "../button/Button"
-
-initialState = {
-  isOpen: false,
-  lastAction: null
-};
-
-<>
-<SimpleWarningDialog
-  title={"Important title"}
-  primaryLabel={"Do it"}
-  secondaryLabel={"Cancel"}
-  message={"This is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warning"}
-  open={state.isOpen}
-  onClose={buttonLabel => {
-    console.log(buttonLabel)
-    setState({isOpen: false, lastAction: buttonLabel})
-  }}
-  onCloseFromHeader={buttonLabel => {
-    console.log("closed from header")
-    setState({isOpen: false, lastAction: buttonLabel})
-  }}
-/>
-
-<WarningButton
-  unelevated
-  onClick={() => setState({isOpen: true})}
->
-  onCloseFromHeader
+  Open Dialog with Close Callback
 </WarningButton>
 </>
 ```
@@ -183,7 +148,7 @@ initialState = {
   unelevated
   onClick={() => setState({isOpen: true})}
 >
-Open Success Dialog
+Open info Dialog
 </PrimaryButton>
 </>
 ```
@@ -214,7 +179,123 @@ initialState = {
   unelevated
   onClick={() => setState({isOpen: true})}
 >
-Open Success Dialog
+Open Dialog without X to close
+</PrimaryButton>
+</>
+```
+
+```js
+import { SimpleInfoDialog } from "./Dialog"
+import { PrimaryButton } from "../button/Button"
+
+initialState = {
+  isOpen: false,
+  lastAction: null
+};
+
+<>
+<SimpleInfoDialog
+  hideCloseIcon
+  title={"Title"}
+  primaryLabel={"Do it"}
+  secondaryLabel={"Cancel"}
+  message={"This is an info dialog without a close X icon"}
+  open={state.isOpen}
+  onClose={buttonLabel => {
+    setState({isOpen: false, lastAction: buttonLabel})
+  }}
+>
+test
+</SimpleInfoDialog>
+
+<PrimaryButton
+  unelevated
+  onClick={() => setState({isOpen: true})}
+>
+Open Dialog with custom content
+</PrimaryButton>
+</>
+```
+
+```js
+import { SimpleInfoDialog } from "./Dialog"
+import { PrimaryButton, SecondaryButton } from "../button/Button"
+
+initialState = {
+  isOpen: false,
+  lastAction: null
+};
+
+<>
+<SimpleInfoDialog
+  title={"Title"}
+  primaryButton={
+    <PrimaryButton
+      onClick={() => setState({isOpen: false, lastAction: "Apply"})}
+    >
+    Apply
+    </PrimaryButton>
+  }
+  secondaryButton={
+    <SecondaryButton
+      unelevated
+      onClick={() => setState({isOpen: false, lastAction: "Cancel"})}
+    >
+    Cancel
+    </SecondaryButton>
+  }
+  message={"This is an info dialog with custom buttons"}
+  open={state.isOpen}
+  onClose={buttonLabel => {
+    setState({isOpen: false, lastAction: buttonLabel})
+  }}
+>
+test
+</SimpleInfoDialog>
+
+<PrimaryButton
+  unelevated
+  onClick={() => setState({isOpen: true})}
+>
+Open Dialog with custom buttons
+</PrimaryButton>
+</>
+```
+
+```js
+import { SimpleInfoDialog } from "./Dialog"
+import { PrimaryButton, SecondaryButton } from "../button/Button"
+
+initialState = {
+  isOpen: false,
+  lastAction: null
+};
+
+<>
+<SimpleInfoDialog
+  title={"Title"}
+  footer={
+    <>
+      <div>A custom message</div>
+      <PrimaryButton
+        onClick={() => setState({isOpen: false, lastAction: "Apply"})}
+      >
+      Ok
+      </PrimaryButton>
+    </>
+  }
+  message={"This is an info dialog with custom footer"}
+  open={state.isOpen}
+  onClose={buttonLabel => {
+    setState({isOpen: false, lastAction: buttonLabel})
+  }}
+/>
+
+<PrimaryButton
+  unelevated
+  onClick={() => setState({isOpen: true})}
+>
+Open Dialog with custom footer
 </PrimaryButton>
 </>
 ```

@@ -83,11 +83,13 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
       <DialogContent>
         {children ?
           children : (<>
-            {(type === "warning" || type === "danger") && (
-              <Icon icon="warning_outline" />
-            )}
-            {type === "success" && <Icon icon="check_circle_outline" />}
-            {type === "info" && <Icon icon="info_outline" />}
+            <div className="message-icon">
+              {(type === "warning" || type === "danger") && (
+                <Icon icon="warning_outline" />
+              )}
+              {type === "success" && <Icon icon="check_circle_outline" />}
+              {type === "info" && <Icon icon="info_outline" />}
+            </div>
             <div className="dialog-message">{message}</div>
           </>)
         }

@@ -48,7 +48,7 @@
       min-width: 420px;
     }
 
-    .mdc-dialog__content .material-icons {
+    .mdc-dialog__content .message-icon .material-icons {
       padding: 0 8px 0 0;
       font-size: 32px;
       width: 32px;
@@ -164,7 +164,7 @@
     .mdc-dialog__content {
       color: $textOnDark;
 
-      .material-icons {
+      .message-icon .material-icons {
         color: $dimTextOnDark;
       }
     }

@@ -4580,7 +4580,7 @@ svg.mdc-button__icon {
 .mdc-dialog .mdc-dialog__container .mdc-dialog__surface {
   min-width: 420px; }
 
-.mdc-dialog .mdc-dialog__container .mdc-dialog__content .material-icons {
+.mdc-dialog .mdc-dialog__container .mdc-dialog__content .message-icon .material-icons {
   padding: 0 8px 0 0;
   font-size: 32px;
   width: 32px;
@@ -4656,7 +4656,7 @@ svg.mdc-button__icon {
         color: #888; }
   .dark-mode .mdc-dialog.info .mdc-dialog__content {
     color: #eee; }
-    .dark-mode .mdc-dialog.info .mdc-dialog__content .material-icons {
+    .dark-mode .mdc-dialog.info .mdc-dialog__content .message-icon .material-icons {
       color: #888; }
   .dark-mode .mdc-dialog.info .mdc-dialog__actions {
     border-top: 1px solid #444; }

@@ -4618,7 +4618,7 @@ svg.mdc-button__icon {
   background-color: #F2B700;
   color: #222; }
 
-.mdc-dialog.warning .mdc-dialog__content .material-icons {
+.mdc-dialog.warning .mdc-dialog__content .message-icon .material-icons {
   color: #F2B700; }
 
 .mdc-dialog.warning .mdc-button:last-child {
@@ -4628,14 +4628,14 @@ svg.mdc-button__icon {
 .mdc-dialog.success .mdc-dialog__title {
   background-color: #5BCE00; }
 
-.mdc-dialog.success .mdc-dialog__content .material-icons {
+.mdc-dialog.success .mdc-dialog__content .message-icon .material-icons {
   color: #5BCE00; }
 
 .mdc-dialog.success .mdc-button:last-child {
   color: white;
   background-color: #5BCE00; }
 
-.mdc-dialog.info .mdc-dialog__content .material-icons {
+.mdc-dialog.info .mdc-dialog__content .message-icon .material-icons {
   color: #3BA1D9; }
 
 .dark-mode .mdc-dialog {

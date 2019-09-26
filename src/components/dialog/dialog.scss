@@ -99,7 +99,7 @@
       color: $very-dark-gray;
     }
 
-    .mdc-dialog__content .material-icons {
+    .mdc-dialog__content .message-icon .material-icons {
       color: $warning;
     }
 
@@ -114,7 +114,7 @@
       background-color: $success;
     }
 
-    .mdc-dialog__content .material-icons {
+    .mdc-dialog__content .message-icon .material-icons {
       color: $success;
     }
 
@@ -125,7 +125,7 @@
   }
 
   &.info {
-    .mdc-dialog__content .material-icons {
+    .mdc-dialog__content .message-icon .material-icons {
       color: $info;
     }
   }

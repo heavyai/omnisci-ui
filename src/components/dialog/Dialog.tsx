@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react"
+import React, { FunctionComponent, useEffect } from "react"
 import { Dialog, DialogTitle, DialogContent, DialogActions } from "@rmwc/dialog"
 import { IconButton } from "@rmwc/icon-button"
 import { Icon } from "@rmwc/icon"
@@ -30,6 +30,9 @@ export interface ISimpleDialogProps {
   children?: React.ReactNode
   footer?: React.ReactNode
   className?: any
+  onStateChange?: any
+  preventOutsideDismiss?: any
+  actionToApplyOnEnter?: any
 }
 
 export interface IDialogProps {
@@ -60,16 +63,49 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   onCloseFromHeader,
   children,
   footer,
-  className
+  className,
+  onStateChange,
+  preventOutsideDismiss,
+  actionToApplyOnEnter
 }) => {
   const handlePrimary = () => onClose(primaryLabel)
   const handleSecondary = () => onClose(secondaryLabel)
   /* eslint-disable no-confusing-arrow */
   const handleCloseFromHeader = () =>
-    onCloseFromHeader ? onCloseFromHeader() : onClose()
+    onCloseFromHeader ? onCloseFromHeader() : onClose("from header")
+
+    useEffect(() => {
+      const handler = event => {
+        if (event.key === "Enter" && open) {
+          event.preventDefault()
+          if (actionToApplyOnEnter === "primary") {
+            handlePrimary()
+          } else if (actionToApplyOnEnter === "secondary") {
+            handleSecondary()
+          } else {
+            onClose("from Enter key")
+          }
+        }
+      }
+      window.addEventListener("keydown", handler)
+      return () => {
+        window.removeEventListener("keydown", handler)
+      }
+    }, [open, actionToApplyOnEnter])
 
   return (
-    <Dialog className={`${type} ${className}`} open={open} onOpen={onOpen}>
+    <Dialog
+      className={`${type} ${className}`}
+      open={open}
+      onOpen={onOpen}
+      onStateChange={e => {
+        onStateChange && onStateChange(e)
+        if (open && e === "closing") {
+          onClose("from state change")
+        }
+      }}
+      preventOutsideDismiss={preventOutsideDismiss}
+    >
       <DialogTitle>
         {title}
         {!hideCloseIcon && (

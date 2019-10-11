@@ -74,24 +74,26 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   const handleCloseFromHeader = () =>
     onCloseFromHeader ? onCloseFromHeader() : onClose("from header")
 
-    useEffect(() => {
-      const handler = event => {
-        if (event.key === "Enter" && open) {
-          event.preventDefault()
-          if (actionToApplyOnEnter === "primary") {
-            handlePrimary()
-          } else if (actionToApplyOnEnter === "secondary") {
-            handleSecondary()
-          } else {
-            onClose("from Enter key")
-          }
-        }
-      }
-      window.addEventListener("keydown", handler)
-      return () => {
-        window.removeEventListener("keydown", handler)
-      }
-    }, [open, actionToApplyOnEnter])
+    // TODO: Hooks breaks when used inside Immerse
+    // https://reactjs.org/warnings/invalid-hook-call-warning.html#duplicate-react
+    // useEffect(() => {
+    //   const handler = event => {
+    //     if (event.key === "Enter" && open) {
+    //       event.preventDefault()
+    //       if (actionToApplyOnEnter === "primary") {
+    //         handlePrimary()
+    //       } else if (actionToApplyOnEnter === "secondary") {
+    //         handleSecondary()
+    //       } else {
+    //         onClose("from Enter key")
+    //       }
+    //     }
+    //   }
+    //   window.addEventListener("keydown", handler)
+    //   return () => {
+    //     window.removeEventListener("keydown", handler)
+    //   }
+    // }, [open, actionToApplyOnEnter])
 
   return (
     <Dialog

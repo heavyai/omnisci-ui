@@ -1,5 +1,4 @@
 ```js
-/* eslint-disable */
 import { SimpleDangerDialog } from "./Dialog"
 import { DangerButton } from "../button/Button"
 
@@ -15,11 +14,10 @@ initialState = {
   secondaryLabel={"Cancel"}
   message={"This is an important message"}
   open={state.isOpen}
-  onStateChange={e => console.log(2, e)}
+  onStateChange={e => console.log("state change", e)}
   onClose={buttonLabel => {
     setState({isOpen: false, lastAction: buttonLabel})
   }}
-  actionToApplyOnEnter="primary"
 />
 
 <DangerButton

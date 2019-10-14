@@ -14,6 +14,7 @@ initialState = {
   secondaryLabel={"Cancel"}
   message={"This is an important message"}
   open={state.isOpen}
+  onStateChange={e => console.log("state change", e)}
   onClose={buttonLabel => {
     setState({isOpen: false, lastAction: buttonLabel})
   }}
@@ -75,7 +76,6 @@ initialState = {
   message={"This is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warning"}
   open={state.isOpen}
   onClose={buttonLabel => {
-    console.log(buttonLabel)
     setState({isOpen: false, lastAction: buttonLabel})
   }}
   onCloseFromHeader={buttonLabel => {

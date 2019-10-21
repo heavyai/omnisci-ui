@@ -1,4 +1,4 @@
-Standard
+Standard on
 ```js
 import { Switch } from "@rmwc/switch"
 initialState = {
@@ -10,11 +10,37 @@ initialState = {
 />
 ```
 
-Disabled
+Standard off
+```js
+import { Switch } from "@rmwc/switch"
+import { RMWCProvider } from '@rmwc/provider';
+initialState = {
+  isChecked: false
+};
+<Switch
+  checked={state.isChecked}
+  onChange={(e) => setState({ isChecked: e.target.checked })}
+/>
+```
+
+Disabled on
 ```js
 import { Switch } from "@rmwc/switch"
 initialState = {
   isChecked: true
+};
+<Switch
+  disabled
+  checked={state.isChecked}
+  onChange={(e) => setState({ isChecked: e.target.checked })}
+/>
+```
+
+Disabled off
+```js
+import { Switch } from "@rmwc/switch"
+initialState = {
+  isChecked: false
 };
 <Switch
   disabled

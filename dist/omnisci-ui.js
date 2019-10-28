@@ -50018,34 +50018,16 @@ var SimpleDialog = function SimpleDialog(_ref) {
 
   var handleCloseFromHeader = function handleCloseFromHeader() {
     return onCloseFromHeader ? onCloseFromHeader() : onClose("from header");
-  }; // TODO: Hooks breaks when used inside Immerse
-  // https://reactjs.org/warnings/invalid-hook-call-warning.html#duplicate-react
-  // useEffect(() => {
-  //   const handler = event => {
-  //     if (event.key === "Enter" && open) {
-  //       event.preventDefault()
-  //       if (actionToApplyOnEnter === "primary") {
-  //         handlePrimary()
-  //       } else if (actionToApplyOnEnter === "secondary") {
-  //         handleSecondary()
-  //       } else {
-  //         onClose("from Enter key")
-  //       }
-  //     }
-  //   }
-  //   window.addEventListener("keydown", handler)
-  //   return () => {
-  //     window.removeEventListener("keydown", handler)
-  //   }
-  // }, [open, actionToApplyOnEnter])
-
+  };
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_dialog__WEBPACK_IMPORTED_MODULE_1__["Dialog"], {
     className: "".concat(type, " ").concat(className),
     open: open,
     onOpen: onOpen,
     onStateChange: function onStateChange(e) {
-      _onStateChange && _onStateChange(e);
+      if (_onStateChange) {
+        _onStateChange(e);
+      }
 
       if (open && e === "closing") {
         onClose("from state change");

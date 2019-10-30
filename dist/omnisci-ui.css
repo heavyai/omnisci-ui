@@ -3757,33 +3757,53 @@ a.mdc-list-item {
   .mdc-switch__thumb-underlay.mdc-ripple-upgraded {
     --mdc-ripple-fg-opacity: 0.24; }
 
-.mdc-switch.mdc-switch--checked .mdc-switch__track {
-  background-color: #0089D1;
-  border-color: #0089D1; }
-
-.mdc-switch.mdc-switch--checked .mdc-switch__thumb {
-  background-color: #0089D1;
-  border-color: #0089D1; }
-
-.mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay::before, .mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay::after {
-  background-color: #0089D1; }
-
-.mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay:hover::before {
-  opacity: 0.04; }
-
-.mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay:not(.mdc-ripple-upgraded):focus::before, .mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay.mdc-ripple-upgraded--background-focused::before {
-  transition-duration: 75ms;
-  opacity: 0.12; }
-
-.mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay:not(.mdc-ripple-upgraded)::after {
-  transition: opacity 150ms linear; }
-
-.mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay:not(.mdc-ripple-upgraded):active::after {
-  transition-duration: 75ms;
-  opacity: 0.12; }
-
-.mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay.mdc-ripple-upgraded {
-  --mdc-ripple-fg-opacity: 0.12; }
+.mdc-switch {
+  /* hide ripple */ }
+  .mdc-switch.mdc-switch--checked .mdc-switch__track {
+    background-color: #0089D1;
+    border-color: #0089D1; }
+  .mdc-switch.mdc-switch--checked .mdc-switch__thumb {
+    background-color: #0089D1;
+    border-color: #0089D1; }
+  .mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay::before, .mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay::after {
+    background-color: #0089D1; }
+  .mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay:hover::before {
+    opacity: 0.04; }
+  .mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay:not(.mdc-ripple-upgraded):focus::before, .mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay.mdc-ripple-upgraded--background-focused::before {
+    transition-duration: 75ms;
+    opacity: 0.12; }
+  .mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay:not(.mdc-ripple-upgraded)::after {
+    transition: opacity 150ms linear; }
+  .mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay:not(.mdc-ripple-upgraded):active::after {
+    transition-duration: 75ms;
+    opacity: 0.12; }
+  .mdc-switch.mdc-switch--checked .mdc-switch__thumb-underlay.mdc-ripple-upgraded {
+    --mdc-ripple-fg-opacity: 0.12; }
+  .mdc-switch:not(.mdc-switch--checked) .mdc-switch__track {
+    background-color: #ddd;
+    border-color: #ddd; }
+  .mdc-switch:not(.mdc-switch--checked) .mdc-switch__thumb {
+    background-color: #ddd;
+    border-color: #ddd; }
+  .mdc-switch:not(.mdc-switch--checked) .mdc-switch__thumb-underlay::before, .mdc-switch:not(.mdc-switch--checked) .mdc-switch__thumb-underlay::after {
+    background-color: #ddd; }
+  .mdc-switch:not(.mdc-switch--checked) .mdc-switch__thumb-underlay:hover::before {
+    opacity: 0.08; }
+  .mdc-switch:not(.mdc-switch--checked) .mdc-switch__thumb-underlay:not(.mdc-ripple-upgraded):focus::before, .mdc-switch:not(.mdc-switch--checked) .mdc-switch__thumb-underlay.mdc-ripple-upgraded--background-focused::before {
+    transition-duration: 75ms;
+    opacity: 0.24; }
+  .mdc-switch:not(.mdc-switch--checked) .mdc-switch__thumb-underlay:not(.mdc-ripple-upgraded)::after {
+    transition: opacity 150ms linear; }
+  .mdc-switch:not(.mdc-switch--checked) .mdc-switch__thumb-underlay:not(.mdc-ripple-upgraded):active::after {
+    transition-duration: 75ms;
+    opacity: 0.24; }
+  .mdc-switch:not(.mdc-switch--checked) .mdc-switch__thumb-underlay.mdc-ripple-upgraded {
+    --mdc-ripple-fg-opacity: 0.24; }
+  .mdc-switch:not(.mdc-switch--checked) .mdc-switch__track {
+    background-color: #999;
+    border-color: #999; }
+  .mdc-switch .mdc-switch__thumb-underlay::before, .mdc-switch .mdc-switch__thumb-underlay::after {
+    display: none; }
 
 .mdc-icon-button {
   width: 48px;

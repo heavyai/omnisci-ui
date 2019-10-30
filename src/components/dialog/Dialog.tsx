@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from "react"
+import React, { FunctionComponent } from "react"
 import { Dialog, DialogTitle, DialogContent, DialogActions } from "@rmwc/dialog"
 import { IconButton } from "@rmwc/icon-button"
 import { Icon } from "@rmwc/icon"
@@ -74,34 +74,15 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   const handleCloseFromHeader = () =>
     onCloseFromHeader ? onCloseFromHeader() : onClose("from header")
 
-    // TODO: Hooks breaks when used inside Immerse
-    // https://reactjs.org/warnings/invalid-hook-call-warning.html#duplicate-react
-    // useEffect(() => {
-    //   const handler = event => {
-    //     if (event.key === "Enter" && open) {
-    //       event.preventDefault()
-    //       if (actionToApplyOnEnter === "primary") {
-    //         handlePrimary()
-    //       } else if (actionToApplyOnEnter === "secondary") {
-    //         handleSecondary()
-    //       } else {
-    //         onClose("from Enter key")
-    //       }
-    //     }
-    //   }
-    //   window.addEventListener("keydown", handler)
-    //   return () => {
-    //     window.removeEventListener("keydown", handler)
-    //   }
-    // }, [open, actionToApplyOnEnter])
-
   return (
     <Dialog
       className={`${type} ${className}`}
       open={open}
       onOpen={onOpen}
       onStateChange={e => {
-        onStateChange && onStateChange(e)
+        if (onStateChange) {
+          onStateChange(e)
+        }
         if (open && e === "closing") {
           onClose("from state change")
         }
@@ -142,9 +123,7 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
               </SecondaryButton>
             )
           )
-
-          && 
-
+          &&
           primaryButton || (
             {
               danger: (

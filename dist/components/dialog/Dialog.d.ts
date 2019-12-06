@@ -11,11 +11,19 @@ export interface ISimpleDialogProps {
     onClose?: any;
     title?: React.ReactNode | string;
     message?: React.ReactNode | string;
+    primaryButton?: React.ReactNode | string;
+    secondaryButton?: React.ReactNode | string;
     primaryLabel?: React.ReactNode | string;
     secondaryLabel?: React.ReactNode | string;
     type?: string;
     hideCloseIcon?: boolean;
     onCloseFromHeader?: any;
+    children?: React.ReactNode;
+    footer?: React.ReactNode;
+    className?: any;
+    onStateChange?: any;
+    preventOutsideDismiss?: any;
+    actionToApplyOnEnter?: any;
 }
 export interface IDialogProps {
     /** Whether or not the Dialog is showing. */
@@ -24,7 +32,7 @@ export interface IDialogProps {
     onOpen?: any;
     /** Callback for when the Dialog closes. */
     onClose?: any;
-    children?: any;
+    children?: React.ReactNode;
 }
 /**
  * Dialog

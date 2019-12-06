@@ -22,6 +22,8 @@ export interface ISimpleDialogProps {
   onClose?: any
   title?: React.ReactNode | string
   message?: React.ReactNode | string
+  primaryButton?: React.ReactNode | string
+  secondaryButton?: React.ReactNode | string
   primaryLabel?: React.ReactNode | string
   secondaryLabel?: React.ReactNode | string
   type?: string
@@ -100,8 +102,10 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
         )}
       </DialogTitle>
       <DialogContent>
-        {children ?
-          children : (<>
+        {children ? (
+          children
+        ) : (
+          <>
             <div className="message-icon">
               {(type === "warning" || type === "danger") && (
                 <Icon icon="warning_outline" />
@@ -110,21 +114,18 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
               {type === "info" && <Icon icon="info_outline" />}
             </div>
             <div className="dialog-message">{message}</div>
-          </>)
-        }
+          </>
+        )}
       </DialogContent>
       <DialogActions>
-        {footer || (
-
-          secondaryButton || (
-            secondaryLabel && (
-              <SecondaryButton onClick={handleSecondary}>
-                {secondaryLabel}
-              </SecondaryButton>
-            )
-          )
-          &&
-          primaryButton || (
+        {footer ||
+          secondaryButton ||
+            (secondaryLabel && (
+                <SecondaryButton onClick={handleSecondary}>
+                  {secondaryLabel}
+                </SecondaryButton>
+              ) &&
+              primaryButton) ||
             {
               danger: (
                 <DangerButton onClick={handlePrimary}>
@@ -146,10 +147,7 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
                   {primaryLabel}
                 </PrimaryButton>
               )
-            }[type]
-          )
-
-        )}
+            }[type]}
       </DialogActions>
     </Dialog>
   )

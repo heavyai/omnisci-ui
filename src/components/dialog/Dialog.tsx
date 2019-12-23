@@ -24,6 +24,8 @@ export interface ISimpleDialogProps {
   message?: React.ReactNode | string
   primaryLabel?: React.ReactNode | string
   secondaryLabel?: React.ReactNode | string
+  primaryButton?: React.ReactNode | string
+  secondaryButton?: React.ReactNode | string
   type?: string
   hideCloseIcon?: boolean
   onCloseFromHeader?: any

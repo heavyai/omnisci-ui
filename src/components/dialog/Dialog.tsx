@@ -24,6 +24,8 @@ export interface ISimpleDialogProps {
   message?: React.ReactNode | string
   primaryLabel?: React.ReactNode | string
   secondaryLabel?: React.ReactNode | string
+  primaryAction?(): void
+  secondaryAction?(): void
   type?: string
   hideCloseIcon?: boolean
   onCloseFromHeader?: any
@@ -51,8 +53,8 @@ export interface IDialogProps {
 export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   primaryLabel,
   secondaryLabel,
-  primaryButton,
-  secondaryButton,
+  primaryAction,
+  secondaryAction,
   message,
   onClose,
   onOpen,
@@ -68,8 +70,32 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   preventOutsideDismiss,
   actionToApplyOnEnter
 }) => {
-  const handlePrimary = () => onClose(primaryLabel)
-  const handleSecondary = () => onClose(secondaryLabel)
+  const handlePrimary = () => {
+    if (primaryAction) {
+      primaryAction()
+      onClose()
+    } else {
+      // https://jira.omnisci.com/browse/FE-10119
+      // We can remove this `else` bit when we remove UI Modal from Immerse.
+      // Calling `onClose` with `primaryLabel` is doing the same thing as calling a `primaryAction` directly
+      // and then `onClose`. `primaryLabel` should just be used for displayed text
+      onClose(primaryLabel)
+    }
+  }
+
+  const handleSecondary = () => {
+    if (secondaryAction) {
+      secondaryAction()
+      onClose()
+    } else {
+      // https://jira.omnisci.com/browse/FE-10119
+      // We can remove this `else` bit when we remove UI Modal from Immerse.
+      // Calling `onClose` with `secondaryLabel` is doing the same thing as calling a `secondaryAction` directly
+      // and then `onClose`. `secondaryLabel` should just be used for displayed text
+      onClose(secondaryLabel)
+    }
+  }
+
   /* eslint-disable no-confusing-arrow */
   const handleCloseFromHeader = () =>
     onCloseFromHeader ? onCloseFromHeader() : onClose("from header")
@@ -115,16 +141,13 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
       </DialogContent>
       <DialogActions>
         {footer || (
-
-          secondaryButton || (
-            secondaryLabel && (
-              <SecondaryButton onClick={handleSecondary}>
-                {secondaryLabel}
-              </SecondaryButton>
-            )
+          secondaryLabel && (
+            <SecondaryButton onClick={handleSecondary}>
+              {secondaryLabel}
+            </SecondaryButton>
           )
           &&
-          primaryButton || (
+          (
             {
               danger: (
                 <DangerButton onClick={handlePrimary}>
@@ -148,7 +171,6 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
               )
             }[type]
           )
-
         )}
       </DialogActions>
     </Dialog>

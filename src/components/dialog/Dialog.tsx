@@ -141,36 +141,38 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
       </DialogContent>
       <DialogActions>
         {footer || (
-          secondaryLabel && (
-            <SecondaryButton onClick={handleSecondary}>
-              {secondaryLabel}
-            </SecondaryButton>
-          )
-          &&
-          (
+          <>
+            { secondaryLabel && (
+              <SecondaryButton onClick={handleSecondary}>
+                {secondaryLabel}
+              </SecondaryButton>
+            ) }
+
             {
-              danger: (
-                <DangerButton onClick={handlePrimary}>
-                  {primaryLabel}
-                </DangerButton>
-              ),
-              warning: (
-                <WarningButton onClick={handlePrimary}>
-                  {primaryLabel}
-                </WarningButton>
-              ),
-              success: (
-                <SuccessButton onClick={handlePrimary}>
-                  {primaryLabel}
-                </SuccessButton>
-              ),
-              info: (
-                <PrimaryButton onClick={handlePrimary}>
-                  {primaryLabel}
-                </PrimaryButton>
-              )
-            }[type]
-          )
+              {
+                danger: (
+                  <DangerButton onClick={handlePrimary}>
+                    {primaryLabel}
+                  </DangerButton>
+                ),
+                warning: (
+                  <WarningButton onClick={handlePrimary}>
+                    {primaryLabel}
+                  </WarningButton>
+                ),
+                success: (
+                  <SuccessButton onClick={handlePrimary}>
+                    {primaryLabel}
+                  </SuccessButton>
+                ),
+                info: (
+                  <PrimaryButton onClick={handlePrimary}>
+                    {primaryLabel}
+                  </PrimaryButton>
+                )
+              }[type]
+            }
+          </>
         )}
       </DialogActions>
     </Dialog>

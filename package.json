@@ -24,7 +24,7 @@
     "lint:fix": "npm run lint --fix",
     "format": "prettier --write '{src,test}/**/*.{js,jsx,ts,tsx}' && npm run lint:fix",
     "styleguide": "styleguidist server",
-    "styleguide:build": "styleguidist build",
+    "styleguide:build": "SASS_PATH=./node_modules styleguidist build",
     "ts:prod": "tsc --emitDeclarationOnly",
     "ts:check": "tsc --noEmit",
     "webpack:dev": "SASS_PATH=./node_modules webpack --env.dev",

@@ -49831,7 +49831,9 @@ var SimpleDialog = function SimpleDialog(_ref) {
     className: "dialog-message"
   }, message))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_dialog__WEBPACK_IMPORTED_MODULE_2__["DialogActions"], null, footer || react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, secondaryLabel && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_5__["SecondaryButton"], {
     onClick: handleSecondary
-  }, secondaryLabel), {
+  }, secondaryLabel), primaryLabel && !type && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_5__["PrimaryButton"], {
+    onClick: handlePrimary
+  }, primaryLabel), {
     danger: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_5__["DangerButton"], {
       onClick: handlePrimary
     }, primaryLabel),

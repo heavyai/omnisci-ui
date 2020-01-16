@@ -148,6 +148,11 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
                 {secondaryLabel}
               </SecondaryButton>
             ) }
+            { primaryLabel && !type && (
+              <PrimaryButton onClick={handlePrimary}>
+                {primaryLabel}
+              </PrimaryButton>
+            ) }
 
             {
               {

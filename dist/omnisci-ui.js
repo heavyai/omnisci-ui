@@ -59713,27 +59713,17 @@ var SimpleDialog = function SimpleDialog(_ref) {
   var handlePrimary = function handlePrimary() {
     if (primaryAction) {
       primaryAction();
-      onClose();
-    } else {
-      // https://jira.omnisci.com/browse/FE-10119
-      // We can remove this `else` bit when we remove UI Modal from Immerse.
-      // Calling `onClose` with `primaryLabel` is doing the same thing as calling a `primaryAction` directly
-      // and then `onClose`. `primaryLabel` should just be used for displayed text
-      onClose(primaryLabel);
     }
+
+    onClose();
   };
 
   var handleSecondary = function handleSecondary() {
     if (secondaryAction) {
       secondaryAction();
-      onClose();
-    } else {
-      // https://jira.omnisci.com/browse/FE-10119
-      // We can remove this `else` bit when we remove UI Modal from Immerse.
-      // Calling `onClose` with `secondaryLabel` is doing the same thing as calling a `secondaryAction` directly
-      // and then `onClose`. `secondaryLabel` should just be used for displayed text
-      onClose(secondaryLabel);
     }
+
+    onClose();
   };
   /* eslint-disable no-confusing-arrow */
 
@@ -59770,21 +59760,21 @@ var SimpleDialog = function SimpleDialog(_ref) {
     icon: "info_outline"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "dialog-message"
-  }, message))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_dialog__WEBPACK_IMPORTED_MODULE_1__["DialogActions"], null, footer || react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, secondaryLabel && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_4__["SecondaryButton"], {
+  }, message))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_dialog__WEBPACK_IMPORTED_MODULE_1__["DialogActions"], null, footer || react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, secondaryAction && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_4__["SecondaryButton"], {
     onClick: handleSecondary
-  }, secondaryLabel), {
+  }, secondaryLabel || "Cancel"), {
     danger: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_4__["DangerButton"], {
       onClick: handlePrimary
-    }, primaryLabel),
+    }, primaryLabel || "OK"),
     warning: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_4__["WarningButton"], {
       onClick: handlePrimary
-    }, primaryLabel),
+    }, primaryLabel || "OK"),
     success: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_4__["SuccessButton"], {
       onClick: handlePrimary
-    }, primaryLabel),
+    }, primaryLabel || "OK"),
     info: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_4__["PrimaryButton"], {
       onClick: handlePrimary
-    }, primaryLabel)
+    }, primaryLabel || "OK")
   }[type])));
 };
 var SimpleDangerDialog = function SimpleDangerDialog(props) {

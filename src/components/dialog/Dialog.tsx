@@ -73,27 +73,15 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   const handlePrimary = () => {
     if (primaryAction) {
       primaryAction()
-      onClose()
-    } else {
-      // https://jira.omnisci.com/browse/FE-10119
-      // We can remove this `else` bit when we remove UI Modal from Immerse.
-      // Calling `onClose` with `primaryLabel` is doing the same thing as calling a `primaryAction` directly
-      // and then `onClose`. `primaryLabel` should just be used for displayed text
-      onClose(primaryLabel)
     }
+    onClose()
   }
 
   const handleSecondary = () => {
     if (secondaryAction) {
       secondaryAction()
-      onClose()
-    } else {
-      // https://jira.omnisci.com/browse/FE-10119
-      // We can remove this `else` bit when we remove UI Modal from Immerse.
-      // Calling `onClose` with `secondaryLabel` is doing the same thing as calling a `secondaryAction` directly
-      // and then `onClose`. `secondaryLabel` should just be used for displayed text
-      onClose(secondaryLabel)
     }
+    onClose()
   }
 
   /* eslint-disable no-confusing-arrow */
@@ -142,9 +130,9 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
       <DialogActions>
         {footer || (
           <>
-            { secondaryLabel && (
+            { secondaryAction && (
               <SecondaryButton onClick={handleSecondary}>
-                {secondaryLabel}
+                {secondaryLabel || "Cancel"}
               </SecondaryButton>
             ) }
 
@@ -152,22 +140,22 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
               {
                 danger: (
                   <DangerButton onClick={handlePrimary}>
-                    {primaryLabel}
+                    {primaryLabel || "OK"}
                   </DangerButton>
                 ),
                 warning: (
                   <WarningButton onClick={handlePrimary}>
-                    {primaryLabel}
+                    {primaryLabel || "OK"}
                   </WarningButton>
                 ),
                 success: (
                   <SuccessButton onClick={handlePrimary}>
-                    {primaryLabel}
+                    {primaryLabel || "OK"}
                   </SuccessButton>
                 ),
                 info: (
                   <PrimaryButton onClick={handlePrimary}>
-                    {primaryLabel}
+                    {primaryLabel || "OK"}
                   </PrimaryButton>
                 )
               }[type]

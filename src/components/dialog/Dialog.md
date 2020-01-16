@@ -199,13 +199,20 @@ initialState = {
   title={"Title"}
   primaryLabel={"Do it"}
   secondaryLabel={"Cancel"}
-  message={"This is an info dialog without a close X icon"}
   open={state.isOpen}
   onClose={buttonLabel => {
     setState({isOpen: false, lastAction: buttonLabel})
   }}
 >
-test
+<div>
+  This is an info dialog with custom content, <br />
+  Here is a button:  
+  <PrimaryButton
+    unelevated
+  >
+  Button
+  </PrimaryButton>
+</div>
 </SimpleInfoDialog>
 
 <PrimaryButton
@@ -213,51 +220,6 @@ test
   onClick={() => setState({isOpen: true})}
 >
 Open Dialog with custom content
-</PrimaryButton>
-</>
-```
-
-```js
-import { SimpleInfoDialog } from "./Dialog"
-import { PrimaryButton, SecondaryButton } from "../button/Button"
-
-initialState = {
-  isOpen: false,
-  lastAction: null
-};
-
-<>
-<SimpleInfoDialog
-  title={"Title"}
-  primaryButton={
-    <PrimaryButton
-      onClick={() => setState({isOpen: false, lastAction: "Apply"})}
-    >
-    Apply
-    </PrimaryButton>
-  }
-  secondaryButton={
-    <SecondaryButton
-      unelevated
-      onClick={() => setState({isOpen: false, lastAction: "Cancel"})}
-    >
-    Cancel
-    </SecondaryButton>
-  }
-  message={"This is an info dialog with custom buttons"}
-  open={state.isOpen}
-  onClose={buttonLabel => {
-    setState({isOpen: false, lastAction: buttonLabel})
-  }}
->
-test
-</SimpleInfoDialog>
-
-<PrimaryButton
-  unelevated
-  onClick={() => setState({isOpen: true})}
->
-Open Dialog with custom buttons
 </PrimaryButton>
 </>
 ```
@@ -346,5 +308,35 @@ initialState = {
 >
   Open Danger Dialog
 </DangerButton>
+</>
+```
+
+```js
+import { SimpleDialog } from "./Dialog"
+import { PrimaryButton } from "../button/Button"
+
+initialState = {
+  isOpen: false,
+  lastAction: null
+};
+
+<>
+<SimpleDialog
+  title={"Title"}
+  primaryLabel={"Do it"}
+  secondaryLabel={"Cancel"}
+  message={"This is a generic dialog"}
+  open={state.isOpen}
+  onClose={buttonLabel => {
+    setState({isOpen: false, lastAction: buttonLabel})
+  }}
+/>
+
+<PrimaryButton
+  unelevated
+  onClick={() => setState({isOpen: true})}
+>
+Open generic Dialog
+</PrimaryButton>
 </>
 ```

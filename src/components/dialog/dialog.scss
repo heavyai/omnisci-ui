@@ -5,7 +5,7 @@
   .mdc-dialog__container {
     .mdc-dialog__title {
       border-radius: 4px 4px 0 0;
-      background-color: $info;
+      background-color: white;
       color: white;
       height: 48px;
       display: flex;
@@ -75,6 +75,7 @@
 
     .mdc-button:last-child {
       color: white;
+      background-color: $info;
     }
   }
 
@@ -83,7 +84,7 @@
       background-color: $danger;
     }
 
-    .mdc-dialog__content {
+    .mdc-dialog__content .material-icons {
       color: $danger;
     }
 
@@ -125,52 +126,50 @@
   }
 
   &.info {
+    .mdc-dialog__title {
+      background-color: $info;
+    }
+
     .mdc-dialog__content .material-icons {
       color: $info;
+    }
+
+    .mdc-button:last-child {
+      color: white;
+      background-color: $info;
+    }
+  }
+
+  &:not(.info):not(.warning):not(.success):not(.danger) {
+    .mdc-dialog__title {
+      border-bottom: 1px solid #ddd;
+      color: $very-dark-gray;
     }
   }
 }
 
 .dark-mode .mdc-dialog {
-  /* dialog doesn't have dark mode for now, but button could be dark using dark-mode class */
-  &:not(.info) .mdc-button:not(.mdc-ripple-upgraded):not(.dark-mode).mdc-button--outlined {
-    background-color: white !important;
-    border: 1px solid $light-gray !important;
-
-    &:active, &:hover {
-      background-color: $very-light-gray;
-    }
-
-    .mdc-button__label {
-      color: $gray;
+  &:not(.info):not(.warning):not(.success):not(.danger) {
+    .mdc-dialog__title {
+      background-color: $grayDp4;
+      color: $textOnDark;
     }
   }
 
-  &.info {
+  .mdc-dialog__surface {
+    background-color: $grayDp3;
 
-    .mdc-dialog__surface {
-      background-color: $grayDp3;
-
-      .mdc-dialog__title {
-        background-color: $grayDp4;
-        border-bottom: 1px solid $borderSeparator;
-
-        .mdc-icon-button {
-          color: $dimTextOnDark;
-        }
-      }
+    .mdc-dialog__title {
+      border-bottom: 1px solid $borderSeparator;
     }
+  }
 
-    .mdc-dialog__content {
-      color: $textOnDark;
+  .mdc-dialog__content {
+    color: $textOnDark;
+  }
 
-      .message-icon .material-icons {
-        color: $dimTextOnDark;
-      }
-    }
-
-    .mdc-dialog__actions {
-      border-top: 1px solid $borderSeparator;
-    }
+  .mdc-dialog__actions {
+    border-top: 1px solid $borderSeparator;
+    color: $textOnDark;
   }
 }

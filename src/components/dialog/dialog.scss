@@ -153,15 +153,12 @@
     .mdc-dialog__title {
       background-color: $grayDp4;
       color: $textOnDark;
+      border-bottom: 1px solid $borderSeparator;
     }
   }
 
   .mdc-dialog__surface {
     background-color: $grayDp3;
-
-    .mdc-dialog__title {
-      border-bottom: 1px solid $borderSeparator;
-    }
   }
 
   .mdc-dialog__content {

@@ -4672,12 +4672,11 @@ svg.mdc-button__icon {
 
 .dark-mode .mdc-dialog:not(.info):not(.warning):not(.success):not(.danger) .mdc-dialog__title {
   background-color: #272727;
-  color: #eee; }
+  color: #eee;
+  border-bottom: 1px solid #444; }
 
 .dark-mode .mdc-dialog .mdc-dialog__surface {
   background-color: #252525; }
-  .dark-mode .mdc-dialog .mdc-dialog__surface .mdc-dialog__title {
-    border-bottom: 1px solid #444; }
 
 .dark-mode .mdc-dialog .mdc-dialog__content {
   color: #eee; }

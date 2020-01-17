@@ -52,13 +52,13 @@ export interface IDialogProps {
  * Dialog
  */
 export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
-  primaryLabel,
-  secondaryLabel,
-  primaryAction,
-  secondaryAction,
+  primaryLabel="Ok",
+  secondaryLabel="Cancel",
+  primaryAction=()=>{},
+  secondaryAction=()=>{},
   message,
-  onClose,
-  onOpen,
+  onClose=()=>{},
+  onOpen=()=>{},
   title,
   open,
   type,
@@ -72,29 +72,13 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   actionToApplyOnEnter
 }) => {
   const handlePrimary = () => {
-    if (primaryAction) {
-      primaryAction()
-      onClose()
-    } else {
-      // https://jira.omnisci.com/browse/FE-10119
-      // We can remove this `else` bit when we remove UI Modal from Immerse.
-      // Calling `onClose` with `primaryLabel` is doing the same thing as calling a `primaryAction` directly
-      // and then `onClose`. `primaryLabel` should just be used for displayed text
-      onClose(primaryLabel)
-    }
+    primaryAction()
+    onClose()
   }
 
   const handleSecondary = () => {
-    if (secondaryAction) {
-      secondaryAction()
-      onClose()
-    } else {
-      // https://jira.omnisci.com/browse/FE-10119
-      // We can remove this `else` bit when we remove UI Modal from Immerse.
-      // Calling `onClose` with `secondaryLabel` is doing the same thing as calling a `secondaryAction` directly
-      // and then `onClose`. `secondaryLabel` should just be used for displayed text
-      onClose(secondaryLabel)
-    }
+    secondaryAction()
+    onClose()
   }
 
   /* eslint-disable no-confusing-arrow */
@@ -148,7 +132,7 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
                 {secondaryLabel}
               </SecondaryButton>
             ) }
-            { primaryLabel && !type && (
+            { !type && (
               <PrimaryButton onClick={handlePrimary}>
                 {primaryLabel}
               </PrimaryButton>

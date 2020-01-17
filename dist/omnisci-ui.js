@@ -49750,13 +49750,19 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
  * Dialog
  */
 var SimpleDialog = function SimpleDialog(_ref) {
-  var primaryLabel = _ref.primaryLabel,
-      secondaryLabel = _ref.secondaryLabel,
-      primaryAction = _ref.primaryAction,
-      secondaryAction = _ref.secondaryAction,
+  var _ref$primaryLabel = _ref.primaryLabel,
+      primaryLabel = _ref$primaryLabel === void 0 ? "Ok" : _ref$primaryLabel,
+      _ref$secondaryLabel = _ref.secondaryLabel,
+      secondaryLabel = _ref$secondaryLabel === void 0 ? "Cancel" : _ref$secondaryLabel,
+      _ref$primaryAction = _ref.primaryAction,
+      primaryAction = _ref$primaryAction === void 0 ? function () {} : _ref$primaryAction,
+      _ref$secondaryAction = _ref.secondaryAction,
+      secondaryAction = _ref$secondaryAction === void 0 ? function () {} : _ref$secondaryAction,
       message = _ref.message,
-      onClose = _ref.onClose,
-      onOpen = _ref.onOpen,
+      _ref$onClose = _ref.onClose,
+      onClose = _ref$onClose === void 0 ? function () {} : _ref$onClose,
+      _ref$onOpen = _ref.onOpen,
+      onOpen = _ref$onOpen === void 0 ? function () {} : _ref$onOpen,
       title = _ref.title,
       open = _ref.open,
       type = _ref.type,
@@ -49770,29 +49776,13 @@ var SimpleDialog = function SimpleDialog(_ref) {
       actionToApplyOnEnter = _ref.actionToApplyOnEnter;
 
   var handlePrimary = function handlePrimary() {
-    if (primaryAction) {
-      primaryAction();
-      onClose();
-    } else {
-      // https://jira.omnisci.com/browse/FE-10119
-      // We can remove this `else` bit when we remove UI Modal from Immerse.
-      // Calling `onClose` with `primaryLabel` is doing the same thing as calling a `primaryAction` directly
-      // and then `onClose`. `primaryLabel` should just be used for displayed text
-      onClose(primaryLabel);
-    }
+    primaryAction();
+    onClose();
   };
 
   var handleSecondary = function handleSecondary() {
-    if (secondaryAction) {
-      secondaryAction();
-      onClose();
-    } else {
-      // https://jira.omnisci.com/browse/FE-10119
-      // We can remove this `else` bit when we remove UI Modal from Immerse.
-      // Calling `onClose` with `secondaryLabel` is doing the same thing as calling a `secondaryAction` directly
-      // and then `onClose`. `secondaryLabel` should just be used for displayed text
-      onClose(secondaryLabel);
-    }
+    secondaryAction();
+    onClose();
   };
   /* eslint-disable no-confusing-arrow */
 
@@ -49831,7 +49821,7 @@ var SimpleDialog = function SimpleDialog(_ref) {
     className: "dialog-message"
   }, message))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_dialog__WEBPACK_IMPORTED_MODULE_2__["DialogActions"], null, footer || react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, secondaryLabel && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_5__["SecondaryButton"], {
     onClick: handleSecondary
-  }, secondaryLabel), primaryLabel && !type && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_5__["PrimaryButton"], {
+  }, secondaryLabel), !type && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_5__["PrimaryButton"], {
     onClick: handlePrimary
   }, primaryLabel), {
     danger: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_5__["DangerButton"], {

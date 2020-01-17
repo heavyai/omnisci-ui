@@ -3,8 +3,7 @@ import { SimpleDangerDialog } from "./Dialog"
 import { DangerButton } from "../button/Button"
 
 initialState = {
-  isOpen: false,
-  lastAction: null
+  isOpen: false
 };
 
 <>
@@ -15,8 +14,8 @@ initialState = {
   message={"This is an important message"}
   open={state.isOpen}
   onStateChange={e => console.log("state change", e)}
-  onClose={buttonLabel => {
-    setState({isOpen: false, lastAction: buttonLabel})
+  onClose={() => {
+    setState({isOpen: false})
   }}
 />
 
@@ -34,8 +33,7 @@ import { SimpleWarningDialog } from "./Dialog"
 import { WarningButton } from "../button/Button"
 
 initialState = {
-  isOpen: false,
-  lastAction: null
+  isOpen: false
 };
 
 <>
@@ -45,8 +43,8 @@ initialState = {
   secondaryLabel={"Cancel"}
   message={"This is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warning"}
   open={state.isOpen}
-  onClose={buttonLabel => {
-    setState({isOpen: false, lastAction: buttonLabel})
+  onClose={() => {
+    setState({isOpen: false})
   }}
 />
 
@@ -64,8 +62,7 @@ import { SimpleWarningDialog } from "./Dialog"
 import { WarningButton } from "../button/Button"
 
 initialState = {
-  isOpen: false,
-  lastAction: null
+  isOpen: false
 };
 
 <>
@@ -75,12 +72,13 @@ initialState = {
   secondaryLabel={"Cancel"}
   message={"This is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warning"}
   open={state.isOpen}
-  onClose={buttonLabel => {
-    setState({isOpen: false, lastAction: buttonLabel})
+  onClose={() => {
+    console.log("closed")
+    setState({isOpen: false})
   }}
-  onCloseFromHeader={buttonLabel => {
+  onCloseFromHeader={() => {
     console.log("closed from header")
-    setState({isOpen: false, lastAction: buttonLabel})
+    setState({isOpen: false})
   }}
 />
 
@@ -98,8 +96,7 @@ import { SimpleSuccessDialog } from "./Dialog"
 import { SuccessButton } from "../button/Button"
 
 initialState = {
-  isOpen: false,
-  lastAction: null
+  isOpen: false
 };
 
 <>
@@ -109,8 +106,8 @@ initialState = {
   secondaryLabel={"Cancel"}
   message={"This is a success"}
   open={state.isOpen}
-  onClose={buttonLabel => {
-    setState({isOpen: false, lastAction: buttonLabel})
+  onClose={() => {
+    setState({isOpen: false})
   }}
 />
 
@@ -128,8 +125,7 @@ import { SimpleInfoDialog } from "./Dialog"
 import { PrimaryButton } from "../button/Button"
 
 initialState = {
-  isOpen: false,
-  lastAction: null
+  isOpen: false
 };
 
 <>
@@ -139,8 +135,8 @@ initialState = {
   secondaryLabel={"Cancel"}
   message={"This is an info"}
   open={state.isOpen}
-  onClose={buttonLabel => {
-    setState({isOpen: false, lastAction: buttonLabel})
+  onClose={() => {
+    setState({isOpen: false})
   }}
 />
 
@@ -158,8 +154,7 @@ import { SimpleInfoDialog } from "./Dialog"
 import { PrimaryButton } from "../button/Button"
 
 initialState = {
-  isOpen: false,
-  lastAction: null
+  isOpen: false
 };
 
 <>
@@ -170,8 +165,8 @@ initialState = {
   secondaryLabel={"Cancel"}
   message={"This is an info dialog without a close X icon"}
   open={state.isOpen}
-  onClose={buttonLabel => {
-    setState({isOpen: false, lastAction: buttonLabel})
+  onClose={() => {
+    setState({isOpen: false})
   }}
 />
 
@@ -189,8 +184,7 @@ import { SimpleInfoDialog } from "./Dialog"
 import { PrimaryButton } from "../button/Button"
 
 initialState = {
-  isOpen: false,
-  lastAction: null
+  isOpen: false
 };
 
 <>
@@ -200,8 +194,8 @@ initialState = {
   primaryLabel={"Do it"}
   secondaryLabel={"Cancel"}
   open={state.isOpen}
-  onClose={buttonLabel => {
-    setState({isOpen: false, lastAction: buttonLabel})
+  onClose={() => {
+    setState({isOpen: false})
   }}
 >
 <div>
@@ -229,8 +223,7 @@ import { SimpleInfoDialog } from "./Dialog"
 import { PrimaryButton, SecondaryButton } from "../button/Button"
 
 initialState = {
-  isOpen: false,
-  lastAction: null
+  isOpen: false
 };
 
 <>
@@ -240,16 +233,16 @@ initialState = {
     <>
       <div>A custom message</div>
       <PrimaryButton
-        onClick={() => setState({isOpen: false, lastAction: "Apply"})}
+        onClick={() => setState({isOpen: false})}
       >
-      Ok
+      Custom button
       </PrimaryButton>
     </>
   }
   message={"This is an info dialog with custom footer"}
   open={state.isOpen}
-  onClose={buttonLabel => {
-    setState({isOpen: false, lastAction: buttonLabel})
+  onClose={() => {
+    setState({isOpen: false})
   }}
 />
 
@@ -273,8 +266,7 @@ import {
 import { DangerButton } from "../button/Button"
 
 initialState = {
-  isOpen: false,
-  lastAction: null
+  isOpen: false
 };
 
 <>
@@ -316,8 +308,7 @@ import { SimpleDialog } from "./Dialog"
 import { PrimaryButton } from "../button/Button"
 
 initialState = {
-  isOpen: false,
-  lastAction: null
+  isOpen: false
 };
 
 <>
@@ -327,8 +318,8 @@ initialState = {
   secondaryLabel={"Cancel"}
   message={"This is a generic dialog"}
   open={state.isOpen}
-  onClose={buttonLabel => {
-    setState({isOpen: false, lastAction: buttonLabel})
+  onClose={() => {
+    setState({isOpen: false})
   }}
 />
 
@@ -340,3 +331,59 @@ Open generic Dialog
 </PrimaryButton>
 </>
 ```
+
+```js
+import { SimpleDialog } from "./Dialog"
+import { PrimaryButton } from "../button/Button"
+
+initialState = {
+  isOpen: false
+};
+
+<>
+<SimpleDialog
+  message={"Dialog with a default button"}
+  open={state.isOpen}
+  onClose={() => {
+    setState({isOpen: false})
+  }}
+/>
+
+<PrimaryButton
+  unelevated
+  onClick={() => setState({isOpen: true})}
+>
+Open default buttons
+</PrimaryButton>
+</>
+```
+
+```js
+import { SimpleDialog } from "./Dialog"
+import { PrimaryButton } from "../button/Button"
+
+initialState = {
+  isOpen: false
+};
+
+<>
+<SimpleDialog
+  message={"Dialog with a default button"}
+  open={state.isOpen}
+  primaryAction={ () => {
+    console.log("primary action")
+    setState({isOpen: false})
+  }}
+  secondaryAction={ () => {
+    console.log("secondary action")
+    setState({isOpen: false})
+  }}
+/>
+
+<PrimaryButton
+  unelevated
+  onClick={() => setState({isOpen: true})}
+>
+Open action callbacks
+</PrimaryButton>
+</>

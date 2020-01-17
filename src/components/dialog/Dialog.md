@@ -10,11 +10,14 @@ initialState = {
 <SimpleDangerDialog
   title={"Important title"}
   primaryLabel={"Do it"}
-  secondaryLabel={"Cancel"}
+  secondaryLabel={"Don't do it"}
   message={"This is an important message"}
   open={state.isOpen}
   onStateChange={e => console.log("state change", e)}
-  onClose={() => {
+  primaryAction={ () => {
+    setState({isOpen: false})
+  }}
+  secondaryAction={ () => {
     setState({isOpen: false})
   }}
 />
@@ -39,8 +42,6 @@ initialState = {
 <>
 <SimpleWarningDialog
   title={"Important title"}
-  primaryLabel={"Do it"}
-  secondaryLabel={"Cancel"}
   message={"This is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warning"}
   open={state.isOpen}
   onClose={() => {
@@ -72,6 +73,12 @@ initialState = {
   secondaryLabel={"Cancel"}
   message={"This is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warningThis is a warning"}
   open={state.isOpen}
+  primaryAction={ () => {
+    console.log("primary action")
+  }}
+  secondaryAction={ () => {
+    console.log("secondary action")
+  }}
   onClose={() => {
     console.log("closed")
     setState({isOpen: false})
@@ -102,8 +109,6 @@ initialState = {
 <>
 <SimpleSuccessDialog
   title={"Title"}
-  primaryLabel={"Do it"}
-  secondaryLabel={"Cancel"}
   message={"This is a success"}
   open={state.isOpen}
   onClose={() => {
@@ -131,8 +136,6 @@ initialState = {
 <>
 <SimpleInfoDialog
   title={"Title"}
-  primaryLabel={"Do it"}
-  secondaryLabel={"Cancel"}
   message={"This is an info"}
   open={state.isOpen}
   onClose={() => {
@@ -161,8 +164,6 @@ initialState = {
 <SimpleInfoDialog
   hideCloseIcon
   title={"Title"}
-  primaryLabel={"Do it"}
-  secondaryLabel={"Cancel"}
   message={"This is an info dialog without a close X icon"}
   open={state.isOpen}
   onClose={() => {
@@ -191,8 +192,6 @@ initialState = {
 <SimpleInfoDialog
   hideCloseIcon
   title={"Title"}
-  primaryLabel={"Do it"}
-  secondaryLabel={"Cancel"}
   open={state.isOpen}
   onClose={() => {
     setState({isOpen: false})
@@ -314,8 +313,6 @@ initialState = {
 <>
 <SimpleDialog
   title={"Title"}
-  primaryLabel={"Do it"}
-  secondaryLabel={"Cancel"}
   message={"This is a generic dialog"}
   open={state.isOpen}
   onClose={() => {

@@ -54,8 +54,8 @@ export interface IDialogProps {
 export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   primaryLabel="Ok",
   secondaryLabel="Cancel",
-  primaryAction=()=>{},
-  secondaryAction=()=>{},
+  primaryAction,
+  secondaryAction,
   message,
   onClose=()=>{},
   onOpen=()=>{},
@@ -72,12 +72,16 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   actionToApplyOnEnter
 }) => {
   const handlePrimary = () => {
-    primaryAction()
+    if (primaryAction) {
+      primaryAction()
+    }
     onClose()
   }
 
   const handleSecondary = () => {
-    secondaryAction()
+    if (secondaryAction) {
+      secondaryAction()
+    }
     onClose()
   }
 
@@ -127,9 +131,9 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
       <DialogActions>
         {footer || (
           <>
-            { secondaryLabel && (
+            { secondaryAction && (
               <SecondaryButton onClick={handleSecondary}>
-                {secondaryLabel}
+                {secondaryLabel || "Cancel"}
               </SecondaryButton>
             ) }
             { !type && (

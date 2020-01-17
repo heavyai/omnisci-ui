@@ -49754,10 +49754,8 @@ var SimpleDialog = function SimpleDialog(_ref) {
       primaryLabel = _ref$primaryLabel === void 0 ? "Ok" : _ref$primaryLabel,
       _ref$secondaryLabel = _ref.secondaryLabel,
       secondaryLabel = _ref$secondaryLabel === void 0 ? "Cancel" : _ref$secondaryLabel,
-      _ref$primaryAction = _ref.primaryAction,
-      primaryAction = _ref$primaryAction === void 0 ? function () {} : _ref$primaryAction,
-      _ref$secondaryAction = _ref.secondaryAction,
-      secondaryAction = _ref$secondaryAction === void 0 ? function () {} : _ref$secondaryAction,
+      primaryAction = _ref.primaryAction,
+      secondaryAction = _ref.secondaryAction,
       message = _ref.message,
       _ref$onClose = _ref.onClose,
       onClose = _ref$onClose === void 0 ? function () {} : _ref$onClose,
@@ -49776,12 +49774,18 @@ var SimpleDialog = function SimpleDialog(_ref) {
       actionToApplyOnEnter = _ref.actionToApplyOnEnter;
 
   var handlePrimary = function handlePrimary() {
-    primaryAction();
+    if (primaryAction) {
+      primaryAction();
+    }
+
     onClose();
   };
 
   var handleSecondary = function handleSecondary() {
-    secondaryAction();
+    if (secondaryAction) {
+      secondaryAction();
+    }
+
     onClose();
   };
   /* eslint-disable no-confusing-arrow */
@@ -49819,9 +49823,9 @@ var SimpleDialog = function SimpleDialog(_ref) {
     icon: "info_outline"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "dialog-message"
-  }, message))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_dialog__WEBPACK_IMPORTED_MODULE_2__["DialogActions"], null, footer || react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, secondaryLabel && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_5__["SecondaryButton"], {
+  }, message))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_rmwc_dialog__WEBPACK_IMPORTED_MODULE_2__["DialogActions"], null, footer || react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, secondaryAction && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_5__["SecondaryButton"], {
     onClick: handleSecondary
-  }, secondaryLabel), !type && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_5__["PrimaryButton"], {
+  }, secondaryLabel || "Cancel"), !type && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_5__["PrimaryButton"], {
     onClick: handlePrimary
   }, primaryLabel), {
     danger: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_button_Button__WEBPACK_IMPORTED_MODULE_5__["DangerButton"], {

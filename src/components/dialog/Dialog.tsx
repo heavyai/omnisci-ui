@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react"
-import classNames from 'classnames'
+import classNames from "classnames"
 import { Dialog, DialogTitle, DialogContent, DialogActions } from "@rmwc/dialog"
 import { IconButton } from "@rmwc/icon-button"
 import { Icon } from "@rmwc/icon"
@@ -52,13 +52,13 @@ export interface IDialogProps {
  * Dialog
  */
 export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
-  primaryLabel="Ok",
-  secondaryLabel="Cancel",
+  primaryLabel = "OK",
+  secondaryLabel = "Cancel",
   primaryAction,
   secondaryAction,
   message,
-  onClose=()=>{},
-  onOpen=()=>{},
+  onClose = () => {},
+  onOpen = () => {},
   title,
   open,
   type,

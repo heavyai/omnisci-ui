@@ -13,6 +13,7 @@ export interface IMultiSelectProps {
   hasError?: boolean
   isRequired?: boolean
   noLabel?: boolean
+  className?: string
 }
 
 export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
@@ -33,18 +34,24 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
   private Placeholder = () => null
 
   render() {
+    const {
+      className, 
+      hasError,
+      isRequired,
+      ...otherProps
+    } = this.props
     return (
       <Select
-        className={cx("multi-select", {
-          error: this.props.hasError,
-          required: this.props.isRequired
+        className={cx("multi-select", className, {
+          error: hasError,
+          required: isRequired
         })}
         classNamePrefix={"select"}
         components={{
           SelectContainer: this.SelectContainer,
           Placeholder: this.Placeholder
         }}
-        {...this.props}
+        {...otherProps}
       />
     )
   }

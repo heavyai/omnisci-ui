@@ -50024,17 +50024,23 @@ function (_React$PureComponent) {
   _createClass(MultiSelect, [{
     key: "render",
     value: function render() {
+      var _this$props = this.props,
+          className = _this$props.className,
+          hasError = _this$props.hasError,
+          isRequired = _this$props.isRequired,
+          otherProps = _objectWithoutProperties(_this$props, ["className", "hasError", "isRequired"]);
+
       return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_select__WEBPACK_IMPORTED_MODULE_1__["default"], _extends({
-        className: classnames__WEBPACK_IMPORTED_MODULE_3___default()("multi-select", {
-          error: this.props.hasError,
-          required: this.props.isRequired
+        className: classnames__WEBPACK_IMPORTED_MODULE_3___default()("multi-select", className, {
+          error: hasError,
+          required: isRequired
         }),
         classNamePrefix: "select",
         components: {
           SelectContainer: this.SelectContainer,
           Placeholder: this.Placeholder
         }
-      }, this.props));
+      }, otherProps));
     }
   }]);
 

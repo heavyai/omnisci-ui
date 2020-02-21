@@ -5,6 +5,8 @@
 @import "@material/list/mdc-list";
 
 .mdc-select--outlined {
+  width: 100%;
+
   &, .mdc-select__selected-text {
     height: 36px;
   }

@@ -14,6 +14,7 @@ export interface IMultiSelectProps {
   isRequired?: boolean
   noLabel?: boolean
   className?: string
+  components?: any
 }
 
 export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
@@ -38,6 +39,7 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
       className, 
       hasError,
       isRequired,
+      components,
       ...otherProps
     } = this.props
     return (
@@ -49,7 +51,8 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
         classNamePrefix={"select"}
         components={{
           SelectContainer: this.SelectContainer,
-          Placeholder: this.Placeholder
+          Placeholder: this.Placeholder,
+          ...components
         }}
         {...otherProps}
       />

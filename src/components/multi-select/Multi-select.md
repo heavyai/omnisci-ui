@@ -91,3 +91,15 @@ initialState = {
   onChange={(e) => setState({ value: e })}
 />
 ```
+
+```js
+<MultiSelect
+  noLabel
+  components={{
+    Menu: ({ innerRef, innerProps }) => (
+      <div ref={innerRef}>Custom menu</div>
+      )
+  }}
+  onChange={(e) => setState({ value: e })}
+/>
+```

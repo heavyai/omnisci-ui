@@ -9,6 +9,8 @@ export interface IMultiSelectProps {
     hasError?: boolean;
     isRequired?: boolean;
     noLabel?: boolean;
+    className?: string;
+    components?: any;
 }
 export declare class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
     private SelectContainer;

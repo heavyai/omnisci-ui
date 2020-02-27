@@ -47,6 +47,7 @@ export declare const WarningDialog: (props: IDialogProps) => JSX.Element;
 export declare const SuccessDialog: (props: IDialogProps) => JSX.Element;
 export declare const InfoDialog: (props: IDialogProps) => JSX.Element;
 declare const _default: {
+    SimpleDialog: React.FunctionComponent<ISimpleDialogProps>;
     DangerDialog: (props: IDialogProps) => JSX.Element;
     WarningDialog: (props: IDialogProps) => JSX.Element;
     SuccessDialog: (props: IDialogProps) => JSX.Element;

@@ -99,20 +99,19 @@ initialState = {
   isLoading
   isSearchable={false}
   components={{
-    Menu: ({ innerRef, innerProps, a }) => {
-      return (
-        <div
-          ref={innerRef}
-          onMouseDown={innerProps.onMouseDown}
-          style={{
-            padding: "20px",
-            background: "red",
-            color: "white"
-          }}
-        >
-        Custom menu
-        </div>
-      )}
+    Menu: ({ innerRef, innerProps}) => (
+      <div
+        ref={innerRef}
+        onMouseDown={innerProps.onMouseDown}
+        style={{
+          padding: "20px",
+          background: "red",
+          color: "white"
+        }}
+      >
+      Custom menu
+      </div>
+    )
   }}
   onChange={(e) => setState({ value: e })}
 />

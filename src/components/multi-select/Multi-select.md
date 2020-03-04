@@ -93,16 +93,24 @@ initialState = {
 ```
 
 ```js
+initialState = {
+  placeholder: "Custom menu, not searchable, loading icon",
+  value: null
+};
+
 <MultiSelect
-  placeholder={"Custom menu, not searchable, loading icon"}
-  noLabel
+  placeholder={state.placeholder}
   isLoading
   isSearchable={false}
+  value={state.value}
   components={{
     Menu: ({ innerRef, innerProps}) => (
       <div
         ref={innerRef}
-        onMouseDown={innerProps.onMouseDown}
+        onMouseDown={(e) => {
+          innerProps.onMouseDown(e)
+          setState({ value: {label: "foo", value: "foo"} })
+        }}
         style={{
           padding: "20px",
           background: "red",
@@ -113,6 +121,5 @@ initialState = {
       </div>
     )
   }}
-  onChange={(e) => setState({ value: e })}
 />
 ```

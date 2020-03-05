@@ -93,13 +93,49 @@ initialState = {
 ```
 
 ```js
+initialState = {
+  placeholder: "Custom menu, not searchable, loading icon",
+  value: null
+};
+
+<MultiSelect
+  placeholder={state.placeholder}
+  isLoading
+  isSearchable={false}
+  value={state.value}
+  components={{
+    Menu: ({ innerRef, innerProps}) => (
+      <div
+        ref={innerRef}
+        onMouseDown={(e) => {
+          innerProps.onMouseDown(e)
+          setState({ value: {label: "foo", value: "foo"} })
+        }}
+        style={{
+          padding: "20px",
+          background: "red",
+          color: "white"
+        }}
+      >
+      Custom menu
+      </div>
+    )
+  }}
+/>
+```
+```js
+initialState = {
+  placeholder: "Menu stays open",
+  value: null, 
+  options: new Array(3).fill(0).map((d, i) => ({label: i, value: i}))
+};
+
 <MultiSelect
   noLabel
-  components={{
-    Menu: ({ innerRef, innerProps }) => (
-      <div ref={innerRef}>Custom menu</div>
-      )
-  }}
+  menuIsOpen
+  options={state.options}
+  value={state.value}
+  placeholder={state.placeholder}
   onChange={(e) => setState({ value: e })}
 />
 ```

@@ -104,7 +104,7 @@ initialState = {
   isSearchable={false}
   value={state.value}
   components={{
-    Menu: ({ innerRef, innerProps}) => (
+    Menu: ({ innerRef, innerProps }) => (
       <div
         ref={innerRef}
         onMouseDown={(e) => {

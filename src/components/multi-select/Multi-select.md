@@ -1,3 +1,4 @@
+{% raw %}
 ```js
 initialState = {
   label: "Standard",
@@ -109,7 +110,7 @@ initialState = {
         ref={innerRef}
         onMouseDown={(e) => {
           innerProps.onMouseDown(e)
-          setState({ value: {label: "foo", value: "foo"} })
+          setState({ value: {label: "foo", value: "foo"}})
         }}
         style={{
           padding: "20px",
@@ -139,3 +140,4 @@ initialState = {
   onChange={(e) => setState({ value: e })}
 />
 ```
+{% endraw %}

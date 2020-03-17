@@ -127,12 +127,13 @@ initialState = {
 initialState = {
   placeholder: "Menu stays open",
   value: null, 
-  options: new Array(3).fill(0).map((d, i) => ({label: i, value: i}))
+  options: new Array(2).fill(0).map((d, i) => ({label: i, value: i}))
 };
 
 <MultiSelect
   noLabel
   menuIsOpen
+  menuShouldScrollIntoView={false}
   options={state.options}
   value={state.value}
   placeholder={state.placeholder}

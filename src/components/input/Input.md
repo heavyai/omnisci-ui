@@ -104,3 +104,37 @@ initialState = {
   rows={8}
 />
 ```
+
+```js
+import { TextField } from "@rmwc/textfield"
+initialState = {
+  label: "Helper text*",
+  value: ""
+};
+<TextField
+  outlined
+  helpText={{
+    persistent: true,
+    children: "*Help text"
+  }}
+  label={state.label}
+  value={state.value}
+  onChange={(e) => setState({ value: e.target.value })}
+/>
+```
+
+```js
+import { TextField } from "@rmwc/textfield"
+initialState = {
+  label: "Placeholder",
+  value: ""
+};
+<TextField
+  outlined
+  label={state.label}
+  value={state.value}
+  onChange={(e) => setState({ value: e.target.value })}
+  onFocus={(e) => setState({ label: "Label" })}
+  onBlur={(e) => setState({ label: "Placeholder" })}
+/>
+```

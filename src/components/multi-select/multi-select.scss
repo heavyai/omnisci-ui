@@ -58,8 +58,8 @@
       background-color: $very-light-gray;
     }
 
-    &.select__option--is-selected {
-      color: $mdc-theme-primary;
+    &.select__option--is-focused {
+      color: $very-dark-gray;
       background-color: $very-light-gray;
     }
   }

@@ -95,3 +95,7 @@
     }
   }
 }
+
+.dark-mode .mdc-text-field:not(.mdc-text-field--disabled) + .mdc-text-field-helper-line .mdc-text-field-helper-text {
+  color: $dimTextOnDark;
+}

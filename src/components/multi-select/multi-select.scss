@@ -1,47 +1,74 @@
 @import "@material/floating-label/mdc-floating-label";
 @import "../../vars.scss";
 
+@mixin notch-border($borderColor) {
+  .mdc-notched-outline {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__trailing,
+    .mdc-notched-outline__notch {
+      box-shadow: none;
+      border-color: $borderColor;
+    }
+  }
+}
+
 .multi-select {
   font-family: "Roboto", sans-serif;
+  display: flex;
 
   .select-container-wrapper {
-    display: inline-block;
-    width: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
   }
 
-  .mdc-floating-label {
-    margin: 10px 14px;
-    color: $light-gray;
-    pointer-events: none;
+  @include notch-border($lightBorder);
 
-    &.mdc-floating-label--float-above {
-      background: white;
-      padding: 0 4px;
-      margin: 2px 14px;
-      color: initial;
+  .mdc-notched-outline {
+    .mdc-notched-outline__leading {
+      border-radius: 4px 0 0 4px;
+    }
 
-      &.no-label {
-        display: none;
+    .mdc-notched-outline__trailing {
+      border-radius: 0 4px 4px 0;
+    }
+
+    .mdc-floating-label {
+      color: $lightDimFont;
+      pointer-events: none;
+      top: 10px;
+      left: 8px;
+
+      &.mdc-floating-label--float-above {
+        top: 2px;
+
+        &.no-label {
+          display: none;
+        }
       }
     }
   }
 
   .select__multi-value {
     background-color: $mdc-theme-primary;
-    color: $textOnDark;
+    color: $lightMainFont;
 
     .select__multi-value__label {
-      color: $textOnDark;
+      color: $lightMainFont;
     }
   }
 
-  .select__control--is-focused {
-    border-color: $mdc-theme-primary;
+  .select__control {
     box-shadow: none;
+    border: none;
+  }
 
-    &:hover {
-      border-color: $mdc-theme-primary;
-    }
+  .select__control--is-focused {
+    box-shadow: 0 0 4px $mdc-theme-primary;
+  }
+
+  .select__indicator {
+    color: $lightDimFont;
   }
 
   .select__indicator-separator {
@@ -54,21 +81,18 @@
     }
 
     &.select__option--is-selected {
-      color: $very-dark-gray;
+      color: $lightMainFont;
       background-color: $very-light-gray;
     }
 
     &.select__option--is-focused {
-      color: $very-dark-gray;
+      color: $lightMainFont;
       background-color: $very-light-gray;
     }
   }
 
   &.error {
-
-    .select__control {
-      border: 1px solid $danger;
-    }
+    @include notch-border($danger);
 
     .mdc-floating-label {
       color: $danger;
@@ -88,29 +112,23 @@
       background-color: $grayDp24;
       border: none;
 
-      .select__single-value {
-        color: $textOnDark !important;
-      }
-
-      .select__input input{
-        color: $textOnDark !important;
-      }
-
+      .select__single-value,
+      .select__input input,
       .select__dropdown-indicator,
       .select__clear-indicator {
-        svg {
-          fill: $dimTextOnDark !important;
-        }
+        color: $dimTextOnDark !important;
       }
+    }
+  }
+
+  .mdc-notched-outline {
+    div {
+      border-color: $borderSeparator;
     }
   }
 
   .mdc-floating-label {
     color: $dimTextOnDark;
-
-    &.mdc-floating-label--float-above {
-      background: none;
-    }
   }
 
   .select__menu {
@@ -134,21 +152,12 @@
     .select-container-wrapper {
       .select__control {
         background-color: $disabledButtonBackgroundColor;
-        border: none;
 
-        .select__single-value {
-          color: $disabledButtonFontColor !important;
-        }
-
-        .select__input input{
-          color: $disabledButtonFontColor !important;
-        }
-
+        .select__single-value,
+        .select__input input,
         .select__dropdown-indicator,
         .select__clear-indicator {
-          svg {
-            fill: $disabledButtonFontColor !important;
-          }
+          color: $disabledButtonFontColor;
         }
       }
     }

@@ -1,6 +1,7 @@
 import * as React from "react"
 import Select, { components } from "react-select"
 import FloatingLabel from "@material/react-floating-label"
+import NotchedOutline from '@material/react-notched-outline';
 import cx from "classnames"
 import "@material/react-floating-label/index.scss"
 import "../../vars.scss"
@@ -18,19 +19,32 @@ export interface IMultiSelectProps {
 }
 
 export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
-  private SelectContainer = ({ children, ...childProps }) => (
-    <components.SelectContainer {...childProps}>
-      <span className="select-container-wrapper">{children}</span>
-        <FloatingLabel
-          className={cx("floating-label", {
-            "no-label": childProps.selectProps.noLabel
-          })}
-          float={childProps.hasValue || childProps.selectProps.inputValue}
-        >
-          {childProps.selectProps.placeholder}
-        </FloatingLabel>
-    </components.SelectContainer>
-  )
+  private SelectContainer = ({ children, ...childProps }) => {
+    const labelShouldFloat = childProps.hasValue || childProps.selectProps.inputValue
+    return (
+      <components.SelectContainer {...childProps}>
+        <span className="select-container-wrapper">{children}</span>
+        <NotchedOutline notch={labelShouldFloat}>
+          <FloatingLabel
+            className={cx("floating-label", {
+              "no-label": childProps.selectProps.noLabel
+            })}
+            float={labelShouldFloat}
+          >
+            {childProps.selectProps.placeholder}
+          </FloatingLabel>
+        </NotchedOutline>
+      </components.SelectContainer>
+    )
+  }
+
+  private DropdownIndicator = ({ ...props }) => {
+    return (
+      <components.DropdownIndicator {...props}>
+        ▾
+      </components.DropdownIndicator>
+    )
+  }
 
   private Placeholder = () => null
 
@@ -52,6 +66,7 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
         components={{
           SelectContainer: this.SelectContainer,
           Placeholder: this.Placeholder,
+          DropdownIndicator: this.DropdownIndicator,
           ...components
         }}
         {...otherProps}

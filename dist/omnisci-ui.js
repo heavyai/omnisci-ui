@@ -5462,6 +5462,101 @@ var r={LABEL_FLOAT_ABOVE:"mdc-floating-label--float-above",LABEL_SHAKE:"mdc-floa
 
 /***/ }),
 
+/***/ "./node_modules/@material/react-notched-outline/dist/index.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@material/react-notched-outline/dist/index.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(t,e){if(true)module.exports=e(__webpack_require__(/*! react */ "./node_modules/react/index.js"),__webpack_require__(/*! classnames */ "./node_modules/classnames/index.js"));else { var r, n; }}("undefined"!=typeof self?self:this,function(t,e){return function(t){var e={};function n(r){if(e[r])return e[r].exports;var o=e[r]={i:r,l:!1,exports:{}};return t[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=t,n.c=e,n.d=function(t,e,r){n.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:r})},n.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},n.t=function(t,e){if(1&e&&(t=n(t)),8&e)return t;if(4&e&&"object"==typeof t&&t&&t.__esModule)return t;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:t}),2&e&&"string"!=typeof t)for(var o in t)n.d(r,o,function(e){return t[e]}.bind(null,o));return r},n.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return n.d(e,"a",e),e},n.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},n.p="",n(n.s=104)}({0:function(e,n){e.exports=t},1:function(t,n){t.exports=e},104:function(t,e,n){"use strict";var r,o=this&&this.__extends||(r=function(t,e){return(r=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(t,e){t.__proto__=e}||function(t,e){for(var n in e)e.hasOwnProperty(n)&&(t[n]=e[n])})(t,e)},function(t,e){function n(){this.constructor=t}r(t,e),t.prototype=null===e?Object.create(e):(n.prototype=e.prototype,new n)}),i=this&&this.__assign||function(){return(i=Object.assign||function(t){for(var e,n=1,r=arguments.length;n<r;n++)for(var o in e=arguments[n])Object.prototype.hasOwnProperty.call(e,o)&&(t[o]=e[o]);return t}).apply(this,arguments)},a=this&&this.__rest||function(t,e){var n={};for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&e.indexOf(r)<0&&(n[r]=t[r]);if(null!=t&&"function"==typeof Object.getOwnPropertySymbols){var o=0;for(r=Object.getOwnPropertySymbols(t);o<r.length;o++)e.indexOf(r[o])<0&&Object.prototype.propertyIsEnumerable.call(t,r[o])&&(n[r[o]]=t[r[o]])}return n},s=this&&this.__importDefault||function(t){return t&&t.__esModule?t:{default:t}};Object.defineProperty(e,"__esModule",{value:!0});var c=s(n(0)),u=s(n(1)),l=n(168),d=n(165),f=l.MDCNotchedOutlineFoundation.cssClasses,p=function(t){function e(){var e=null!==t&&t.apply(this,arguments)||this;return e.notchedEl=c.default.createRef(),e.state={classList:new Set,foundationNotchWidth:void 0},e.addClass=function(t){e.setState(function(e){var n=new Set(e.classList);return n.add(t),{classList:n}})},e.notch=function(){var t=e.props,n=t.notchWidth,r=t.notch;e.foundation&&(r?e.foundation.notch(n):e.foundation.closeNotch())},e}return o(e,t),e.prototype.componentDidMount=function(){var t=this;this.foundation=new l.MDCNotchedOutlineFoundation(this.adapter),this.foundation.init(),this.notch(),this.label&&(this.label.style.transitionDuration="0s",this.addClass(f.OUTLINE_UPGRADED),requestAnimationFrame(function(){t.label&&(t.label.style.transitionDuration="")}))},e.prototype.componentWillUnmount=function(){this.foundation&&this.foundation.destroy()},e.prototype.componentDidUpdate=function(t){this.props.notchWidth===t.notchWidth&&this.props.notch===t.notch||this.notch()},Object.defineProperty(e.prototype,"classes",{get:function(){var t,e=this.state.classList,n=this.props.className;return u.default("mdc-notched-outline",Array.from(e),n,((t={})[f.NO_LABEL]=!this.label,t))},enumerable:!0,configurable:!0}),Object.defineProperty(e.prototype,"label",{get:function(){return this.notchedEl.current?this.notchedEl.current.querySelector("."+d.MDCFloatingLabelFoundation.cssClasses.ROOT):null},enumerable:!0,configurable:!0}),Object.defineProperty(e.prototype,"adapter",{get:function(){var t=this;return{addClass:this.addClass,removeClass:function(e){t.setState(function(t){var n=new Set(t.classList);return n.delete(e),{classList:n}})},setNotchWidthProperty:function(e){return t.setState({foundationNotchWidth:e})},removeNotchWidthProperty:function(){return t.setState({foundationNotchWidth:void 0})}}},enumerable:!0,configurable:!0}),e.prototype.render=function(){var t=this.props,e=t.children,n=(t.className,t.notchWidth,t.notch,a(t,["children","className","notchWidth","notch"])),r=this.state.foundationNotchWidth,o={width:r?r+"px":void 0};return c.default.createElement("div",i({className:this.classes,ref:this.notchedEl},n),c.default.createElement("div",{className:"mdc-notched-outline__leading"}),e?c.default.createElement("div",{className:"mdc-notched-outline__notch",style:o},c.default.Children.only(e)):null,c.default.createElement("div",{className:"mdc-notched-outline__trailing"}))},e.defaultProps={className:"",notchWidth:0,notch:!1},e}(c.default.Component);e.default=p},165:function(t,e,n){"use strict";n.r(e);var r=n(22),o=n(29),i={LABEL_FLOAT_ABOVE:"mdc-floating-label--float-above",LABEL_SHAKE:"mdc-floating-label--shake",ROOT:"mdc-floating-label"};n.d(e,"MDCFloatingLabelFoundation",function(){return a});
+/**
+ * @license
+ * Copyright 2016 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+var a=function(t){function e(n){var o=t.call(this,r.a({},e.defaultAdapter,n))||this;return o.shakeAnimationEndHandler_=function(){return o.handleShakeAnimationEnd_()},o}return r.b(e,t),Object.defineProperty(e,"cssClasses",{get:function(){return i},enumerable:!0,configurable:!0}),Object.defineProperty(e,"defaultAdapter",{get:function(){return{addClass:function(){},removeClass:function(){},getWidth:function(){return 0},registerInteractionHandler:function(){},deregisterInteractionHandler:function(){}}},enumerable:!0,configurable:!0}),e.prototype.init=function(){this.adapter_.registerInteractionHandler("animationend",this.shakeAnimationEndHandler_)},e.prototype.destroy=function(){this.adapter_.deregisterInteractionHandler("animationend",this.shakeAnimationEndHandler_)},e.prototype.getWidth=function(){return this.adapter_.getWidth()},e.prototype.shake=function(t){var n=e.cssClasses.LABEL_SHAKE;t?this.adapter_.addClass(n):this.adapter_.removeClass(n)},e.prototype.float=function(t){var n=e.cssClasses,r=n.LABEL_FLOAT_ABOVE,o=n.LABEL_SHAKE;t?this.adapter_.addClass(r):(this.adapter_.removeClass(r),this.adapter_.removeClass(o))},e.prototype.handleShakeAnimationEnd_=function(){var t=e.cssClasses.LABEL_SHAKE;this.adapter_.removeClass(t)},e}(o.a);e.default=a},168:function(t,e,n){"use strict";n.r(e);var r=n(22),o=n(29),i={NOTCH_ELEMENT_SELECTOR:".mdc-notched-outline__notch"},a={NOTCH_ELEMENT_PADDING:8},s={NO_LABEL:"mdc-notched-outline--no-label",OUTLINE_NOTCHED:"mdc-notched-outline--notched",OUTLINE_UPGRADED:"mdc-notched-outline--upgraded"};n.d(e,"MDCNotchedOutlineFoundation",function(){return c});
+/**
+ * @license
+ * Copyright 2017 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+var c=function(t){function e(n){return t.call(this,r.a({},e.defaultAdapter,n))||this}return r.b(e,t),Object.defineProperty(e,"strings",{get:function(){return i},enumerable:!0,configurable:!0}),Object.defineProperty(e,"cssClasses",{get:function(){return s},enumerable:!0,configurable:!0}),Object.defineProperty(e,"numbers",{get:function(){return a},enumerable:!0,configurable:!0}),Object.defineProperty(e,"defaultAdapter",{get:function(){return{addClass:function(){},removeClass:function(){},setNotchWidthProperty:function(){},removeNotchWidthProperty:function(){}}},enumerable:!0,configurable:!0}),e.prototype.notch=function(t){var n=e.cssClasses.OUTLINE_NOTCHED;t>0&&(t+=a.NOTCH_ELEMENT_PADDING),this.adapter_.setNotchWidthProperty(t),this.adapter_.addClass(n)},e.prototype.closeNotch=function(){var t=e.cssClasses.OUTLINE_NOTCHED;this.adapter_.removeClass(t),this.adapter_.removeNotchWidthProperty()},e}(o.a);e.default=c},22:function(t,e,n){"use strict";n.d(e,"b",function(){return o}),n.d(e,"a",function(){return i});"function"==typeof Symbol&&Symbol.iterator;
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */var r=function(t,e){return(r=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(t,e){t.__proto__=e}||function(t,e){for(var n in e)e.hasOwnProperty(n)&&(t[n]=e[n])})(t,e)};function o(t,e){function n(){this.constructor=t}r(t,e),t.prototype=null===e?Object.create(e):(n.prototype=e.prototype,new n)}var i=function(){return(i=Object.assign||function(t){for(var e,n=1,r=arguments.length;n<r;n++)for(var o in e=arguments[n])Object.prototype.hasOwnProperty.call(e,o)&&(t[o]=e[o]);return t}).apply(this,arguments)}},29:function(t,e,n){"use strict";n.d(e,"a",function(){return r});
+/**
+ * @license
+ * Copyright 2016 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+var r=function(){function t(t){void 0===t&&(t={}),this.adapter_=t}return Object.defineProperty(t,"cssClasses",{get:function(){return{}},enumerable:!0,configurable:!0}),Object.defineProperty(t,"strings",{get:function(){return{}},enumerable:!0,configurable:!0}),Object.defineProperty(t,"numbers",{get:function(){return{}},enumerable:!0,configurable:!0}),Object.defineProperty(t,"defaultAdapter",{get:function(){return{}},enumerable:!0,configurable:!0}),t.prototype.init=function(){},t.prototype.destroy=function(){},t}()}})});
+//# sourceMappingURL=notched-outline.js.map
+
+/***/ }),
+
 /***/ "./node_modules/@material/ripple/component.js":
 /*!****************************************************!*\
   !*** ./node_modules/@material/ripple/component.js ***!
@@ -50021,12 +50116,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.esm.js");
 /* harmony import */ var _material_react_floating_label__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material/react-floating-label */ "./node_modules/@material/react-floating-label/dist/index.js");
 /* harmony import */ var _material_react_floating_label__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_material_react_floating_label__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _material_react_floating_label_index_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material/react-floating-label/index.scss */ "./node_modules/@material/react-floating-label/index.scss");
-/* harmony import */ var _material_react_floating_label_index_scss__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_material_react_floating_label_index_scss__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _vars_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../vars.scss */ "./src/vars.scss");
-/* harmony import */ var _vars_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_vars_scss__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _material_react_notched_outline__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material/react-notched-outline */ "./node_modules/@material/react-notched-outline/dist/index.js");
+/* harmony import */ var _material_react_notched_outline__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_material_react_notched_outline__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _material_react_floating_label_index_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material/react-floating-label/index.scss */ "./node_modules/@material/react-floating-label/index.scss");
+/* harmony import */ var _material_react_floating_label_index_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_material_react_floating_label_index_scss__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _vars_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../vars.scss */ "./src/vars.scss");
+/* harmony import */ var _vars_scss__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_vars_scss__WEBPACK_IMPORTED_MODULE_6__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -50061,6 +50158,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var MultiSelect =
 /*#__PURE__*/
 function (_React$PureComponent) {
@@ -50083,14 +50181,22 @@ function (_React$PureComponent) {
       var children = _ref.children,
           childProps = _objectWithoutProperties(_ref, ["children"]);
 
+      var labelShouldFloat = childProps.hasValue || childProps.selectProps.inputValue;
       return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_select__WEBPACK_IMPORTED_MODULE_1__["components"].SelectContainer, childProps, react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", {
         className: "select-container-wrapper"
-      }, children), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_material_react_floating_label__WEBPACK_IMPORTED_MODULE_2___default.a, {
-        className: classnames__WEBPACK_IMPORTED_MODULE_3___default()("floating-label", {
+      }, children), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_material_react_notched_outline__WEBPACK_IMPORTED_MODULE_3___default.a, {
+        notch: labelShouldFloat
+      }, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_material_react_floating_label__WEBPACK_IMPORTED_MODULE_2___default.a, {
+        className: classnames__WEBPACK_IMPORTED_MODULE_4___default()("floating-label", {
           "no-label": childProps.selectProps.noLabel
         }),
-        float: childProps.hasValue || childProps.selectProps.inputValue
-      }, childProps.selectProps.placeholder));
+        float: labelShouldFloat
+      }, childProps.selectProps.placeholder)));
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "DropdownIndicator", function (_ref2) {
+      var props = Object.assign({}, _ref2);
+      return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_select__WEBPACK_IMPORTED_MODULE_1__["components"].DropdownIndicator, props, "\u25BE");
     });
 
     _defineProperty(_assertThisInitialized(_this), "Placeholder", function () {
@@ -50111,14 +50217,15 @@ function (_React$PureComponent) {
           otherProps = _objectWithoutProperties(_this$props, ["className", "hasError", "isRequired", "components"]);
 
       return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_select__WEBPACK_IMPORTED_MODULE_1__["default"], _extends({
-        className: classnames__WEBPACK_IMPORTED_MODULE_3___default()("multi-select", className, {
+        className: classnames__WEBPACK_IMPORTED_MODULE_4___default()("multi-select", className, {
           error: hasError,
           required: isRequired
         }),
         classNamePrefix: "select",
         components: _objectSpread({
           SelectContainer: this.SelectContainer,
-          Placeholder: this.Placeholder
+          Placeholder: this.Placeholder,
+          DropdownIndicator: this.DropdownIndicator
         }, components)
       }, otherProps));
     }

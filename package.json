@@ -47,6 +47,7 @@
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/polyfill": "^7.4.0",
     "@material/react-floating-label": "^0.15.0",
+    "@material/react-notched-outline": "^0.15.0",
     "@typescript-eslint/parser": "^1.9.0",
     "classnames": "^2.2.6",
     "moment": "^2.24.0",

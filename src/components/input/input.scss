@@ -45,7 +45,7 @@
     transform: translateY(-75%) translateX(-20px) scale(0.75)
   }
 
-  &.mdc-text-field--with-leading-icon .mdc-text-field__icon, 
+  &.mdc-text-field--with-leading-icon .mdc-text-field__icon,
   &.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
     bottom: 6px;
   }
@@ -71,7 +71,7 @@
       color: $dimTextOnDark;
     }
 
-    &.mdc-text-field--with-leading-icon .mdc-text-field__icon, 
+    &.mdc-text-field--with-leading-icon .mdc-text-field__icon,
     &.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
       color: $dimTextOnDark;
     }
@@ -89,13 +89,21 @@
       color: $disabledButtonFontColor;
     }
 
-    &.mdc-text-field--with-leading-icon .mdc-text-field__icon, 
+    &.mdc-text-field--with-leading-icon .mdc-text-field__icon,
     &.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
       color: $disabledButtonFontColor;
     }
   }
 }
 
-.dark-mode .mdc-text-field:not(.mdc-text-field--disabled) + .mdc-text-field-helper-line .mdc-text-field-helper-text {
-  color: $dimTextOnDark;
+.dark-mode {
+  .mdc-text-field:not(.mdc-text-field--disabled) {
+    & + .mdc-text-field-helper-line .mdc-text-field-helper-text {
+      color: $dimTextOnDark;
+    }
+
+    .mdc-text-field__input::placeholder {
+      color: $dimTextOnDark;
+    }
+  }
 }

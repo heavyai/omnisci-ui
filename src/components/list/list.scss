@@ -1,0 +1,32 @@
+@import "@material/list/mdc-list";
+
+.mdc-list {
+  border: 1px solid $lightBorder;
+  background-color: $very-light-gray;
+  color: $lightMainFont;
+  .mdc-list-item--selected {
+    color: $mdc-theme-primary;
+  }
+}
+.mdc-list.compact {
+  padding: 0;
+  .mdc-list-item {
+    height: 24px;
+    padding: 0 8px;
+    font-size: 14px;
+  }
+}
+
+.dark-mode .mdc-list {
+  background-color: #2D2D2D;
+  border-color: $borderSeparator;
+  .mdc-list-item, .mdc-list-item__meta {
+    color: $textOnDark;
+  }
+  .mdc-list-item:hover {
+    background-color: $highlightOnDark;
+  }
+  .mdc-list-item--selected {
+    color: $mdc-theme-primary;
+  }
+}

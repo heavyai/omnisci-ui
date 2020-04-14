@@ -8,7 +8,7 @@ import { List as RMWCList } from "@rmwc/list"
 export interface IListProps {
   /** Content specified as children. */
   children?: [React.ReactNode]
-   /** Reduce list item padding */
+  /** Reduce list item padding */
   compact?: boolean
   extraCompact?: boolean
 }
@@ -18,9 +18,16 @@ export interface IListProps {
  */
 export const List = (props: IListProps) => {
   const { compact, extraCompact, children, ...rest } = props
-  const classNames = cx({ compact: props.compact, "extra-compact": props.extraCompact })
+  const classNames = cx({
+    compact: props.compact,
+    "extra-compact": props.extraCompact
+  })
 
-  return <RMWCList {...rest} className={classNames}>{props.children}</RMWCList>
+  return (
+    <RMWCList {...rest} className={classNames}>
+      {props.children}
+    </RMWCList>
+  )
 }
 
 export default List

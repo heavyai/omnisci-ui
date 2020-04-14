@@ -10,6 +10,16 @@
   .mdc-list-item--selected {
     color: $mdc-theme-primary;
   }
+  .mdc-list-item.compact, .mdc-list-item.mdc-list-item.extra-compact {
+    padding: 0 8px;
+    font-size: 14px;
+  }
+  .mdc-list-item.compact {
+    height: 32px;
+  }
+  .mdc-list-item.extra-compact {
+    height: 24px;
+  }
 }
 
 .mdc-list.compact, .mdc-list.extra-compact {

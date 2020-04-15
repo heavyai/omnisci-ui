@@ -4978,7 +4978,7 @@ a.mdc-list-item {
     background-color: whitesmoke; }
   .mdc-list .mdc-list-item--selected {
     color: #0089D1; }
-  .mdc-list .mdc-list-item.compact, .mdc-list .mdc-list-item.mdc-list-item.extra-compact {
+  .mdc-list .mdc-list-item.compact, .mdc-list .mdc-list-item.extra-compact {
     padding: 0 8px;
     font-size: 14px; }
   .mdc-list .mdc-list-item.compact {

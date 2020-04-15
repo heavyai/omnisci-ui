@@ -1,0 +1,50 @@
+@import "@material/list/mdc-list";
+
+.mdc-list {
+  border: 1px solid $lightBorder;
+  background-color: #fff;
+  color: $lightMainFont;
+  .mdc-list-item:hover {
+    background-color: $very-light-gray;
+  }
+  .mdc-list-item--selected {
+    color: $mdc-theme-primary;
+  }
+  .mdc-list-item.compact, .mdc-list-item.extra-compact {
+    padding: 0 8px;
+    font-size: 14px;
+  }
+  .mdc-list-item.compact {
+    height: 32px;
+  }
+  .mdc-list-item.extra-compact {
+    height: 24px;
+  }
+}
+
+.mdc-list.compact, .mdc-list.extra-compact {
+  padding: 0;
+  .mdc-list-item {
+    height: 32px;
+    padding: 0 8px;
+    font-size: 14px;
+  }
+}
+
+.mdc-list.extra-compact .mdc-list-item {
+  height: 24px;
+}
+
+.dark-mode .mdc-list {
+  background-color: #2D2D2D;
+  border-color: $borderSeparator;
+  .mdc-list-item, .mdc-list-item__meta {
+    color: $textOnDark;
+  }
+  .mdc-list-item:hover {
+    background-color: $highlightOnDark;
+  }
+  .mdc-list-item--selected {
+    color: $mdc-theme-primary;
+  }
+}

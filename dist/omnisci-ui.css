@@ -2004,7 +2004,7 @@ svg.mdc-button__icon {
             transform: translateY(-75%) translateX(0) scale(0.75); }
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--with-leading-icon .mdc-floating-label {
     left: 24px;
-    padding-right: 24px; }
+    padding-right: 20px; }
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--with-leading-icon .mdc-floating-label.mdc-floating-label--float-above {
     -webkit-transform: translateY(-75%) translateX(-20px) scale(0.75);
             transform: translateY(-75%) translateX(-20px) scale(0.75);

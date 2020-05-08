@@ -3,12 +3,12 @@
 .mdc-list {
   border: 1px solid $lightBorder;
   background-color: #fff;
-  color: $lightMainFont;
+  color: $lightDimFont;
   .mdc-list-item:hover {
     background-color: $very-light-gray;
   }
   .mdc-list-item--selected {
-    color: $mdc-theme-primary;
+    color: $lightMainFont;
   }
   .mdc-list-item.compact, .mdc-list-item.extra-compact {
     padding: 0 8px;
@@ -19,6 +19,10 @@
   }
   .mdc-list-item.extra-compact {
     height: 24px;
+  }
+  &:not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item::before,
+  &:not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item::after {
+    background-color: $very-light-gray;
   }
 }
 
@@ -36,15 +40,21 @@
 }
 
 .dark-mode .mdc-list {
-  background-color: #2D2D2D;
+  background-color: $grayDp6;
   border-color: $borderSeparator;
   .mdc-list-item, .mdc-list-item__meta {
-    color: $textOnDark;
+    color: $dimTextOnDark;
+    background-color: $grayDp6;
   }
   .mdc-list-item:hover {
     background-color: $highlightOnDark;
+    color: $textOnDark;
   }
   .mdc-list-item--selected {
-    color: $mdc-theme-primary;
+    color: $textOnDark;
+  }
+  .mdc-list-item--selected::before,
+  .mdc-list-item--selected::after {
+    background-color: $grayDp6;
   }
 }

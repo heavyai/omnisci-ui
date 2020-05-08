@@ -1,9 +1,9 @@
 @import "@material/button/mdc-button";
-@import "../../vars";
 
 .mdc-button:not(.mdc-ripple-upgraded) {
   text-transform: initial;
   letter-spacing: normal;
+  height: 32px;
 
   &.mdc-button--unelevated,
   &.mdc-button--outlined {

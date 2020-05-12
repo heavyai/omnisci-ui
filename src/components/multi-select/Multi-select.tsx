@@ -48,6 +48,35 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
 
   private Placeholder = () => null
 
+  private customStyles = {
+    control: provided => ({
+      ...provided,
+      minHeight: "32px",
+      height: "32px"
+    }),
+    indicatorsContainer: provided => ({
+      ...provided,
+      height: "32px"
+    }),
+    clearIndicator: provided => ({
+      ...provided,
+      padding: "4px"
+    }),
+    dropdownIndicator: provided => ({
+      ...provided,
+      padding: "4px"
+    }),
+    valueContainer: base => ({
+      ...base,
+      padding: '0px 6px'
+    }),
+    input: base => ({
+      ...base,
+      margin: 0,
+      padding: 0
+    })
+  }
+
   render() {
     const {
       className, 
@@ -62,6 +91,7 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
           error: hasError,
           required: isRequired
         })}
+        styles={this.customStyles}
         classNamePrefix={"select"}
         components={{
           SelectContainer: this.SelectContainer,

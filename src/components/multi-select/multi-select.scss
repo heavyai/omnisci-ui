@@ -35,7 +35,7 @@
     .mdc-floating-label {
       color: $lightDimFont;
       pointer-events: none;
-      top: 10px;
+      top: 6px;
       left: 8px;
 
       &.mdc-floating-label--float-above {
@@ -48,8 +48,12 @@
     }
   }
 
+  .select__single-value {
+    color: $lightMainFont;
+  }
+
   .select__multi-value {
-    background-color: $mdc-theme-primary;
+    background-color: $light-gray;
     color: $lightMainFont;
 
     .select__multi-value__label {
@@ -103,6 +107,23 @@
       content: " *";
     }
   }
+
+  .select__clear-indicator svg {
+    height: 16px;
+  }
+
+  .select__multi-value__remove {
+    opacity: 0;
+  }
+
+  &:hover .select__multi-value__remove {
+    opacity: 1;
+  }
+
+  .select__multi-value__remove:hover {
+    background-color: $mdc-theme-primary;
+    color: white;
+  }
 }
 
 .dark-mode .multi-select {
@@ -111,7 +132,10 @@
       background-color: $grayDp24;
       border: none;
 
-      .select__single-value,
+      .select__single-value {
+        color: $textOnDark;
+      }
+
       .select__input input,
       .select__dropdown-indicator,
       .select__clear-indicator {
@@ -123,6 +147,14 @@
   .mdc-notched-outline {
     div {
       border-color: $borderSeparator;
+    }
+  }
+
+  .select__multi-value {
+    background-color: $grayDp4;
+    color: $dimTextOnDark;
+    .select__multi-value__label {
+      color: $textOnDark;
     }
   }
 

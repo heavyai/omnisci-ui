@@ -4,12 +4,12 @@
   font-family: "Roboto", sans-serif;
 
   &:not(.mdc-text-field--textarea) {
-    height: 36px;
+    height: 32px;
   }
 
   &.mdc-text-field--textarea,
   &.mdc-text-field--textarea .mdc-text-field__input {
-    min-height: 36px;
+    min-height: 32px;
   }
 
   &.mdc-text-field--textarea {
@@ -22,14 +22,15 @@
 
   .mdc-text-field__input {
     padding: 4px 8px;
+    -webkit-font-smoothing: initial;
   }
 
   &.mdc-text-field--with-leading-icon .mdc-text-field__input {
-    padding: 4px 36px;
+    padding: 4px 32px;
   }
 
   .mdc-floating-label {
-    top: 8px;
+    top: 6px;
     bottom: initial;
   }
 

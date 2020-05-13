@@ -53,7 +53,7 @@
   &.mdc-button--outlined {
     border-color: $light-gray;
     border-width: 1px;
-    color: $gray;
+    color: $dark-gray;
     background: white;
 
     &:active, &:hover {
@@ -62,7 +62,7 @@
 
     svg,
     svg use {
-      fill: $gray;
+      fill: $dark-gray;
     }
 
     &:disabled {

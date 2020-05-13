@@ -144,10 +144,8 @@
     }
   }
 
-  .mdc-notched-outline {
-    div {
-      border-color: $borderSeparator;
-    }
+  .mdc-notched-outline div {
+    border-color: $borderSeparator;
   }
 
   .select__multi-value {

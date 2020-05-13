@@ -50252,6 +50252,41 @@ function (_React$PureComponent) {
       return null;
     });
 
+    _defineProperty(_assertThisInitialized(_this), "customStyles", {
+      control: function control(provided) {
+        return _objectSpread({}, provided, {
+          minHeight: "32px",
+          height: "32px"
+        });
+      },
+      indicatorsContainer: function indicatorsContainer(provided) {
+        return _objectSpread({}, provided, {
+          height: "32px"
+        });
+      },
+      clearIndicator: function clearIndicator(provided) {
+        return _objectSpread({}, provided, {
+          padding: "4px"
+        });
+      },
+      dropdownIndicator: function dropdownIndicator(provided) {
+        return _objectSpread({}, provided, {
+          padding: "4px"
+        });
+      },
+      valueContainer: function valueContainer(base) {
+        return _objectSpread({}, base, {
+          padding: '0px 6px'
+        });
+      },
+      input: function input(base) {
+        return _objectSpread({}, base, {
+          margin: 0,
+          padding: 0
+        });
+      }
+    });
+
     return _this;
   }
 
@@ -50270,6 +50305,7 @@ function (_React$PureComponent) {
           error: hasError,
           required: isRequired
         }),
+        styles: this.customStyles,
         classNamePrefix: "select",
         components: _objectSpread({
           SelectContainer: this.SelectContainer,

@@ -1930,20 +1930,21 @@ svg.mdc-button__icon {
 .mdc-text-field.mdc-text-field--upgraded {
   font-family: "Roboto", sans-serif; }
   .mdc-text-field.mdc-text-field--upgraded:not(.mdc-text-field--textarea) {
-    height: 36px; }
+    height: 32px; }
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea,
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea .mdc-text-field__input {
-    min-height: 36px; }
+    min-height: 32px; }
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea {
     display: inline-flex; }
     .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--textarea.mdc-text-field--fullwidth {
       resize: vertical; }
   .mdc-text-field.mdc-text-field--upgraded .mdc-text-field__input {
-    padding: 4px 8px; }
+    padding: 4px 8px;
+    -webkit-font-smoothing: initial; }
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--with-leading-icon .mdc-text-field__input {
-    padding: 4px 36px; }
+    padding: 4px 32px; }
   .mdc-text-field.mdc-text-field--upgraded .mdc-floating-label {
-    top: 8px;
+    top: 6px;
     bottom: initial; }
   .mdc-text-field.mdc-text-field--upgraded .mdc-floating-label.mdc-floating-label--float-above {
     -webkit-transform: translateY(-75%) translateX(0) scale(0.75);
@@ -1960,27 +1961,48 @@ svg.mdc-button__icon {
     left: 4px; }
   .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--with-trailing-icon .mdc-text-field__icon ~ .mdc-text-field__icon {
     right: 0; }
+  .mdc-text-field.mdc-text-field--upgraded .mdc-notched-outline .mdc-notched-outline__leading,
+  .mdc-text-field.mdc-text-field--upgraded .mdc-notched-outline .mdc-notched-outline__notch,
+  .mdc-text-field.mdc-text-field--upgraded .mdc-notched-outline .mdc-notched-outline__trailing {
+    background-color: white; }
+  .mdc-text-field.mdc-text-field--upgraded .mdc-notched-outline .mdc-notched-outline__leading,
+  .mdc-text-field.mdc-text-field--upgraded .mdc-notched-outline .mdc-notched-outline__trailing,
+  .mdc-text-field.mdc-text-field--upgraded .mdc-notched-outline .mdc-notched-outline__notch {
+    box-shadow: none;
+    border-color: #868686; }
+  .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--invalid .mdc-notched-outline .mdc-notched-outline__leading,
+  .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--invalid .mdc-notched-outline .mdc-notched-outline__trailing,
+  .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--invalid .mdc-notched-outline .mdc-notched-outline__notch {
+    box-shadow: none;
+    border-color: #D83C3C; }
 
-.dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined:not(.mdc-text-field--disabled) {
+.dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  color: #eee; }
+
+.dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-floating-label {
+  color: #888; }
+
+.dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--with-leading-icon .mdc-text-field__icon,
+.dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--with-trailing-icon .mdc-text-field__icon {
+  color: #888; }
+
+.dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined.mdc-text-field--disabled .mdc-text-field__input {
+  color: #555; }
+
+.dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined.mdc-text-field--disabled .mdc-floating-label {
+  color: #555; }
+
+.dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined.mdc-text-field--disabled.mdc-text-field--with-leading-icon .mdc-text-field__icon,
+.dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined.mdc-text-field--disabled.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
+  color: #555; }
+
+.dark-mode .mdc-text-field.mdc-text-field--upgraded .mdc-notched-outline .mdc-notched-outline__leading,
+.dark-mode .mdc-text-field.mdc-text-field--upgraded .mdc-notched-outline .mdc-notched-outline__notch,
+.dark-mode .mdc-text-field.mdc-text-field--upgraded .mdc-notched-outline .mdc-notched-outline__trailing {
   background-color: #383838; }
-  .dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-text-field__input {
-    color: #eee; }
-  .dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-floating-label {
-    color: #888; }
-  .dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--with-leading-icon .mdc-text-field__icon,
-  .dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--with-trailing-icon .mdc-text-field__icon {
-    color: #888; }
 
-.dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined.mdc-text-field--disabled {
-  background-color: #313131;
-  border: 1px solid #444 !important; }
-  .dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined.mdc-text-field--disabled .mdc-text-field__input {
-    color: #555; }
-  .dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined.mdc-text-field--disabled .mdc-floating-label {
-    color: #555; }
-  .dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined.mdc-text-field--disabled.mdc-text-field--with-leading-icon .mdc-text-field__icon,
-  .dark-mode .mdc-text-field.mdc-text-field--upgraded.mdc-text-field--outlined.mdc-text-field--disabled.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
-    color: #555; }
+.dark-mode .mdc-text-field.mdc-text-field--upgraded .mdc-notched-outline div {
+  border-color: #444; }
 
 .dark-mode .mdc-text-field:not(.mdc-text-field--disabled) + .mdc-text-field-helper-line .mdc-text-field-helper-text {
   color: #888; }
@@ -3922,7 +3944,7 @@ a.mdc-list-item {
   .multi-select .mdc-notched-outline .mdc-notched-outline__trailing,
   .multi-select .mdc-notched-outline .mdc-notched-outline__notch {
     box-shadow: none;
-    border-color: #ddd; }
+    border-color: #868686; }
   .multi-select .mdc-notched-outline .mdc-notched-outline__leading {
     border-radius: 4px 0 0 4px; }
   .multi-select .mdc-notched-outline .mdc-notched-outline__trailing {
@@ -3930,14 +3952,16 @@ a.mdc-list-item {
   .multi-select .mdc-notched-outline .mdc-floating-label {
     color: #bbb;
     pointer-events: none;
-    top: 10px;
+    top: 6px;
     left: 8px; }
     .multi-select .mdc-notched-outline .mdc-floating-label.mdc-floating-label--float-above {
       top: 2px; }
       .multi-select .mdc-notched-outline .mdc-floating-label.mdc-floating-label--float-above.no-label {
         display: none; }
+  .multi-select .select__single-value {
+    color: #404040; }
   .multi-select .select__multi-value {
-    background-color: #0089D1;
+    background-color: #ddd;
     color: #404040; }
     .multi-select .select__multi-value .select__multi-value__label {
       color: #404040; }
@@ -3967,11 +3991,21 @@ a.mdc-list-item {
     color: #D83C3C; }
   .multi-select.required .mdc-floating-label::after {
     content: " *"; }
+  .multi-select .select__clear-indicator svg {
+    height: 16px; }
+  .multi-select .select__multi-value__remove {
+    opacity: 0; }
+  .multi-select:hover .select__multi-value__remove {
+    opacity: 1; }
+  .multi-select .select__multi-value__remove:hover {
+    background-color: #0089D1;
+    color: white; }
 
 .dark-mode .multi-select .select-container-wrapper .select__control {
   background-color: #383838;
   border: none; }
-  .dark-mode .multi-select .select-container-wrapper .select__control .select__single-value,
+  .dark-mode .multi-select .select-container-wrapper .select__control .select__single-value {
+    color: #eee; }
   .dark-mode .multi-select .select-container-wrapper .select__control .select__input input,
   .dark-mode .multi-select .select-container-wrapper .select__control .select__dropdown-indicator,
   .dark-mode .multi-select .select-container-wrapper .select__control .select__clear-indicator {
@@ -3979,6 +4013,12 @@ a.mdc-list-item {
 
 .dark-mode .multi-select .mdc-notched-outline div {
   border-color: #444; }
+
+.dark-mode .multi-select .select__multi-value {
+  background-color: #272727;
+  color: #888; }
+  .dark-mode .multi-select .select__multi-value .select__multi-value__label {
+    color: #eee; }
 
 .dark-mode .multi-select .mdc-floating-label {
   color: #888; }
@@ -5139,7 +5179,7 @@ a.mdc-list-item {
     opacity: 0.12; }
 
 .mdc-list {
-  border: 1px solid #ddd;
+  border: 1px solid #868686;
   background-color: #fff;
   color: #bbb; }
   .mdc-list .mdc-list-item:hover {

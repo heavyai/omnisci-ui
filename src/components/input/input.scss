@@ -1,15 +1,26 @@
 @import "@material/textfield/mdc-text-field";
 
+@mixin notch-border($borderColor) {
+  .mdc-notched-outline {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__trailing,
+    .mdc-notched-outline__notch {
+      box-shadow: none;
+      border-color: $borderColor;
+    }
+  }
+}
+
 .mdc-text-field.mdc-text-field--upgraded {
   font-family: "Roboto", sans-serif;
 
   &:not(.mdc-text-field--textarea) {
-    height: 36px;
+    height: 32px;
   }
 
   &.mdc-text-field--textarea,
   &.mdc-text-field--textarea .mdc-text-field__input {
-    min-height: 36px;
+    min-height: 32px;
   }
 
   &.mdc-text-field--textarea {
@@ -22,14 +33,15 @@
 
   .mdc-text-field__input {
     padding: 4px 8px;
+    -webkit-font-smoothing: initial;
   }
 
   &.mdc-text-field--with-leading-icon .mdc-text-field__input {
-    padding: 4px 36px;
+    padding: 4px 32px;
   }
 
   .mdc-floating-label {
-    top: 8px;
+    top: 6px;
     bottom: initial;
   }
 
@@ -57,12 +69,24 @@
   &.mdc-text-field--with-trailing-icon .mdc-text-field__icon ~ .mdc-text-field__icon {
     right: 0;
   }
+
+  .mdc-notched-outline {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      background-color: white;
+    }
+  }
+
+  @include notch-border($lightBorder);
+
+  &.mdc-text-field--invalid {
+    @include notch-border($danger);
+  }
 }
 
 .dark-mode .mdc-text-field.mdc-text-field--upgraded {
   &.mdc-text-field--outlined:not(.mdc-text-field--disabled) {
-    background-color: $grayDp24;
-
     .mdc-text-field__input {
       color: $textOnDark;
     }
@@ -78,9 +102,6 @@
   }
 
   &.mdc-text-field--outlined.mdc-text-field--disabled {
-    background-color: $disabledButtonBackgroundColor;
-    border: 1px solid $disabledButtonBorderColor !important;
-
     .mdc-text-field__input {
       color: $disabledButtonFontColor;
     }
@@ -93,6 +114,18 @@
     &.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
       color: $disabledButtonFontColor;
     }
+  }
+
+  .mdc-notched-outline {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      background-color: $grayDp24;
+    }
+  }
+
+  .mdc-notched-outline div {
+    border-color: $borderSeparator;
   }
 }
 

@@ -48,3 +48,16 @@ initialState = {
   onChange={(e) => setState({ isChecked: e.target.checked })}
 />
 ```
+
+Compact
+```js
+import { Switch } from "@rmwc/switch"
+initialState = {
+  isChecked: false
+};
+<Switch
+  className="compact"
+  checked={state.isChecked}
+  onChange={(e) => setState({ isChecked: e.target.checked })}
+/>
+```

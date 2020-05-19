@@ -3822,6 +3822,18 @@ a.mdc-list-item {
     border-color: #999; }
   .mdc-switch .mdc-switch__thumb-underlay::before, .mdc-switch .mdc-switch__thumb-underlay::after {
     display: none; }
+  .mdc-switch.compact .mdc-switch__track {
+    width: 24px;
+    height: 10px; }
+  .mdc-switch.compact .mdc-switch__thumb-underlay {
+    top: -19px; }
+  .mdc-switch.compact .mdc-switch__thumb {
+    width: 12px;
+    height: 12px;
+    border: none; }
+  .mdc-switch.compact.mdc-switch--checked .mdc-switch__thumb-underlay {
+    -webkit-transform: translateX(12px);
+            transform: translateX(12px); }
 
 .mdc-icon-button {
   width: 48px;

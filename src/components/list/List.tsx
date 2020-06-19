@@ -20,7 +20,7 @@ export const List = (props: IListProps) => {
   const { compact, extraCompact, children, ...rest } = props
   const classNames = cx({
     compact: props.compact,
-    "extra-compact": props.extraCompact
+    "extra-compact": props.extraCompact,
   })
 
   return (

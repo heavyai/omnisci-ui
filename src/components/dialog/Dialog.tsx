@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react"
-import classNames from 'classnames'
+import classNames from "classnames"
 import { Dialog, DialogTitle, DialogContent, DialogActions } from "@rmwc/dialog"
 import { IconButton } from "@rmwc/icon-button"
 import { Icon } from "@rmwc/icon"
@@ -8,7 +8,7 @@ import {
   WarningButton,
   SuccessButton,
   SecondaryButton,
-  PrimaryButton
+  PrimaryButton,
 } from "../button/Button"
 
 /**
@@ -52,13 +52,17 @@ export interface IDialogProps {
  * Dialog
  */
 export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
-  primaryLabel="Ok",
-  secondaryLabel="Cancel",
+  primaryLabel = "Ok",
+  secondaryLabel = "Cancel",
   primaryAction,
   secondaryAction,
   message,
-  onClose=()=>{},
-  onOpen=()=>{},
+  onClose = () => {
+    // No-op by default
+  },
+  onOpen = () => {
+    // No-op by default
+  },
   title,
   open,
   type,
@@ -69,7 +73,7 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
   className,
   onStateChange,
   preventOutsideDismiss,
-  actionToApplyOnEnter
+  actionToApplyOnEnter,
 }) => {
   const handlePrimary = () => {
     if (primaryAction) {
@@ -94,7 +98,7 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
       className={classNames(type, className)}
       open={open}
       onOpen={onOpen}
-      onStateChange={e => {
+      onStateChange={(e) => {
         if (onStateChange) {
           onStateChange(e)
         }
@@ -115,8 +119,10 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
         )}
       </DialogTitle>
       <DialogContent>
-        {children ?
-          children : (<>
+        {children ? (
+          children
+        ) : (
+          <>
             <div className="message-icon">
               {(type === "warning" || type === "danger") && (
                 <Icon icon="warning_outline" />
@@ -125,22 +131,22 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
               {type === "info" && <Icon icon="info_outline" />}
             </div>
             <div className="dialog-message">{message}</div>
-          </>)
-        }
+          </>
+        )}
       </DialogContent>
       <DialogActions>
         {footer || (
           <>
-            { secondaryAction && (
+            {secondaryAction && (
               <SecondaryButton onClick={handleSecondary}>
                 {secondaryLabel || "Cancel"}
               </SecondaryButton>
-            ) }
-            { !type && (
+            )}
+            {!type && (
               <PrimaryButton onClick={handlePrimary}>
                 {primaryLabel}
               </PrimaryButton>
-            ) }
+            )}
 
             {
               {
@@ -163,7 +169,7 @@ export const SimpleDialog: FunctionComponent<ISimpleDialogProps> = ({
                   <PrimaryButton onClick={handlePrimary}>
                     {primaryLabel}
                   </PrimaryButton>
-                )
+                ),
               }[type]
             }
           </>
@@ -230,5 +236,5 @@ export default {
   SimpleDangerDialog,
   SimpleWarningDialog,
   SimpleSuccessDialog,
-  SimpleInfoDialog
+  SimpleInfoDialog,
 }

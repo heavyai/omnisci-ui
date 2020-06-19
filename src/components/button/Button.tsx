@@ -64,5 +64,5 @@ export default {
   DangerButton,
   WarningButton,
   InfoButton,
-  SuccessButton
+  SuccessButton,
 }

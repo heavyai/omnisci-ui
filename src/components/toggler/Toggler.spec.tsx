@@ -5,7 +5,7 @@ import Toggler from "./Toggler"
 
 test("Should render a toggle", () => {
   const props = {
-    isPrimaryState: true
+    isPrimaryState: true,
   }
   const component = render(<Toggler {...props} />)
 

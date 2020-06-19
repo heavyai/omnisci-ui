@@ -16,16 +16,17 @@ export interface IMultiSelectProps {
   components?: any
 }
 
-export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
+export class MultiSelect extends React.PureComponent<IMultiSelectProps> {
   private SelectContainer = ({ children, ...childProps }) => {
-    const labelShouldFloat = childProps.hasValue || childProps.selectProps.inputValue
+    const labelShouldFloat =
+      childProps.hasValue || childProps.selectProps.inputValue
     return (
       <components.SelectContainer {...childProps}>
         <span className="select-container-wrapper">{children}</span>
         <NotchedOutline notch={labelShouldFloat}>
           <FloatingLabel
             className={cx("floating-label", {
-              "no-label": childProps.selectProps.noLabel
+              "no-label": childProps.selectProps.noLabel,
             })}
             float={labelShouldFloat}
           >
@@ -37,40 +38,38 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
   }
 
   private DropdownIndicator = ({ ...props }) => (
-      <components.DropdownIndicator {...props}>
-        ▾
-      </components.DropdownIndicator>
-    )
+    <components.DropdownIndicator {...props}>▾</components.DropdownIndicator>
+  )
 
   private Placeholder = () => null
 
   private customStyles = {
-    control: provided => ({
+    control: (provided) => ({
       ...provided,
       minHeight: "32px",
-      height: "32px"
+      height: "32px",
     }),
-    indicatorsContainer: provided => ({
+    indicatorsContainer: (provided) => ({
       ...provided,
-      height: "32px"
+      height: "32px",
     }),
-    clearIndicator: provided => ({
+    clearIndicator: (provided) => ({
       ...provided,
-      padding: "4px"
+      padding: "4px",
     }),
-    dropdownIndicator: provided => ({
+    dropdownIndicator: (provided) => ({
       ...provided,
-      padding: "4px"
+      padding: "4px",
     }),
-    valueContainer: base => ({
+    valueContainer: (base) => ({
       ...base,
-      padding: "0px 6px"
+      padding: "0px 6px",
     }),
-    input: base => ({
+    input: (base) => ({
       ...base,
       margin: 0,
-      padding: 0
-    })
+      padding: 0,
+    }),
   }
 
   render() {
@@ -85,7 +84,7 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
       <Select
         className={cx("multi-select", className, {
           error: hasError,
-          required: isRequired
+          required: isRequired,
         })}
         styles={this.customStyles}
         classNamePrefix={"select"}
@@ -93,7 +92,7 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
           SelectContainer: this.SelectContainer,
           Placeholder: this.Placeholder,
           DropdownIndicator: this.DropdownIndicator,
-          ...components
+          ...components,
         }}
         {...otherProps}
       />

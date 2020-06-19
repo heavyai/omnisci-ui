@@ -10,7 +10,7 @@ export interface IMultiSelectProps {
     className?: string;
     components?: any;
 }
-export declare class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
+export declare class MultiSelect extends React.PureComponent<IMultiSelectProps> {
     private SelectContainer;
     private DropdownIndicator;
     private Placeholder;

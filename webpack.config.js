@@ -1,16 +1,17 @@
 const path = require("path")
-const ExtractTextPlugin = require("extract-text-webpack-plugin")
-const indexPath = path.resolve("./src/index.ts")
+const webpack = require("webpack")
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+
+const indexJsPath = path.resolve("./src/index.ts")
+const indexCssPath = path.resolve("./src/index.scss")
 
 const config = () => (
   {
     entry: {
-      "omnisci-ui": indexPath
+      "omnisci-ui": [indexJsPath, indexCssPath]
     },
 
-    mode: "development",
-
-    devtool: "cheap-source-map",
+    devtool: "source-map",
 
     resolve: {
       extensions: [".ts", ".tsx", ".js", ".jsx"],
@@ -43,24 +44,25 @@ const config = () => (
           test: /\.(sass|scss)$/,
           exclude: /node_modules/,
           include: path.resolve(__dirname, "src/"),
-          use: ExtractTextPlugin.extract({
-            use: [
-              {
-                loader: "css-loader"
-              },
-              {
-                loader: "postcss-loader",
-                options: {
-                  config: {
-                    path: "postcss.config.js"
-                  }
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader
+            },
+            {
+              loader: "css-loader"
+            },
+            {
+              loader: "postcss-loader",
+              options: {
+                config: {
+                  path: "postcss.config.js"
                 }
-              },
-              {
-                loader: "sass-loader"
               }
-            ]
-          })
+            },
+            {
+              loader: "sass-loader"
+            }
+          ]
         },
         {
           test: /\.(sass|scss|css)$/,
@@ -68,29 +70,30 @@ const config = () => (
             path.resolve(__dirname, "node_modules/material-components-web"),
             path.resolve(__dirname, "node_modules/@material")
           ],
-          use: ExtractTextPlugin.extract({
-            use: [
-              {
-                loader: "css-loader"
-              },
-              {
-                loader: "sass-loader",
-                options: {
-                  includePaths: [
-                    path.resolve(__dirname, "node_modules/material-components-web"),
-                    path.resolve(__dirname, "node_modules/@material")
-                  ]
-                }
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader
+            },
+            {
+              loader: "css-loader"
+            },
+            {
+              loader: "sass-loader",
+              options: {
+                includePaths: [
+                  path.resolve(__dirname, "node_modules/material-components-web"),
+                  path.resolve(__dirname, "node_modules/@material")
+                ]
               }
-            ]
-          })
+            }
+          ]
         }
       ]
     },
     plugins: [
-      new ExtractTextPlugin({
-        filename: "[name].css",
-        allChunks: true
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      new MiniCssExtractPlugin({
+        filename: "[name].css"
       })
     ]
   }

@@ -5,17 +5,21 @@
         "esModuleInterop": true,
         "rootDir": "./src",
         "declaration": true,
-        "declarationDir": "./dist",
         "jsx": "react",
         "module": "commonjs",
         "target": "es2016",
         "moduleResolution": "node",
         "noUnusedLocals": false,
         "noUnusedParameters": false,
+        "outDir": "lib",
         "pretty": true,
         "skipLibCheck": true,
         "sourceMap": true
     },
-    "include": ["./src/**/*"],
-    "exclude": ["./src/**/*.spec.*"]
+    "include": [
+        "./src/**/*"
+    ],
+    "exclude": [
+        "./src/**/*.spec.*"
+    ]
 }

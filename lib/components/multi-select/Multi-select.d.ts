@@ -1,6 +1,4 @@
 import * as React from "react";
-import "@material/react-floating-label/index.scss";
-import "../../vars.scss";
 export interface IMultiSelectProps {
     options?: any;
     value?: any;
@@ -16,6 +14,7 @@ export declare class MultiSelect extends React.PureComponent<IMultiSelectProps, 
     private SelectContainer;
     private DropdownIndicator;
     private Placeholder;
+    private customStyles;
     render(): JSX.Element;
 }
 export default MultiSelect;

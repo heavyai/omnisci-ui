@@ -1,10 +1,8 @@
 import * as React from "react"
 import Select, { components } from "react-select"
 import FloatingLabel from "@material/react-floating-label"
-import NotchedOutline from '@material/react-notched-outline';
+import NotchedOutline from "@material/react-notched-outline"
 import cx from "classnames"
-import "@material/react-floating-label/index.scss"
-import "../../vars.scss"
 
 export interface IMultiSelectProps {
   options?: any
@@ -38,13 +36,11 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
     )
   }
 
-  private DropdownIndicator = ({ ...props }) => {
-    return (
+  private DropdownIndicator = ({ ...props }) => (
       <components.DropdownIndicator {...props}>
         ▾
       </components.DropdownIndicator>
     )
-  }
 
   private Placeholder = () => null
 
@@ -68,7 +64,7 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
     }),
     valueContainer: base => ({
       ...base,
-      padding: '0px 6px'
+      padding: "0px 6px"
     }),
     input: base => ({
       ...base,
@@ -79,7 +75,7 @@ export class MultiSelect extends React.PureComponent<IMultiSelectProps, {}> {
 
   render() {
     const {
-      className, 
+      className,
       hasError,
       isRequired,
       components,

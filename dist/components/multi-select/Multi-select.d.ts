@@ -16,6 +16,7 @@ export declare class MultiSelect extends React.PureComponent<IMultiSelectProps, 
     private SelectContainer;
     private DropdownIndicator;
     private Placeholder;
+    private customStyles;
     render(): JSX.Element;
 }
 export default MultiSelect;

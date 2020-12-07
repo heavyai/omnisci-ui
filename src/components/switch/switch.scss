@@ -18,14 +18,23 @@
       height: 10px;
     }
     .mdc-switch__thumb-underlay {
-      top: -19px;
+      width: 12px;
+      height: 12px;
+      left: 0;
+      top: 0;
     }
     .mdc-switch__thumb {
       width: 12px;
       height: 12px;
       border: none;
     }
-
+    .mdc-switch__native-control {
+      width: 24px;
+      height: 12px;
+    }
+    &.mdc-switch--checked .mdc-switch__native-control {
+      transform: translateX(-12px);
+    }
     &.mdc-switch--checked .mdc-switch__thumb-underlay {
       transform: translateX(12px);
     }
